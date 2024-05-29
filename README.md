@@ -4,7 +4,7 @@ This repository contains my dotfiles and use GNU Stow to manage them.
 
 ## Installation
 
-- Clone the repo
+- Clone the repo **into your user home directory**
 - Stow
 
 ```bash
