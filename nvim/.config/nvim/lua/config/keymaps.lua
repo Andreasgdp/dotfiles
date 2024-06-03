@@ -109,3 +109,6 @@ map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 map("n", "<leader>mm", ":delmarks a-z<CR>", { desc = "Delete all marks" })
 -- remove all marks for alphanumeric characters and special characters
 map("n", "<leader>ma", ":delm! | delm A-Z0-9<CR>", { desc = "Delete all marks for alphanumeric characters" })
+
+-- keymap to restart lsp
+map("n", "<leader>rl", ":LspRestart<CR>", { desc = "Restart LSP" })
