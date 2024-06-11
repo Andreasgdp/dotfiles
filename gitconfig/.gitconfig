@@ -1,0 +1,47 @@
+[user]
+  email = andreasgdp@gmail.com
+  name = Andreas Petersen
+
+[core]
+  pager = delta
+  editor = nvim
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true    # use n and N to move between diff sections
+  side-by-side = true
+
+  # delta detects terminal colors automatically; set one of these to disable auto-detection
+  # dark = true
+  # light = true
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default
+
+[alias]
+  s = status
+  ammend = commit --amend --no-edit
+  log = log --oneline --graph --all --decorate
+  logb = log --oneline --graph --all --decorate --branches
+  logt = log --oneline --graph --all --tags
+  rhmaster = reset --hard origin/master
+  rhmain = reset --hard origin/main
+  nuke = !git reset --hard HEAD && git clean -df
+  branch = branch -a
+  pf = push --force-with-lease
+  search = log --grep
+  blamec = blame -C -C -C
+
+[rerere]
+  enabled = true
+
+[pull]
+  rebase = true
+
+[includeif "gitdir:~/work/"]
+  path = ~/work/.gitconfig
