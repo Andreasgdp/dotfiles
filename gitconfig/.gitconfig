@@ -35,7 +35,8 @@
   branch = branch -a
   pf = push --force-with-lease
   search = log --grep
-  blamec = blame -C -C -C
+  bl = blame
+  blame = blame -C -C -C
 
 [rerere]
   enabled = true
