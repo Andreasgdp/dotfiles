@@ -17,9 +17,13 @@ Nerd font icons does not work well with the monaspace font. In arch the icons mo
 So, install NerdFontsSymbolsOnly Nerd Font from ryanoasis/nerd-fonts.
 
 ```bash
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
+curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
 
-cd nerd-fonts
+unzip NerdFontsSymbolsOnly.zip -d ~/.local/share/fonts
+```
 
-./install.sh NerdFontsSymbolsOnly
+Then, update the font cache.
+
+```bash
+fc-cache -fv
 ```
