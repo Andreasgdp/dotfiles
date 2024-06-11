@@ -47,3 +47,6 @@
 
 [includeif "gitdir:~/work/"]
   path = ~/work/.gitconfig
+
+[includeif "gitdir:~/personal/"]
+  path = ~/personal/.gitconfig
