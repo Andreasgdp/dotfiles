@@ -34,8 +34,8 @@
   nuke = !git reset --hard HEAD && git clean -df
   branch = branch -a
   pf = push --force-with-lease
-  gerp = log --grep --oneline --graph --all --decorate
-  search = log --oneline --graph --all --decorate -S 
+  find = log --grep
+  search = !sh -c 'git log -S"$1" -p' -
   bl = blame
   blame = blame -C -C -C
 
