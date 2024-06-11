@@ -11,11 +11,3 @@ cd monaspace
 
 ./util/install_linux.sh
 ```
-
-Nerd font icons does not work well with the monaspace font.
-
-So, install JetBrainsMono Nerd Font from ryanoasis/nerd-fonts.
-
-```bash
-git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git
-```
