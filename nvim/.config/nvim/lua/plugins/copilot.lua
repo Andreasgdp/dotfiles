@@ -3,11 +3,14 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     build = ":Copilot auth",
+    event = "InsertEnter",
     opts = {
+      panel = {
+        enabled = false,
+      },
       suggestion = {
         enabled = true,
         auto_trigger = true,
-        debounce = 0,
         keymap = {
           accept = "<C-J>",
           accept_word = false,
@@ -17,14 +20,9 @@ return {
           dismiss = "<C-;>",
         },
       },
-      panel = { enabled = false },
-      filetypes = {
-        yaml = true,
-        markdown = true,
-        help = true,
-        gitcommit = true,
-        gitrebase = true,
-      },
+      filetypes = { ["*"] = true },
+      copilot_node_command = "node", -- Node.js version must be > 18.x
+      server_opts_overrides = {},
     },
   },
   {
