@@ -1,4 +1,5 @@
 return {
+  { "onsails/lspkind.nvim" },
   {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
@@ -61,13 +62,29 @@ return {
         }, {
           { name = "buffer" },
         }),
+        window = {
+          completion = cmp.config.window.bordered({
+            col_offset = -3,
+            side_padding = 0,
+            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+          }),
+          documentation = cmp.config.window.bordered({
+            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+          }),
+        },
         formatting = {
-          format = function(_, item)
-            local icons = require("lazyvim.config").icons.kinds
-            if icons[item.kind] then
-              item.kind = icons[item.kind] .. item.kind
-            end
-            return item
+          fields = { "kind", "abbr", "menu" },
+          format = function(entry, vim_item)
+            local lspkind = require("lspkind")
+            local kind = lspkind.cmp_format({
+              mode = "symbol_text",
+              maxwidth = 50,
+            })(entry, vim_item)
+            local strings = vim.split(kind.kind, "%s", { trimempty = true })
+            kind.kind = " " .. strings[1] .. " "
+            kind.menu = "    (" .. strings[2] .. ")"
+
+            return kind
           end,
         },
         experimental = {
