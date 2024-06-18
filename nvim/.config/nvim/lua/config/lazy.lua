@@ -53,6 +53,8 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lsp.neoconf" },
     -- Test plugins
     { import = "lazyvim.plugins.extras.test.core" },
+    -- Debug plugins
+    { import = "lazyvim.plugins.extras.dap.core" },
 
     -- import/override with own plugins
     { import = "plugins" },
