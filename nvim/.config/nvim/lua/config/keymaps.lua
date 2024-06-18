@@ -19,7 +19,6 @@ local function map(mode, lhs, rhs, opts)
   end
 end
 
-map("n", "<C-p>", Util.telescope("files"), { desc = "Telescope Files", remap = true })
 -- ---------GIT---------
 -- Open command-line window with ":Git " pre-filled
 map("n", "<leader>g<leader>", ":Git ", { desc = "Git" })
