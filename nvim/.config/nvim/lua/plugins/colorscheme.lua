@@ -88,6 +88,7 @@ return {
           CmpItemKindOperator = { fg = C.base, bg = C.blue },
           CmpItemKindTypeParameter = { fg = C.base, bg = C.blue },
           CmpItemKindCopilot = { fg = C.base, bg = C.teal },
+          GitSignsCurrentLineBlame = { fg = "#565a6d", bg = "#16171f" },
         }
       end,
     },
