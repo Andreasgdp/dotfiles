@@ -51,10 +51,6 @@ require("lazy").setup({
     -- LSP plugins
     { import = "lazyvim.plugins.extras.lsp.none-ls" },
     { import = "lazyvim.plugins.extras.lsp.neoconf" },
-    -- Test plugins
-    { import = "lazyvim.plugins.extras.test.core" },
-    -- Debug plugins
-    { import = "lazyvim.plugins.extras.dap.core" },
 
     -- import/override with own plugins
     { import = "plugins" },
