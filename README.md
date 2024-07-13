@@ -32,3 +32,5 @@ When adding zsh config use this alias for tmux
 ```bash
 alias t='tmux attach || tmux new-session'
 ```
+
+Also install atuin and setup completions for zsh
