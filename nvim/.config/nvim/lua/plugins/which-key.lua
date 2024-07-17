@@ -2,9 +2,4 @@
 -- with the active keybindings of the command you started typing.
 return {
   "folke/which-key.nvim",
-  opts = {
-    defaults = {
-      ["<leader>gb"] = { name = "+buffer" },
-    },
-  },
 }

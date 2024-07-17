@@ -96,11 +96,6 @@ vim.keymap.set("n", "<leader>apm", function()
 end, { desc = "APM toggle monitor" })
 
 -- windows
-map("n", "<leader>ww", "<C-W>c", { desc = "Delete Window", remap = true })
-map("n", "<leader>wk", "<C-W>s", { desc = "Split Window Above", remap = true })
-map("n", "<leader>wj", "<C-W>s", { desc = "Split Window Below", remap = true })
-map("n", "<leader>wl", "<C-W>v", { desc = "Split Window Right", remap = true })
-map("n", "<leader>wl", "<C-W>v", { desc = "Split Window Left", remap = true })
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
 
