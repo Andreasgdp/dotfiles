@@ -5,6 +5,11 @@ return {
     opts = {
       term_colors = true,
       transparent_background = false,
+      dim_inactive = {
+        enabled = true,
+        shade = "dark",
+        percentage = 0,
+      },
       styles = {
         comments = {},
         conditionals = {},
@@ -20,9 +25,9 @@ return {
       },
       color_overrides = {
         mocha = {
-          base = "#000000",
+          base = "#050505",
           mantle = "#000000",
-          crust = "#000000",
+          crust = "#212121",
         },
       },
       integrations = {
