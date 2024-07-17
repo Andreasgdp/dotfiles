@@ -22,7 +22,7 @@ return {
       require("incline").setup({
         window = {
           padding = 0,
-          margin = { horizontal = 0 },
+          margin = { horizontal = 1, vertical = 1 },
         },
         render = function(props)
           local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
