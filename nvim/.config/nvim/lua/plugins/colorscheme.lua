@@ -23,13 +23,6 @@ return {
         properties = {},
         types = {},
       },
-      color_overrides = {
-        mocha = {
-          base = "#050505",
-          mantle = "#000000",
-          crust = "#212121",
-        },
-      },
       integrations = {
         aerial = true,
         alpha = true,
