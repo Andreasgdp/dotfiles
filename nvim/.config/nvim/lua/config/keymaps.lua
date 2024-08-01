@@ -89,12 +89,6 @@ map("n", "<leader>fF", function()
   ts_builtin.find_files({ cwd = ts_utils.buffer_dir() })
 end, { desc = "Telescope Find Files in CWD", remap = true })
 
-local apm = require("vim-apm")
-apm:setup({})
-vim.keymap.set("n", "<leader>apm", function()
-  apm:toggle_monitor()
-end, { desc = "APM toggle monitor" })
-
 -- windows
 map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
 map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
