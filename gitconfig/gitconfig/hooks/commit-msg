@@ -1,0 +1,4 @@
+#!/bin/bash
+
+INPUT_MSG=$1
+conventional-pre-commit "$INPUT_MSG"
