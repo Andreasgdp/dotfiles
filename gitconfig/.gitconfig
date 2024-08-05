@@ -30,6 +30,10 @@
   log = log --oneline --graph --all --decorate
   logb = log --oneline --graph --all --decorate --branches
   logt = log --oneline --graph --all --tags
+  pmaster = pull origin master
+  pmain = pull origin main
+  rbmaster = rebase origin/master
+  rbmain = rebase origin/main
   rhmaster = reset --hard origin/master
   rhmain = reset --hard origin/main
   nuke = !git reset --hard HEAD && git clean -df
