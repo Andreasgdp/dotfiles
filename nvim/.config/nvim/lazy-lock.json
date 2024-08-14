@@ -89,5 +89,5 @@
   "vim-visual-multi": { "branch": "master", "commit": "38b0e8d94a5499ccc17d6159763d32c79f53417b" },
   "which-key.nvim": { "branch": "main", "commit": "6c1584eb76b55629702716995cca4ae2798a9cca" },
   "yanky.nvim": { "branch": "main", "commit": "73215b77d22ebb179cef98e7e1235825431d10e4" },
-  "yazi.nvim": { "branch": "main", "commit": "e3d4c782a12bced97bf8824527cdc82c383a88b6" }
+  "yazi.nvim": { "branch": "main", "commit": "74eb5fdc501505fcdc8088cf60a10c4ece5a260b" }
 }

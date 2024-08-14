@@ -100,3 +100,8 @@ map("n", "<leader>ma", ":delm! | delm A-Z0-9<CR>", { desc = "Delete all marks fo
 
 -- keymap to restart lsp
 map("n", "<leader>rl", ":LspRestart<CR>", { desc = "Restart LSP" })
+
+-- keymap for ctrl + s to save all buffers ':wa'
+map("n", "<C-s>", ":wa<CR>", { desc = "Save all buffers" })
+-- ctrl + S to save current buffer
+map("n", "<C-S>", ":w<CR>", { desc = "Save current buffer" })
