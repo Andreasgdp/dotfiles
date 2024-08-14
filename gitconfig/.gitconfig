@@ -31,7 +31,9 @@
   lo = log --graph --all --decorate --oneline
   nuke = !git reset --hard HEAD && git clean -df
   pf = push --force-with-lease
+  # looks thorugh commit messages for a string (git find <string>)
   find = log --grep
+  # looks through the code for a string (git search <string>)
   search = !sh -c 'git log -S"$1" -p' -
   bl = blame -C -C -C
 
