@@ -27,7 +27,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.docker" },
     { import = "lazyvim.plugins.extras.lang.angular" },
     { import = "lazyvim.plugins.extras.lang.git" },
-    { import = "lazyvim.plugins.extras.lang.sql" },
     { import = "lazyvim.plugins.extras.lang.toml" },
     -- Formatting and linting plugins
     { import = "lazyvim.plugins.extras.formatting.prettier" },
@@ -36,7 +35,6 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.editor.navic" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     -- UI plugins
-    { import = "lazyvim.plugins.extras.ui.alpha" },
     { import = "lazyvim.plugins.extras.ui.treesitter-context" },
     -- Utility plugins
     { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
