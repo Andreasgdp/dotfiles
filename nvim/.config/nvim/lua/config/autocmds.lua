@@ -2,7 +2,7 @@
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 -- Add any additional autocmds here
 
-function feedkeys(key, mode)
+local function feedkeys(key, mode)
   local keys = vim.api.nvim_replace_termcodes(key, true, false, true)
   vim.api.nvim_feedkeys(keys, mode, true)
 end
