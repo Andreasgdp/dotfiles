@@ -37,3 +37,14 @@ vim.api.nvim_create_autocmd({ "InsertEnter" }, {
 -- require('copilot.api').register_status_notification_handler(function(data)
 --   print("Copilot Status: " .. data.status)
 -- end)
+
+-- workaround for issue with lazygit window rendering with overflow
+-- this opens and closes the command line to trigger a redraw
+vim.api.nvim_create_autocmd({ "User" }, {
+  pattern = "*",
+  once = true,
+  callback = function()
+    feedkeys(":", "n")
+    feedkeys("<esc>", "n")
+  end,
+})
