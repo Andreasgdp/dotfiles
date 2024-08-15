@@ -105,3 +105,8 @@ map("n", "<leader>rl", ":LspRestart<CR>", { desc = "Restart LSP" })
 map("n", "<C-s>", ":wa<CR>", { desc = "Save all buffers" })
 -- ctrl + S to save current buffer
 map("n", "<C-S>", ":w<CR>", { desc = "Save current buffer" })
+
+-- ctrl + g to launch lazygit
+map("n", "<C-g>", function()
+  LazyVim.lazygit({ cwd = Util.root.git() })
+end, { desc = "Lazygit (Root Dir)" })
