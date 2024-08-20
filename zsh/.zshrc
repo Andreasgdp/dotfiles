@@ -88,5 +88,7 @@ fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
 eval "$(zoxide init zsh)"
 
+alias t='tmux attach || tmux new-session'
+
 # launch fastfetch on new terminal
 fastfetch
