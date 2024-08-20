@@ -4,6 +4,10 @@ This is my neovim setup. I use it for web development, so it's optimized for tha
 
 It is based on [LazyVim](https://www.lazyvim.org/).
 
+## Installation
+
+$ sudo apt-get install ripgrep
+
 ## Complete reset of local neovim setup
 
 Run the following if something goes wrong and you want to reset your local neovim setup to the state from the one in this repository.

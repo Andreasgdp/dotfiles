@@ -24,7 +24,6 @@ stow nvim
 ```
 
 For this case it will create a symlink from `~/.config/nvim` to `dotfiles/nvim`
-
 ## Notes
 
 When adding zsh config use this alias for tmux
@@ -34,3 +33,23 @@ alias t='tmux attach || tmux new-session'
 ```
 
 Also install atuin and setup completions for zsh
+
+# System Configuration
+
+## Laptop
+
+### Close lid
+
+```bash
+[Login]
+...
+HandlePowerKey=hibernate
+#HandleSuspendKey=suspend
+#HandleHibernateKey=hibernate
+HandleLidSwitch=suspend
+...
+HoldoffTimeoutSec=30s
+IdleAction=hybrid-sleep
+IdleActionSec=30min
+...
+```

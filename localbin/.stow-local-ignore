@@ -1,0 +1,3 @@
+.local/bin/.gitignore
+.local/bin/kitty
+.local/bin/kitten
