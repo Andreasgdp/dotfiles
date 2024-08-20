@@ -79,16 +79,6 @@ map("n", "<C-q>", "<C-a>", { desc = "Increment number under cursor" })
 -- map <leader>/ to <cmd>Telescope current_buffer_fuzzy_find<cr>
 map("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Telescope current buffer fuzzy find" })
 
-local ts_builtin = require("telescope.builtin")
-local ts_utils = require("telescope.utils")
-
--- telescope find files in project
-map("n", "<leader>ff", ts_builtin.find_files, { desc = "Telescope Find Files", remap = true })
--- telescope find files in cwd
-map("n", "<leader>fF", function()
-  ts_builtin.find_files({ cwd = ts_utils.buffer_dir() })
-end, { desc = "Telescope Find Files in CWD", remap = true })
-
 local apm = require("vim-apm")
 apm:setup({})
 vim.keymap.set("n", "<leader>apm", function()

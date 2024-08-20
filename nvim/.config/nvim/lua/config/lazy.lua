@@ -36,6 +36,7 @@ require("lazy").setup({
     -- Editor plugins
     { import = "lazyvim.plugins.extras.editor.navic" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
+    { import = "lazyvim.plugins.extras.editor.telescope" },
     -- UI plugins
     { import = "lazyvim.plugins.extras.ui.alpha" },
     { import = "lazyvim.plugins.extras.ui.treesitter-context" },
