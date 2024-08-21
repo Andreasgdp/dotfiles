@@ -14,4 +14,4 @@ if [ ! -d "$HOME/dotfiles" ]; then
 fi
 
 # run setup.sh
-~/dotfiles/install-scripts/setup.sh
+~/dotfiles/setup.sh
