@@ -35,7 +35,7 @@ fi
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat rofi
 
 # Install Starship prompt
 if ! command_exists "starship"; then
