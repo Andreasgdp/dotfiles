@@ -2,19 +2,25 @@
 
 This repository contains my dotfiles and use GNU Stow to manage them.
 
-## Installation
+## OS-Post-Install process
+
+This is the process I follow after a fresh install of a Ubuntu based system.
+
+Run the following command and follow the instructions to get the system up and running.
+
+```bash
+curl -s https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/entrypoint.sh | bash
+```
+
+## Basic setup of only configuration files
+
+This is part of the above script but can be run separately.
 
 - Clone the repo **into your user home directory**
 - Stow
 
 ```bash
 sudo apt install stow
-```
-
-or
-
-```bash
-yay -S stow
 ```
 
 - Stow the desired configuration (from the root of the dotfiles repo) e.g. for neovim
@@ -27,13 +33,17 @@ For this case it will create a symlink from `~/.config/nvim` to `dotfiles/nvim`
 
 ## Notes
 
+Things that need to be done manually (for now)
+
+### zsh completions
+
 Install atuin and setup completions for zsh
 
-# System Configuration
+### System Configuration
 
-## Laptop
+#### Laptop
 
-### Close lid
+##### Close lid
 
 ```bash
 [Login]

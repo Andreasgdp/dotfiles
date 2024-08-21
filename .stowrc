@@ -1,0 +1,5 @@
+--ignore=.stowrc
+--ignore=DS_Store
+--ignore=install-scripts
+--ignore=setup.sh
+--ignore=README.md
