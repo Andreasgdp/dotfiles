@@ -35,7 +35,7 @@ fi
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree
 
 # Install Starship prompt
 if ! command_exists "starship"; then
@@ -74,12 +74,6 @@ if ! command_exists "nvim"; then
 	sudo tar -C /opt -xzf nvim-linux64.tar.gz
 fi
 
-# Install Oh My Zsh
-# if .oh-my-zsh directory does not exist run the install script
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
-
 # Install Kitty terminal emulator
 if ! command_exists "kitty"; then
 	curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
@@ -101,6 +95,9 @@ fi
 # TODO: see if this is necessary
 # pipx install pynvim
 
+pipx install conventional-pre-commit
+pipx ensurepath
+
 # Install and set up Tmux plugin manager
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -111,6 +108,8 @@ LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/re
 curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 tar xf lazygit.tar.gz lazygit
 sudo install lazygit /usr/local/bin
+# remove lazygit bin and lazygit.tar.gz from current dir
+rm lazygit lazygit.tar.gz
 
 if ! command_exists "n"; then
 	curl -L https://bit.ly/n-install | bash
@@ -140,11 +139,10 @@ if ! command_exists "yazi"; then
 		wget -P ~/Downloads -i - -O yazi.snap
 
 	# Install Yazi from the downloaded file
-	sudo snap install --dangerous ~/Downloads/yazi.snap
+	sudo snap install --dangerous --classic ~/Downloads/yazi.snap
 fi
 
 # TODO:make AwesomeWM config part of the dotfiles repo
-
 # clone git@github.com:Andreasgdp/awesome.git into ~/.config/awesome and run git submodule update --init --recursive in the repo
 if [ ! -d "$HOME/.config/awesome" ]; then
 	git clone git@github.com:Andreasgdp/awesome.git ~/.config/awesome
@@ -153,6 +151,12 @@ if [ ! -d "$HOME/.config/awesome" ]; then
 	cd -
 fi
 
-echo "Setup script completed."
+echo "Will be done after setting up oh-my-zsh - opens zsh right after"
+
+# Install Oh My Zsh
+# if .oh-my-zsh directory does not exist run the install script
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
 # TODO: Add more installation steps or configurations as needed

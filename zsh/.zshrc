@@ -57,6 +57,7 @@ alias nm="nmap -sC -sV -oN nmap"
 
 export PATH="$PATH:/opt/nvim-linux64/bin:/usr/local/bin:/usr/local/share:/usr/bin:/bin:/usr/sbin:/sbin:/snap/bin:/Users/anpe/.local/bin"
 export EDITOR=nvim
+export PATH="$PATH:/home/anpe/dotfiles/localbin/.local/bin"
 
 alias cl='clear'
 
@@ -92,3 +93,6 @@ alias t='tmux attach || tmux new-session'
 
 # launch fastfetch on new terminal
 fastfetch
+
+
+export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).

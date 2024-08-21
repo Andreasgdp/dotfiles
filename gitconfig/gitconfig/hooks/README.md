@@ -5,5 +5,5 @@
 Ensure conventional-pre-commit is installed by running the following command:
 
 ```bash
-pip install conventional-pre-commit
+pipx install conventional-pre-commit
 ```
