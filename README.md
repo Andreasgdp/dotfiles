@@ -1,5 +1,7 @@
 # dotfiles
 
+> **_Important_** This repo is made for personal use and is not intended to be used by others. However, feel free to use it as a reference or inspiration for your own dotfiles.
+
 This repository contains my dotfiles and use GNU Stow to manage them.
 
 ## OS-Post-Install process
