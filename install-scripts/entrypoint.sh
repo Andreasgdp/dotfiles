@@ -1,6 +1,6 @@
 sudo apt update
 sudo apt upgrade -y
-sudo apt install git stow curl
+sudo apt install -y git stow curl xclip
 
 # run the single script from github
 # script need interactivity so it is not possible to run it with curl | bash
