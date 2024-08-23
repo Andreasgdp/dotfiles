@@ -3,12 +3,7 @@ sudo apt upgrade -y
 sudo apt install -y git stow curl xclip
 
 # run the single script from github
-# script need interactivity so it is not possible to run it with curl | bash
-curl -s -O https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/setup-ssh.sh
-chmod +x setup-ssh.sh
-./setup-ssh.sh
-# remove the script after running it
-rm setup-ssh.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/setup-ssh.sh)
 
 # clone the dotfiles repo
 if [ ! -d "$HOME/dotfiles" ]; then

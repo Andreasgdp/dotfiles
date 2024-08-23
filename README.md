@@ -11,15 +11,7 @@ This is the process I follow after a fresh install of a Ubuntu based system.
 Run the following command and follow the instructions to get the system up and running.
 
 ```bash
-curl -s -O https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/entrypoint.sh
-chmod +x entrypoint.sh
-./entrypoint.sh
-```
-
-Feel free to remove the script after running it.
-
-```bash
-rm entrypoint.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/entrypoint.sh)
 ```
 
 ## Basic setup of only configuration files
