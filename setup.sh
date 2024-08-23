@@ -35,7 +35,11 @@ fi
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat rofi pavucontrol btop htop
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks
+
+# installing brightnessctl as a suid binary
+sudo apt install -y brightnessctl
+sudo chmod u+s /usr/bin/brightnessctl
 
 # Install Starship prompt
 if ! command_exists "starship"; then
@@ -150,6 +154,12 @@ if [ ! -d "$HOME/.config/awesome" ]; then
 	git submodule update --init --recursive
 	cd -
 fi
+
+# Install Arc GTK theme
+git clone https://github.com/horst3180/arc-icon-theme --depth 1 && cd arc-icon-theme
+./autogen.sh --prefix=/usr
+sudo make install
+cd ~/dotfiles
 
 echo "Will be done after setting up oh-my-zsh - opens zsh right after"
 
