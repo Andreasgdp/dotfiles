@@ -48,3 +48,19 @@ vim.api.nvim_create_autocmd({ "User" }, {
     feedkeys("<esc>", "n")
   end,
 })
+
+-- When the window is scrolled, resized, or about to quit, show the scrollbar
+vim.api.nvim_create_autocmd({ "WinScrolled", "VimResized", "QuitPre", "WinEnter", "FocusGained" }, {
+  pattern = "*",
+  callback = function()
+    vim.cmd("silent! lua require('scrollbar').show()")
+  end,
+})
+
+-- When leaving a window, buffer, or losing focus, clear the scrollbar
+vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave", "BufWinLeave", "FocusLost" }, {
+  pattern = "*",
+  callback = function()
+    vim.cmd("silent! lua require('scrollbar').clear()")
+  end,
+})

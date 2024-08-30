@@ -65,6 +65,7 @@
   "rainbow-delimiters.nvim": { "branch": "master", "commit": "c097f728a409d9923a3c70c1507e8389978a9b85" },
   "refactoring.nvim": { "branch": "master", "commit": "c406fc5fb4d7ba5fce7b668637075fad6e75e9f8" },
   "rustaceanvim": { "branch": "master", "commit": "047f9c9d8cd2861745eb9de6c1570ee0875aa795" },
+  "scrollbar.nvim": { "branch": "master", "commit": "d7e6966c258cb30c29f50012543d687aec707b9e" },
   "tailwindcss-colorizer-cmp.nvim": { "branch": "main", "commit": "3d3cd95e4a4135c250faf83dd5ed61b8e5502b86" },
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "cf48d4dfce44e0b9a2e19a008d6ec6ea6f01a83b" },
   "telescope-terraform-doc.nvim": { "branch": "main", "commit": "7ac642765615e6ff164ecfc82eb278aa68d06840" },
