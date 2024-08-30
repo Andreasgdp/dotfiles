@@ -35,11 +35,16 @@ fi
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek
 
 # installing brightnessctl as a suid binary
 sudo apt install -y brightnessctl
 sudo chmod u+s /usr/bin/brightnessctl
+
+read -p "Do you want to install steam? (y/n) " install_steam
+if [[ $install_steam == "y" ]]; then
+	sudo snap install steam
+fi
 
 # Install Starship prompt
 if ! command_exists "starship"; then
