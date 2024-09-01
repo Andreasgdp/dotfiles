@@ -41,14 +41,17 @@ sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux
 # check if homebrew is installed and install if not
 if ! command_exists "brew"; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+	sudo apt install build-essential
+	brew install gcc
 fi
 
 if ! command_exists "fzf"; then
-	/home/linuxbrew/.linuxbrew/bin/brew install fzf
+	brew install fzf
 fi
 
 if ! command_exists "fuck"; then
-	/home/linuxbrew/.linuxbrew/bin/brew install thefuck
+	brew install thefuck
 fi
 
 if ! command_exists "atuin"; then
@@ -57,8 +60,10 @@ if ! command_exists "atuin"; then
 fi
 
 # installing brightnessctl as a suid binary
-sudo apt install -y brightnessctl
-sudo chmod u+s /usr/bin/brightnessctl
+if ! command_exists "brightnessctl"; then
+	sudo apt install -y brightnessctl
+	sudo chmod u+s /usr/bin/brightnessctl
+fi
 
 read -p "Do you want to install steam? (y/n) " install_steam
 if [[ $install_steam == "y" ]]; then
@@ -100,23 +105,7 @@ if ! command_exists "nvim"; then
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
 	sudo rm -rf /opt/nvim
 	sudo tar -C /opt -xzf nvim-linux64.tar.gz
-fi
-
-# Install Kitty terminal emulator
-if ! command_exists "kitty"; then
-	curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-	# Create symbolic links to add kitty and kitten to PATH (assuming ~/.local/bin is in
-	# your system-wide PATH)
-	ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
-	# Place the kitty.desktop file somewhere it can be found by the OS
-	cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
-	# If you want to open text files and images in kitty via your file manager also add the kitty-open.desktop file
-	cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
-	# Update the paths to the kitty and its icon in the kitty desktop file(s)
-	sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
-	sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
-	# Make xdg-terminal-exec (and hence desktop environments that support it use kitty)
-	echo 'kitty.desktop' >~/.config/xdg-terminals.list
+	rm nvim-linux64.tar.gz
 fi
 
 pipx install conventional-pre-commit
@@ -160,10 +149,12 @@ if ! command_exists "yazi"; then
 		grep "browser_download_url.*yazi-x86_64-unknown-linux-gnu.snap" |
 		cut -d : -f 2,3 |
 		tr -d \" |
-		wget -P ~/Downloads -i - -O yazi.snap
+		wget -i - -O yazi.snap
 
 	# Install Yazi from the downloaded file
-	sudo snap install --dangerous --classic ~/Downloads/yazi.snap
+	sudo snap install --dangerous --classic ~/dotfiles/yazi.snap
+	rm ~/dotfiles/yazi.snap
+	cd ~/dotfiles/
 fi
 
 # TODO:make AwesomeWM config part of the dotfiles repo
@@ -196,4 +187,21 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	git clone https://github.com/chrissicool/zsh-256color ~/.oh-my-zsh/custom/plugins/zsh-256color
 	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+fi
+
+# Install Kitty terminal emulator
+if ! command_exists "kitty"; then
+	curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+	# Create symbolic links to add kitty and kitten to PATH (assuming ~/.local/bin is in
+	# your system-wide PATH)
+	ln -sf ~/.local/kitty.app/bin/kitty ~/.local/kitty.app/bin/kitten ~/.local/bin/
+	# Place the kitty.desktop file somewhere it can be found by the OS
+	cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+	# If you want to open text files and images in kitty via your file manager also add the kitty-open.desktop file
+	cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
+	# Update the paths to the kitty and its icon in the kitty desktop file(s)
+	sed -i "s|Icon=kitty|Icon=$(readlink -f ~)/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+	sed -i "s|Exec=kitty|Exec=$(readlink -f ~)/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+	# Make xdg-terminal-exec (and hence desktop environments that support it use kitty)
+	echo 'kitty.desktop' >~/.config/xdg-terminals.list
 fi

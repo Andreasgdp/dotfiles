@@ -137,3 +137,4 @@ esac
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
+export XDG_DATA_DIRS="/home/linuxbrew/.linuxbrew/share:$XDG_DATA_DIRS"
