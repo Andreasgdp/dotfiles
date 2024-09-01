@@ -29,7 +29,7 @@ command_exists() {
 read -p "Do you want to stow dotfiles? (y/n) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
 	cd ~/dotfiles
-	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin
+	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit
 fi
 
 # Update and upgrade system packages
@@ -40,13 +40,14 @@ sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux
 
 # Install Lazygit
 if ! command_exists "lazygit"; then
+	cd ~/
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 	tar xf lazygit.tar.gz lazygit
 	sudo install lazygit /usr/local/bin
 	# remove lazygit bin and lazygit.tar.gz from current dir
 	rm lazygit lazygit.tar.gz
-	stow lazygit --adopt
+	cd ~/dotfiles/
 fi
 
 # check if homebrew is installed and install if not
