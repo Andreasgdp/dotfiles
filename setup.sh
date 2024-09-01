@@ -119,8 +119,10 @@ if ! command_exists "nvim"; then
 	rm nvim-linux64.tar.gz
 fi
 
-pipx install conventional-pre-commit
-pipx ensurepath
+if ! command_exists "conventional-pre-commit"; then
+	pipx install conventional-pre-commit
+	pipx ensurepath
+fi
 
 # Install and set up Tmux plugin manager
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
