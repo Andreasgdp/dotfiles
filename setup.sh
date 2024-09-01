@@ -28,14 +28,32 @@ command_exists() {
 # want to stow dotfiles
 read -p "Do you want to stow dotfiles? (y/n) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
-	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig
+	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit
 fi
 
 # Update and upgrade system packages
 sudo apt-get update && sudo apt-get upgrade -y
 
+# check if homebrew is installed and install if not
+if ! command_exists "brew"; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+if ! command_exists "fzf"; then
+	/home/linuxbrew/.linuxbrew/bin/brew install fzf
+fi
+
+if ! command_exists "fuck"; then
+	/home/linuxbrew/.linuxbrew/bin/brew install thefuck
+fi
+
 # Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux fzf flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr
+
+if ! command_exists "atuin"; then
+	# atuin command history
+	curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+fi
 
 # installing brightnessctl as a suid binary
 sudo apt install -y brightnessctl
@@ -100,10 +118,6 @@ if ! command_exists "kitty"; then
 	echo 'kitty.desktop' >~/.config/xdg-terminals.list
 fi
 
-# Install pynvim via pipx
-# TODO: see if this is necessary
-# pipx install pynvim
-
 pipx install conventional-pre-commit
 pipx ensurepath
 
@@ -161,17 +175,24 @@ if [ ! -d "$HOME/.config/awesome" ]; then
 fi
 
 # Install Arc GTK theme
-git clone https://github.com/horst3180/arc-icon-theme --depth 1 && cd arc-icon-theme
-./autogen.sh --prefix=/usr
-sudo make install
-cd ~/dotfiles
+if [ ! -d "$HOME/arc-icon-theme" ]; then
 
-echo "Will be done after setting up oh-my-zsh - opens zsh right after"
+	git clone --depth 1 https://github.com/horst3180/arc-icon-theme ~/arc-icon-theme/ && cd ~/arc-icon-theme/
+	./autogen.sh --prefix=/usr
+	sudo make install
+	cd ~/dotfiles
+fi
+
+if [ ! -d "$HOME/fzf-git.sh" ]; then
+	git clone https://github.com/junegunn/fzf-git.sh.git ~/fzf-git.sh
+fi
 
 # Install Oh My Zsh
 # if .oh-my-zsh directory does not exist run the install script
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+	git clone https://github.com/Aloxaf/fzf-tab.git ~/.oh-my-zsh/custom/plugins/fzf-tab
+	git clone https://github.com/chrissicool/zsh-256color ~/.oh-my-zsh/custom/plugins/zsh-256color
+	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
-
-# TODO: Add more installation steps or configurations as needed
