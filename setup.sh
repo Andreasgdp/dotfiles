@@ -34,6 +34,9 @@ fi
 # Update and upgrade system packages
 sudo apt-get update && sudo apt-get upgrade -y
 
+# Install essential packages
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr
+
 # check if homebrew is installed and install if not
 if ! command_exists "brew"; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -46,9 +49,6 @@ fi
 if ! command_exists "fuck"; then
 	/home/linuxbrew/.linuxbrew/bin/brew install thefuck
 fi
-
-# Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr
 
 if ! command_exists "atuin"; then
 	# atuin command history
@@ -83,7 +83,7 @@ if ! command_exists "eza"; then
 fi
 
 # Install zoxide
-if ! command_exists "zoxide"; then
+if ! command_exists "z"; then
 	curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 fi
 
