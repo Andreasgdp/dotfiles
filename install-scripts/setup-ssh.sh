@@ -26,11 +26,8 @@ if [[ $generate_ssh == "y" ]]; then
 	fi
 
 	# Copy public key to clipboard and wait for user to add it to GitHub
-	read -p "Do you want to copy the public key to the clipboard? (y/n) " copy_key
-	if [[ $copy_key == "y" ]]; then
-		cat "$public_key_path" | xclip -selection clipboard
-		echo "Public key copied to clipboard."
-	fi
+	cat "$public_key_path" | xclip -selection clipboard
+	echo "Public key copied to clipboard."
 
 	# Press any key to continue after adding key to GitHub
 	read -p "Press any key to continue after adding the public key to GitHub..."
