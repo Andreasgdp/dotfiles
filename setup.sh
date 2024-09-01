@@ -188,6 +188,7 @@ fi
 # if .oh-my-zsh directory does not exist run the install script
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	export RUNZSH=no
+	export KEEP_ZSHRC=yes
 	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	git clone https://github.com/Aloxaf/fzf-tab.git ~/.oh-my-zsh/custom/plugins/fzf-tab
 	git clone https://github.com/chrissicool/zsh-256color ~/.oh-my-zsh/custom/plugins/zsh-256color
