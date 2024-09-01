@@ -29,7 +29,7 @@ command_exists() {
 read -p "Do you want to stow dotfiles? (y/n) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
 	cd ~/dotfiles
-	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit
+	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin
 fi
 
 # Update and upgrade system packages
@@ -37,6 +37,17 @@ sudo apt-get update && sudo apt-get upgrade -y
 
 # Install essential packages
 sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr
+
+# Install Lazygit
+if ! command_exists "lazygit"; then
+	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+	tar xf lazygit.tar.gz lazygit
+	sudo install lazygit /usr/local/bin
+	# remove lazygit bin and lazygit.tar.gz from current dir
+	rm lazygit lazygit.tar.gz
+	stow lazygit --adopt
+fi
 
 # check if homebrew is installed and install if not
 if ! command_exists "brew"; then
@@ -116,14 +127,6 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-# Install Lazygit
-LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-tar xf lazygit.tar.gz lazygit
-sudo install lazygit /usr/local/bin
-# remove lazygit bin and lazygit.tar.gz from current dir
-rm lazygit lazygit.tar.gz
-
 if ! command_exists "n"; then
 	curl -L https://bit.ly/n-install | bash
 fi
@@ -182,7 +185,8 @@ fi
 # Install Oh My Zsh
 # if .oh-my-zsh directory does not exist run the install script
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
+	export RUNZSH=no
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	git clone https://github.com/Aloxaf/fzf-tab.git ~/.oh-my-zsh/custom/plugins/fzf-tab
 	git clone https://github.com/chrissicool/zsh-256color ~/.oh-my-zsh/custom/plugins/zsh-256color
 	git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
