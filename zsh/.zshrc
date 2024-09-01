@@ -106,8 +106,6 @@ fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
 f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
 fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
-eval "$(zoxide init zsh)"
-alias cd='z'
 
 alias t='tmux attach || tmux new-session'
 
@@ -137,4 +135,8 @@ esac
 . "$HOME/.atuin/bin/env"
 
 eval "$(atuin init zsh)"
+
 export XDG_DATA_DIRS="/home/linuxbrew/.linuxbrew/share:$XDG_DATA_DIRS"
+
+eval "$(zoxide init zsh)"
+alias cd='z'
