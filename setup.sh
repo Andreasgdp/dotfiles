@@ -69,6 +69,7 @@ fi
 if ! command_exists "atuin"; then
 	# atuin command history
 	curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+	atuin import auto
 fi
 
 # installing brightnessctl as a suid binary
