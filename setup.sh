@@ -150,6 +150,11 @@ if ! command_exists "google-chrome-stable"; then
 	sudo apt --fix-broken install
 fi
 
+# intsall flatpak
+if ! command_exists "flatpak"; then
+	sudo apt install -y flatpak
+fi
+
 # Install Yazi (terminal file manager)
 if ! command_exists "yazi"; then
 	curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest |
