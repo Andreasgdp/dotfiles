@@ -55,7 +55,7 @@ export PATH="$PATH:/home/anpe/dotfiles/localbin/.local/bin"
 alias cl='clear'
 
 # open links
-alias open="tmux capture-pane -J -p | grep -oE '(https?):\/\/.*[^>]' | fzf-tmux -d20 --multi --bind alt-a:select-all,alt-d:deselect-all | xargs xdg-open"
+# alias open="tmux capture-pane -J -p | grep -oE '(https?):\/\/.*[^>]' | fzf-tmux -d20 --multi --bind alt-a:select-all,alt-d:deselect-all | xargs xdg-open"
 
 # Eza
 alias l="eza -l --icons --git -a"
