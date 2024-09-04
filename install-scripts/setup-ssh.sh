@@ -14,7 +14,7 @@ select_option() {
 }
 
 # Generate SSH key
-read -p "Do you want to generate an SSH key? (y/n) " generate_ssh
+read -p "Do you want to generate an SSH key? (y/N) " generate_ssh
 if [[ $generate_ssh == "y" ]]; then
 	key_type=$(select_option "Select the SSH key type:" "ed25519" "rsa")
 	if [[ $key_type == "rsa" ]]; then

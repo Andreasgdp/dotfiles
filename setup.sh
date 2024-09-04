@@ -26,7 +26,7 @@ command_exists() {
 }
 
 # want to stow dotfiles
-read -p "Do you want to stow dotfiles? (y/n) " stow_dotfiles
+read -p "Do you want to stow dotfiles? (y/N) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
 	cd ~/dotfiles
 	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit
@@ -78,9 +78,15 @@ if ! command_exists "brightnessctl"; then
 	sudo chmod u+s /usr/bin/brightnessctl
 fi
 
-read -p "Do you want to install steam? (y/n) " install_steam
+read -p "Do you want to install steam? (y/N) " install_steam
 if [[ $install_steam == "y" ]]; then
 	sudo snap install steam
+fi
+
+read -p "Do you want personal desktop screen layout? (y/N) " stow_screen_layout
+if [[ $stow_screen_layout == "y" ]]; then
+	cd ~/dotfiles
+	stow screenlayout
 fi
 
 # Install Starship prompt
