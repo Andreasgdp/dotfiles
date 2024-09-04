@@ -29,7 +29,7 @@ command_exists() {
 read -p "Do you want to stow dotfiles? (y/N) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
 	cd ~/dotfiles
-	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit
+	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit picom
 fi
 
 # Update and upgrade system packages
@@ -182,6 +182,18 @@ if [ ! -d "$HOME/.config/awesome" ]; then
 	cd ~/.config/awesome
 	git submodule update --init --recursive
 	cd -
+fi
+
+if ! command_exists "picom"; then
+	sudo apt install -y libx11-dev libxft-dev libimlib2-dev libdmx-dev libxinerama-dev libxext-dev libxcb1-dev libxcb-damage0-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-render-util0-dev libxcb-render0-dev libxcb-randr0-dev libxcb-composite0-dev libxcb-image0-dev libxcb-present-dev libxcb-xinerama0-dev libxcb-glx0-dev libpixman-1-dev libdbus-1-dev libconfig-dev libgl1-mesa-dev libpcre2-dev libevdev-dev uthash-dev libev-dev libx11-xcb-dev meson ninja-build libpcre3-dev cmake
+
+	git clone https://github.com/jonaburg/picom ~/picom
+	cd picom
+	meson --buildtype=release . build
+	ninja -C build
+	# To install the binaries in /usr/local/bin (optional)
+	sudo ninja -C build install
+	cd ~/dotfiles
 fi
 
 # Install Arc GTK theme
