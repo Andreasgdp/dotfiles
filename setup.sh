@@ -83,10 +83,19 @@ if [[ $install_steam == "y" ]]; then
 	sudo snap install steam
 fi
 
-read -p "Do you want personal desktop screen layout? (y/N) " stow_screen_layout
-if [[ $stow_screen_layout == "y" ]]; then
+read -p "Do you want personal desktop setup? (y/N) " is_personal_desktop
+if [[ $is_personal_desktop == "y" ]]; then
 	cd ~/dotfiles
 	stow screenlayout
+	if [ ! -d "$HOME/switch-audio-sinks" ]; then
+		git clone git@github.com:Andreasgdp/switch-audio-sinks.git ~/git/switch-audio-sinks
+	fi
+	# streamdeck (source: https://github.com/streamdeck-linux-gui/streamdeck-linux-gui)
+	if ! command_exists "streamdeck"; then
+		sudo apt -y install libhidapi-libusb0 pipx
+		sudo wget https://raw.githubusercontent.com/streamdeck-linux-gui/streamdeck-linux-gui/main/udev/60-streamdeck.rules -O /etc/udev/rules.d/60-streamdeck.rules
+		sudo udevadm trigger
+	fi
 fi
 
 # Install Starship prompt
