@@ -257,7 +257,7 @@ if [ ! -d "$HOME/monaspace" ]; then
 	./util/install_linux.sh
 	cd ~/dotfiles
 fi
-if ! fc-list | grep -q "Nerd"; then
+if [ ! -f "$HOME/.local/share/fonts/SymbolsNerdFont-Regular.ttf" ]; then
 	cd ~/Downloads
 	curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
 	unzip NerdFontsSymbolsOnly.zip -d ~/.local/share/fonts
