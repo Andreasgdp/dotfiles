@@ -60,5 +60,3 @@ IdleAction=hybrid-sleep
 IdleActionSec=30min
 ...
 ```
-
-WIP
