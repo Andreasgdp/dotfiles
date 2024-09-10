@@ -1,4 +1,12 @@
 #!/bin/bash
 
 INPUT_MSG=$1
-conventional-pre-commit "$INPUT_MSG"
+
+COMMIT_MESSAGE_CONTENT=$(cat $1)
+
+# if starts with [WIP] do not run check
+if [[ $COMMIT_MESSAGE_CONTENT == "[WIP]"* ]]; then
+	exit 0
+fi
+
+conventional-pre-commit build chore ci docs feat fix perf refactor revert style test "$INPUT_MSG"
