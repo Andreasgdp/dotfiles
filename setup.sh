@@ -78,9 +78,11 @@ if ! command_exists "brightnessctl"; then
 	sudo chmod u+s /usr/bin/brightnessctl
 fi
 
-read -p "Do you want to install steam? (y/N) " install_steam
-if [[ $install_steam == "y" ]]; then
-	sudo snap install steam
+if ! command_exists "steam"; then
+	read -p "Do you want to install steam? (y/N) " install_steam
+	if [[ $install_steam == "y" ]]; then
+		sudo snap install steam
+	fi
 fi
 
 read -p "Do you want personal desktop setup? (y/N) " is_personal_desktop
