@@ -32,6 +32,25 @@ if [[ $stow_dotfiles == "y" ]]; then
 	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit picom
 fi
 
+# extra stuff for rofi
+if [ ! -d "$HOME/rofi-emoji" ]; then
+	sudo apt install rofi-dev autoconf automake libtool-bin libtool
+	git clone https://github.com/Mange/rofi-emoji.git ~/rofi-emoji
+	cd ~/rofi-emoji
+	git checkout 3-x-stable
+
+	# install rofi-emoji
+	autoreconf -i
+	mkdir build
+	cd build/
+	../configure
+	make
+	sudo make install
+	libtool --finish /usr/lib/x86_64-linux-gnu/rofi//
+
+	cd ~/dotfiles
+fi
+
 # Update and upgrade system packages
 sudo apt-get update && sudo apt-get upgrade -y
 
@@ -209,7 +228,6 @@ fi
 
 # Install Arc GTK theme
 if [ ! -d "$HOME/arc-icon-theme" ]; then
-
 	git clone --depth 1 https://github.com/horst3180/arc-icon-theme ~/arc-icon-theme/ && cd ~/arc-icon-theme/
 	./autogen.sh --prefix=/usr
 	sudo make install
