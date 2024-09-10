@@ -250,6 +250,21 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
 
+# setup monaspace font and symbols
+if [ ! -d "$HOME/monaspace" ]; then
+	git clone https://github.com/githubnext/monaspace.git ~/monaspace
+	cd ~/monaspace
+	./util/install_linux.sh
+	cd ~/dotfiles
+fi
+if ! fc-list | grep -q "Nerd"; then
+	cd ~/Downloads
+	curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip
+	unzip NerdFontsSymbolsOnly.zip -d ~/.local/share/fonts
+	fc-cache -fv
+	cd ~/dotfiles
+fi
+
 # Install Kitty terminal emulator
 if ! command_exists "kitty"; then
 	curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
