@@ -46,6 +46,20 @@ alias mkdir='mkdir -p'
 alias cat=batcat
 alias lg='lazygit'
 
+# Docker aliases
+# kill absolutely everything
+alias dka='docker kill $(docker ps -q)'
+alias dca='docker rm $(docker ps -a -q)'
+alias dprune='docker system prune -af --volumes'
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias dlogs='docker logs'
+alias dexec='docker exec -it'
+alias dstop='docker stop'
+alias drm='docker rm'
+alias dclean='dka && dca && dprune'
+
+
 # Dirs
 alias ..="cd .."
 alias ...="cd ../.."
