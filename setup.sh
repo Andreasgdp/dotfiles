@@ -191,9 +191,12 @@ if ! command_exists "flatpak"; then
 	sudo apt install -y flatpak
 fi
 
+# stow yazi
+if [ ! -d "~/.config/yazi" ]; then
+	stow yazi
+fi
 # Install Yazi (terminal file manager)
 if ! command_exists "yazi"; then
-	stow yazi
 	curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest |
 		grep "browser_download_url.*yazi-x86_64-unknown-linux-gnu.snap" |
 		cut -d : -f 2,3 |
