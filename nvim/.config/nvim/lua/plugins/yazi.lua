@@ -9,6 +9,7 @@ return {
   },
   {
     "mikavilpas/yazi.nvim",
+    version = "5.7.0",
     event = "VeryLazy",
     keys = {
       {
