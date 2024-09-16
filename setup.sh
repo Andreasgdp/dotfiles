@@ -81,6 +81,10 @@ if ! command_exists "fzf"; then
 	brew install fzf
 fi
 
+if ! command_exists "fd"; then
+	brew install fd
+fi
+
 if ! command_exists "fuck"; then
 	brew install thefuck
 fi
