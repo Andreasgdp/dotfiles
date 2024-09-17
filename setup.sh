@@ -142,7 +142,7 @@ if ! command_exists "eza"; then
 fi
 
 # Install zoxide
-if ! command_exists "z"; then
+if ! command_exists "zoxide"; then
 	curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 fi
 
