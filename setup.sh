@@ -25,6 +25,11 @@ command_exists() {
 	command -v "$1" &>/dev/null
 }
 
+# setup nala as default handler for apt
+if ! command_exists "nala"; then
+	sudo apt update && sudo apt install nala
+fi
+
 # want to stow dotfiles
 read -p "Do you want to stow dotfiles? (y/N) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
