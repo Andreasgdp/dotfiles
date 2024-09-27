@@ -114,3 +114,5 @@ map("n", "<C-S>", ":wa<CR>", { desc = "Save all buffers", remap = true })
 map("n", "<C-g>", function()
   LazyVim.lazygit({ cwd = Util.root.git() })
 end, { desc = "Lazygit (Root Dir)" })
+
+map("n", "<C-q>", "<cmd>qa<cr>", { desc = "Quit All" })
