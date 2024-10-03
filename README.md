@@ -35,12 +35,6 @@ For this case it will create a symlink from `~/.config/nvim` to `dotfiles/nvim`
 
 ## Notes
 
-Things that need to be done manually (for now)
-
-### zsh completions
-
-Install atuin and setup completions for zsh
-
 ### System Configuration
 
 #### Laptop
