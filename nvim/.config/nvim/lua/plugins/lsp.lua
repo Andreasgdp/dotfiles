@@ -95,6 +95,7 @@ return {
             },
           },
         },
+        jdtls = {},
       },
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be setup with lspconfig
@@ -107,6 +108,9 @@ return {
         -- end,
         -- Specify * to use this function as a fallback for any server
         -- ["*"] = function(server, opts) end,
+        jdtls = function()
+          return true -- avoid duplicate servers
+        end,
       },
     }
     return ret
