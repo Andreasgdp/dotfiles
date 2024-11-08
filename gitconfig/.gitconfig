@@ -36,6 +36,9 @@
   # looks through the code for a string (git search <string>)
   search = !sh -c 'git log -S"$1" -p' -
   bl = blame -C -C -C
+  tomain = !git diff origin/main HEAD
+  tomaster = !git diff origin/master HEAD
+  to = !sh -c 'git diff origin/"$1" HEAD' -
 
 [rerere]
   enabled = true
