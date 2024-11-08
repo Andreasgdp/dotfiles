@@ -39,6 +39,7 @@ alias gdiffmaster='git diff origin/master'
 # Always mkdir a path (this doesn't inhibit functionality to make a single dir)
 alias mkdir='mkdir -p'
 
+alias bat='batcat'
 alias cat=batcat
 alias lg='lazygit'
 
@@ -132,7 +133,7 @@ export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PR
 
 # ----- Bat (better cat) -----
 
-export BAT_THEME=Catppuccin%20Mocha
+export BAT_THEME="Catppuccin Mocha"
 
 # ---- Eza (better ls) -----
 
