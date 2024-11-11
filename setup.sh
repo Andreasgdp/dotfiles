@@ -29,7 +29,7 @@ command_exists() {
 read -p "Do you want to stow dotfiles? (y/N) " stow_dotfiles
 if [[ $stow_dotfiles == "y" ]]; then
 	cd ~/dotfiles
-	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit picom
+	stow nvim tmux zsh starship kitty rofi localbin htop btop bat fastfetch gitconfig atuin lazygit picom awesome
 fi
 
 # extra stuff for rofi
