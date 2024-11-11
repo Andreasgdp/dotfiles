@@ -1,16 +1,4 @@
 return {
-  -- messages, cmdline and the popupmenu
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 5000,
-      render = "wrapped-compact",
-      top_down = false,
-      stages = "fade_in_slide_out",
-      fps = 60,
-    },
-  },
-
   -- filename in top right corner of all file buffers
   {
     "b0o/incline.nvim",
