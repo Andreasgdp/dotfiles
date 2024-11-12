@@ -38,17 +38,6 @@ vim.api.nvim_create_autocmd({ "InsertEnter" }, {
 --   print("Copilot Status: " .. data.status)
 -- end)
 
--- workaround for issue with lazygit window rendering with overflow
--- this opens and closes the command line to trigger a redraw
-vim.api.nvim_create_autocmd({ "User" }, {
-  pattern = "*",
-  once = true,
-  callback = function()
-    feedkeys(":", "n")
-    feedkeys("<esc>", "n")
-  end,
-})
-
 -- When the window is scrolled, resized, or about to quit, show the scrollbar
 vim.api.nvim_create_autocmd({ "WinScrolled", "VimResized", "QuitPre", "WinEnter", "FocusGained" }, {
   pattern = "*",

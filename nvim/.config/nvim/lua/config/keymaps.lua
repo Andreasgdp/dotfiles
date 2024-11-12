@@ -112,7 +112,7 @@ map("n", "<C-S>", ":wa<CR>", { desc = "Save all buffers", remap = true })
 
 -- ctrl + g to launch lazygit
 map("n", "<C-g>", function()
-  LazyVim.lazygit({ cwd = Util.root.git() })
+  Snacks.lazygit({ cwd = Util.root.git() })
 end, { desc = "Lazygit (Root Dir)" })
 
 map("n", "<C-q>", "<cmd>qa<cr>", { desc = "Quit All" })
