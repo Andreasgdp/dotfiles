@@ -161,6 +161,9 @@ if ! command_exists "nvim"; then
 	rm nvim-linux64.tar.gz
 fi
 
+# Language servers
+npm i -g @astrojs/language-serve
+
 if ! command_exists "conventional-pre-commit"; then
 	pipx install conventional-pre-commit
 	pipx ensurepath
