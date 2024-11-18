@@ -48,7 +48,6 @@ map("n", "<leader>gd", function()
 end, { silent = true, remap = true, desc = "Neogit Diff" })
 -- ---------GIT---------
 
-vim.keymap.del("i", "<Tab>")
 vim.g.copilot_no_tab_map = true
 -- enable/disable copilot 'Copilot enable'
 map("n", "<leader>cp", function()
