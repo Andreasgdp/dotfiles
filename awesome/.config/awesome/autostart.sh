@@ -11,7 +11,7 @@ if command -v streamdeck >/dev/null 2>&1; then
 	run "streamdeck -n"
 fi
 
-run "setxkbmap us"
+run "setxkbmap us altgr-intl"
 run "/home/$USER/.screenlayout/defaultDisplaySetup.sh"
 
 # if nordvpn is installed, connect to us server
@@ -25,7 +25,5 @@ run "blueman-applet"
 
 # ensure firefox is running so faster startup
 run "firefox"
-
-setxkbmap us altgr-intl
 
 feh --bg-fill ~/wallpaper.jpg

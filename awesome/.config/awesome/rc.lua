@@ -109,8 +109,8 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-	awful.layout.suit.tile.left,
 	awful.layout.suit.tile,
+	awful.layout.suit.tile.left,
 	awful.layout.suit.tile.bottom,
 	awful.layout.suit.tile.top,
 	awful.layout.suit.fair,
@@ -998,11 +998,6 @@ client.connect_signal("manage", function(c)
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
 
-	-- Adds rounded corners to the clients
-	c.shape = function(cr, w, h)
-		gears.shape.rounded_rect(cr, w, h, 15)
-	end
-
 	if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position then
 		-- Prevent clients from being unreachable after screen count changes.
 		awful.placement.no_offscreen(c)
@@ -1010,20 +1005,8 @@ client.connect_signal("manage", function(c)
 end)
 
 client.connect_signal("property::maximized", function(c)
-	if c.maximized and c.class == "Code - Insiders" then
-		c.maximized = false
-	end
-	if c.maximized and c.class == "gazebo" then
-		c.maximized = false
-	end
-	if c.maximized and c.class == "Spotify" then
-		c.maximized = false
-	end
-	if c.maximized and c.name == "Akiflow" then
-		c.maximized = false
-	end
-	if c.maximized and c.name == "Messages" then
-		c.maximized = false
+	if c.maximized then
+		c.shape = gears.shape.rectangle
 	end
 end)
 
@@ -1094,6 +1077,7 @@ end)
 client.connect_signal("property::floating", function(c)
 	-- if a client that is fullscreen do nothing
 	if c.fullscreen then
+		c.shape = gears.shape.rectangle
 		return
 	end
 
