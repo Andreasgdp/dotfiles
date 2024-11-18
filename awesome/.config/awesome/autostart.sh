@@ -11,11 +11,11 @@ if command -v streamdeck >/dev/null 2>&1; then
 	run "streamdeck -n"
 fi
 
-run "setxkbmap us"
+run "setxkbmap us altgr-intl"
 run "/home/$USER/.screenlayout/defaultDisplaySetup.sh"
 
 # if nordvpn is installed, connect to us server
-# run "nordvpn c us"
+run "nordvpn c us"
 
 # if greenclip is installed,
 run "greenclip daemon"
@@ -26,6 +26,7 @@ run "blueman-applet"
 # ensure firefox is running so faster startup
 run "firefox"
 
-setxkbmap us altgr-intl
+# if picom is installed, run picom
+run "picom -b"
 
 feh --bg-fill ~/wallpaper.jpg
