@@ -164,6 +164,11 @@ fi
 # Language servers
 npm i -g @astrojs/language-server
 
+# betterlockscreen
+if ! command_exists "betterlockscreen"; then
+	wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | bash -s user
+fi
+
 if ! command_exists "conventional-pre-commit"; then
 	pipx install conventional-pre-commit
 	pipx ensurepath
