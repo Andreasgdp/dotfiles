@@ -162,7 +162,7 @@ if ! command_exists "nvim"; then
 fi
 
 # Language servers
-npm i -g @astrojs/language-server
+npm list -g @astrojs/language-server || npm i -g @astrojs/language-server
 
 # betterlockscreen
 if ! command_exists "betterlockscreen"; then
