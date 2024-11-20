@@ -57,6 +57,23 @@ sudo apt-get update && sudo apt-get upgrade -y
 # Install essential packages
 sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr duf ack kazam cmatrix
 
+#blueman
+sudo apt install -y blueman bluez bluez-obexd
+
+# TODO: finish setup for enabling app image support
+# Install FUSE for AppImage support
+sudo add-apt-repository universe
+sudo apt install libfuse2t64
+# Install AppImageLauncher latest _amd64.deb from https://github.com/TheAssassin/AppImageLauncher/releases. E.g. https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb
+# if ! command_exists "appimagelauncher"; then
+# 	cd ~/Downloads
+# 	RELEASE_DATA=$(curl -s "https://api.github.com/repos/TheAssassin/AppImageLauncher/releases/latest")
+# 	APPIMAGELAUNCHER_VERSION=$(echo "$RELEASE_DATA" | grep -Po '"tag_name": "\K.*?(?=")')
+# 	ASSET_NAME=$(echo "$RELEASE_DATA" | grep -Po '"name": "\K.*?(?=")')
+# 	DOWNLOAD_URL="https://github.com/TheAssassin/AppImageLauncher/releases/download/${APPIMAGELAUNCHER_VERSION}/${ASSET_NAME}"
+# 	curl -Lo appimagelauncher.deb "$DOWNLOAD_URL"
+# fi
+
 # spotify_player
 if ! command_exists "spotify_player"; then
 	sudo apt install -y libssl-dev libasound2-dev libdbus-1-dev
@@ -243,15 +260,6 @@ if ! command_exists "yazi"; then
 	sudo snap install --dangerous --classic ~/dotfiles/yazi.snap
 	rm ~/dotfiles/yazi.snap
 	cd ~/dotfiles/
-fi
-
-# TODO:make AwesomeWM config part of the dotfiles repo
-# clone git@github.com:Andreasgdp/awesome.git into ~/.config/awesome and run git submodule update --init --recursive in the repo
-if [ ! -d "$HOME/.config/awesome" ]; then
-	git clone git@github.com:Andreasgdp/awesome.git ~/.config/awesome
-	cd ~/.config/awesome
-	git submodule update --init --recursive
-	cd -
 fi
 
 if ! command_exists "picom"; then # if on a system with the earlier version of picom, first uninstall it from the repo with sudo ninja -C build uninstall and then move the contents of the repo somewhereelse, as the other will ocuppy the picom folder from now on.
