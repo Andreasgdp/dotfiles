@@ -89,6 +89,10 @@ if ! command_exists "fuck"; then
 	brew install thefuck
 fi
 
+if ! command_exists "delta"; then
+	brew install git-delta
+fi
+
 if ! command_exists "atuin"; then
 	# atuin command history
 	curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
