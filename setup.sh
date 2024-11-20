@@ -57,6 +57,15 @@ sudo apt-get update && sudo apt-get upgrade -y
 # Install essential packages
 sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr duf ack kazam cmatrix
 
+# spotify_player
+if ! command_exists "spotify_player"; then
+	sudo apt install -y libssl-dev libasound2-dev libdbus-1-dev
+	brew install spotify_player
+fi
+if [ ! -f "/usr/local/bin/spotify_player" ] && [ -z "$(command -v spotify_player)" ]; then
+	sudo ln -s /home/linuxbrew/.linuxbrew/bin/spotify_player /usr/local/bin/
+fi
+
 # Install Lazygit
 if ! command_exists "lazygit"; then
 	cd ~/
