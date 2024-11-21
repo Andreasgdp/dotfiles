@@ -111,9 +111,7 @@ modkey = "Mod4"
 awful.layout.layouts = {
 	awful.layout.suit.tile,
 	awful.layout.suit.tile.left,
-	awful.layout.suit.tile.bottom,
-	awful.layout.suit.tile.top,
-	awful.layout.suit.fair,
+	awful.layout.suit.floating,
 }
 -- }}}
 
@@ -238,7 +236,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- Each screen has its own tag table.
 	if is_personal_desktop() then
 		if s.index == 2 then
-			awful.tag({ "3", "5" }, s, awful.layout.layouts[1])
+			awful.tag({ "3", "5" }, s, awful.layout.layouts[2])
 		elseif s.index == 1 then
 			awful.tag({ "2", "4", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 		elseif s.index == 3 then
@@ -646,15 +644,25 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 		group = "awesome",
 	}),
 	awful.key({ modkey, "Control" }, "l", function()
-		awful.tag.incmwfact(0.05)
+		local layout = awful.layout.get(awful.screen.focused())
+		if layout == awful.layout.suit.tile then
+			awful.tag.incmwfact(0.05)
+		elseif layout == awful.layout.suit.tile.left then
+			awful.tag.incmwfact(-0.05)
+		end
 	end, {
-		description = "increase master width factor",
+		description = "increase or decrease master width factor based on layout",
 		group = "layout",
 	}),
 	awful.key({ modkey, "Control" }, "h", function()
-		awful.tag.incmwfact(-0.05)
+		local layout = awful.layout.get(awful.screen.focused())
+		if layout == awful.layout.suit.tile then
+			awful.tag.incmwfact(-0.05)
+		elseif layout == awful.layout.suit.tile.left then
+			awful.tag.incmwfact(0.05)
+		end
 	end, {
-		description = "decrease master width factor",
+		description = "decrease or increase master width factor based on layout",
 		group = "layout",
 	}),
 	awful.key({ modkey }, "r", function()
