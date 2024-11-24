@@ -15,7 +15,7 @@ run "setxkbmap us altgr-intl"
 run "/home/$USER/.screenlayout/defaultDisplaySetup.sh"
 
 # if nordvpn is installed, connect to us server
-run "nordvpn c us"
+# run "nordvpn c us"
 
 # if greenclip is installed,
 run "greenclip daemon"
