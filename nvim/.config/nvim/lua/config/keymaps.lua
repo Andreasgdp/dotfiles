@@ -51,11 +51,7 @@ end, { silent = true, remap = true, desc = "Neogit Diff" })
 vim.g.copilot_no_tab_map = true
 -- enable/disable copilot 'Copilot enable'
 map("n", "<leader>cp", function()
-  if require("copilot.client").is_disabled() then
-    vim.cmd("Copilot enable")
-  else
-    vim.cmd("Copilot disable")
-  end
+  vim.cmd("Copilot toggle <CR>")
 end, { desc = "Copilot toggle" })
 
 map("n", "<leader>cP", function()

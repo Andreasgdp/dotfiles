@@ -1,3 +1,0 @@
-return {
-  "dylon/vim-antlr"
-}

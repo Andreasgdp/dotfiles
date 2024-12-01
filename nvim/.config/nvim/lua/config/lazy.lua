@@ -8,9 +8,6 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
   spec = {
-    -- TODO: the addition of lazyvim and it's extras below is what needs to be removed
-    -- at some point to be decoupled from the nvim framework and have my own personal setup
-
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- import any extras modules here:
@@ -38,6 +35,8 @@ require("lazy").setup({
     -- Editor plugins
     { import = "lazyvim.plugins.extras.editor.navic" },
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
+    { import = "lazyvim.plugins.extras.ai.copilot" },
+    { import = "lazyvim.plugins.extras.ai.copilot-chat" },
     -- UI plugins
     { import = "lazyvim.plugins.extras.ui.treesitter-context" },
     -- Utility plugins
