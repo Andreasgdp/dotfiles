@@ -155,5 +155,10 @@ eval "$(atuin init zsh)"
 
 export XDG_DATA_DIRS="/home/linuxbrew/.linuxbrew/share:$XDG_DATA_DIRS"
 
+export PATH=$PATH:/usr/local/go/bin
+
 eval "$(zoxide init zsh)"
 alias cd='z'
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
