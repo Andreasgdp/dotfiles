@@ -339,6 +339,14 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
+	awful.key({ modkey, "Shift" }, "q", function()
+		for _, c in ipairs(client.get()) do
+			c:kill()
+		end
+	end, {
+		description = "kill all windows",
+		group = "client",
+	}),
 	awful.key({}, "Print", function()
 		awful.spawn("flameshot gui")
 	end),
