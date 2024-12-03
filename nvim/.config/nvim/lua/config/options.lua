@@ -21,8 +21,3 @@ opt.wildignore:append("*/node_modules/*")
 
 -- disable format on save can format using cf or cF
 -- vim.g.autoformat = false
-
--- LSP Server to use for Ruby.
--- Set to "solargraph" to use solargraph instead of ruby_lsp.
-vim.g.lazyvim_ruby_lsp = "solargraph"
-vim.g.lazyvim_ruby_formatter = "rubocop"
