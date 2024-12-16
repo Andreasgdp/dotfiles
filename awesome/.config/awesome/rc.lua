@@ -434,7 +434,6 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 		description = "change windows from right to left",
 		group = "awesome",
 	}), -- Configue hotkeys for opening specific applications
-	-- chrome
 	awful.key({ modkey }, "f", function()
 		if is_personal_desktop() then
 			awful.spawn("firefox")
@@ -445,31 +444,18 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 		description = "open chrome",
 		group = "launcher",
 	}), -- Akiflow (akiflow is installed as a chrome PWA)
-	awful.key({ modkey, "Shift" }, "a", function()
+	awful.key({ modkey }, "a", function()
 		awful.spawn("google-chrome-stable --app=https://web.akiflow.com/#/planner/today")
 	end, {
 		description = "open akiflow",
 		group = "launcher",
 	}), -- Messages
-	awful.key({ modkey, "Shift" }, "n", function()
-		awful.spawn("google-chrome-stable --app=https://mem.ai/everything")
-	end, {
-		description = "open mem ai for notes",
-		group = "launcher",
-	}), -- Messages
-	awful.key({ modkey, "Shift" }, "m", function()
-		awful.spawn("google-chrome-stable --app=https://messages.google.com/web/conversations")
-	end, {
-		description = "open google messages",
-		group = "launcher",
-	}), -- Mail inbox (open not as a PWA)
 	awful.key({ modkey }, "i", function()
-		-- current user is named 'anpe'
-		local current_user = os.getenv("USER")
-		local email_command = current_user == "anpe"
-				and "google-chrome-stable --new-window https://outlook.office.com/mail/inbox"
-			or "google-chrome-stable --new-window https://mail.google.com/mail/u/0/#inbox"
-		awful.spawn(email_command)
+		if is_personal_desktop() then
+			awful.spawn("firefox --new-window https://mail.google.com/mail/u/0/#inbox")
+		else
+			awful.spawn("google-chrome-stable --new-window https://outlook.office.com/mail/inbox")
+		end
 	end, {
 		description = "open outlook inbox",
 		group = "launcher",
@@ -491,15 +477,27 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 	end, {
 		description = "toggle showing the desktop",
 		group = "client",
-	}), -- Open discord with shift + super + d
-	awful.key({ modkey, "Shift" }, "d", function()
+	}),
+	awful.key({ modkey }, "d", function()
 		awful.spawn(
 			"discord --no-sandbox --ignore-gpu-blocklist --disable-features=UseOzonePlatform --enable-features=VaapiVideoDecoder --use-gl=desktop --enable-gpu-rasterization --enable-zero-copy"
 		)
 	end, {
 		description = "open discord",
 		group = "launcher",
-	}), -- Open spotify with super + shift + s
+	}),
+	awful.key({ modkey }, "m", function()
+		awful.spawn("firefox --new-window https://www.facebook.com/messages")
+	end, {
+		description = "open messenger",
+		group = "launcher",
+	}),
+	awful.key({ modkey }, "y", function()
+		awful.spawn("firefox --new-window https://www.youtube.com/feed/subscriptions")
+	end, {
+		description = "open messenger",
+		group = "launcher",
+	}),
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn("bash -c '~/Applications/BambuStudio_linux_ubuntu_v01.08.01.57.AppImage'")
 	end, {
@@ -773,27 +771,6 @@ clientkeys = gears.table.join(
 		c.minimized = true
 	end, {
 		description = "minimize",
-		group = "client",
-	}),
-	awful.key({ modkey }, "m", function(c)
-		c.maximized = not c.maximized
-		c:raise()
-	end, {
-		description = "(un)maximize",
-		group = "client",
-	}),
-	awful.key({ modkey, "Control" }, "m", function(c)
-		c.maximized_vertical = not c.maximized_vertical
-		c:raise()
-	end, {
-		description = "(un)maximize vertically",
-		group = "client",
-	}),
-	awful.key({ modkey, "Shift" }, "m", function(c)
-		c.maximized_horizontal = not c.maximized_horizontal
-		c:raise()
-	end, {
-		description = "(un)maximize horizontally",
 		group = "client",
 	})
 )
