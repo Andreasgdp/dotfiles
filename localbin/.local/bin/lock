@@ -1,4 +1,12 @@
 # #!/bin/sh
 
+xset s on
+xset +dpms
+xset s blank
+
 # betterlockscreen -u ~/wallpaper.jpg --fx blur --blur 0.9
 betterlockscreen -l --off 20
+
+xset s off
+xset -dpms
+xset s noblank

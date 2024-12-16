@@ -29,4 +29,9 @@ run "firefox"
 # if picom is installed, run picom
 run "picom -b"
 
+# ensure displays does not sleep
+run "xset s off"
+run "xset -dpms"
+run "xset s noblank"
+
 feh --bg-fill ~/wallpaper.jpg
