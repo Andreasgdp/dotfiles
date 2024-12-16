@@ -22,12 +22,8 @@ vim.api.nvim_create_autocmd({ "InsertEnter" }, {
   pattern = "*",
   callback = function()
     vim.defer_fn(function()
-      if not require("copilot.client").is_disabled() then
-        -- TODO: Check in once in a while if this is still needed
-        -- insert a space and remove it again to trigger cpilot
-        -- this is a workaround for the issue that cpilot does not trigger on the first character
-        feedkeys("<space><BS>", "n")
-      end
+      -- TODO: fiture out how to make this work for the lazuvim installment of copilot
+      feedkeys("<space><BS>", "n")
     end, 100)
   end,
 })
@@ -47,12 +43,10 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave", "BufWinLeave", "FocusLost"
   end,
 })
 
-local cmp = require("cmp")
-
-cmp.setup({
-  mapping = cmp.mapping.preset.insert({
-    ["<CR>"] = function(fallback)
-      fallback() -- This will make <CR> behave as a normal return key
-    end,
-  }),
+local blink = require("blink.cmp")
+---@diagnostic disable-next-line: missing-fields
+blink.setup({
+  keymap = {
+    ["<CR>"] = { "fallback" },
+  },
 })
