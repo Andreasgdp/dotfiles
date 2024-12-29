@@ -124,7 +124,7 @@ f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
 fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
 
-alias t='tmux attach || tmux new-session'
+alias t='tmux attach'
 
 export N_PREFIX="$HOME/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  # Added by n-install (see http://git.io/n-install-repo).
 
@@ -138,7 +138,6 @@ alias ls="eza --color=always --long --git --no-filesize --icons=always --no-time
 
 eval "$(direnv hook zsh)"
 
-alias t='tmux attach || tmux new-session'
 alias f='fastfetch'
 
 # pnpm
