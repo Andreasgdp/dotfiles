@@ -351,7 +351,7 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 		awful.spawn("flameshot gui")
 	end),
 	awful.key({ modkey }, "Print", function()
-		awful.spawn("kazam")
+		awful.spawn("peek")
 	end),
 	awful.key({}, "#123", function()
 		volume_widget:inc(5)
