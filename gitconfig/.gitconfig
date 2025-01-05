@@ -51,3 +51,6 @@
 
 [includeif "gitdir:~/personal/"]
   path = ~/personal/.gitconfig
+
+[rebase]
+	updateRefs = true
