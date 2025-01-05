@@ -61,3 +61,9 @@ window-vsync = true
 
 # function
 confirm-close-surface = false
+
+# keys
+# delete all to the left of cursor
+keybind = option+backspace=csi:117;5u
+# delete whole word
+keybind = ctrl+backspace=csi:119;5u
