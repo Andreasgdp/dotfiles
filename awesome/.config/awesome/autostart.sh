@@ -27,7 +27,7 @@ run "blueman-applet"
 run "firefox"
 
 # if picom is installed, run picom
-run "picom -b"
+# run "picom -b"
 
 # ensure displays does not sleep
 run "xset s off"
