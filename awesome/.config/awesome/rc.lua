@@ -9,6 +9,7 @@ local batteryarc_widget = require("awesome-wm-widgets.batteryarc-widget.batterya
 local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
 local switcher = require("awesome-switcher")
 
+local shape = require("gears.shape")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -988,6 +989,10 @@ awful.rules.rules = { -- All clients will match this rule.
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
+	-- Set the shape of the window to be rounded
+	c.shape = function(cr, width, height)
+		shape.rounded_rect(cr, width, height, 13)
+	end
 	-- Set the windows at the slave,
 	-- i.e. put it at the end of others instead of setting it master.
 	-- if not awesome.startup then awful.client.setslave(c) end
@@ -1081,6 +1086,10 @@ end)
 -- }}}
 
 client.connect_signal("property::floating", function(c)
+	-- Set the shape of the window to be rounded
+	c.shape = function(cr, width, height)
+		shape.rounded_rect(cr, width, height, 10)
+	end
 	-- if a client that is fullscreen do nothing
 	if c.fullscreen then
 		c.shape = gears.shape.rectangle
