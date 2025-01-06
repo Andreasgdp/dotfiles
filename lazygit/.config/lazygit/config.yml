@@ -21,14 +21,17 @@ gui:
     searchingActiveBorderColor:
       - "#f9e2af"
 
-# customCommands:
-#   - key: "E"
-#     description: "Add empty commit"
-#     context: "commits"
-#     command: 'git commit --allow-empty -m "{{.Form.Message}}"'
-#     loadingText: "Committing empty commit..."
-
 customCommands:
+  - key: "E"
+    description: "Add empty commit"
+    context: "global"
+    prompts:
+      - type: "input"
+        title: "Empty commit message"
+        key: "Message"
+        initialValue: ""
+    command: 'git commit --allow-empty -m "{{.Form.Message}}"'
+    loadingText: "Committing empty commit..."
   # retrieved from: https://github.com/jesseduffield/lazygit/wiki/Custom-Commands-Compendium#conventional-commit
   - key: "<c-c>"
     context: "global"
@@ -134,5 +137,5 @@ customCommands:
         title: "What is the new branch name?"
         key: "BranchName"
         initialValue: ""
-    command: "git {{if .Form.BranchType}}flow {{.Form.BranchType}} start {{.Form.BranchName}}{{else}}checkout -b {{.Form.BranchName}}{{end}}"
+    command: "git {{if .Form.BranchType}}flow {{.Form.BranchType}} start $(echo {{.Form.BranchName}} | sed 's/ /-/g'){{else}}checkout -b $(echo {{.Form.BranchName}} | sed 's/ /-/g'){{end}}"
     loadingText: "Creating branch"
