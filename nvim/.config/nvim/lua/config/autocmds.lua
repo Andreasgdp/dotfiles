@@ -42,11 +42,3 @@ vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave", "BufWinLeave", "FocusLost"
     vim.cmd("silent! lua require('scrollbar').clear()")
   end,
 })
-
-local blink = require("blink.cmp")
----@diagnostic disable-next-line: missing-fields
-blink.setup({
-  keymap = {
-    ["<CR>"] = { "fallback" },
-  },
-})
