@@ -43,6 +43,9 @@
 [rerere]
   enabled = true
 
+[rebase]
+	updateRefs = true
+
 [pull]
   rebase = true
 
@@ -52,5 +55,3 @@
 [includeif "gitdir:~/personal/"]
   path = ~/personal/.gitconfig
 
-[rebase]
-	updateRefs = true
