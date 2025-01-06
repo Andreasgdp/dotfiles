@@ -92,7 +92,7 @@ customCommands:
         title: "Ticket"
         key: "Ticket"
         initialValue: ""
-        body: "The ticket number associated with the change (e.g. JIRA-123 or #123)"
+        body: "The ticket number associated with the change"
       - type: "menu"
         title: "Versioning (SemVer)"
         key: "Versioning"
@@ -113,7 +113,7 @@ customCommands:
         key: "Confirm"
         title: "Commit"
         body: "Are you sure you want to commit?"
-    command: "git commit --allow-empty --message '{{.Form.Type}}{{ if .Form.Scope }}({{ .Form.Scope }}){{ end }}: {{.Form.Message}} {{if .Form.Body}}\n\n{{.Form.Body}}{{if .Form.Ticket}}\n\n{{.Form.Ticket}}{{else}}{{if .Form.Versioning}}\n\n{{.Form.Versioning}}{{end}}{{end}}{{if .Form.Ticket}}{{if .Form.Versioning}}\n{{.Form.Versioning}}{{end}}{{end}}{{else}}{{if .Form.Ticket}}\n\nFix {{.Form.Ticket}}{{if .Form.Versioning}}\n{{.Form.Versioning}}{{end}}{{else}}{{if .Form.Versioning}}\n\n{{.Form.Versioning}}{{end}}{{end}}{{end}}'"
+    command: "git commit --allow-empty --message '{{.Form.Type}}{{ if .Form.Scope }}({{ .Form.Scope }}){{ end }}: {{.Form.Message}} {{if .Form.Body}}\n\n{{.Form.Body}}{{if .Form.Ticket}}\n\n{{.Form.Ticket}}{{else}}{{if .Form.Versioning}}\n\n{{.Form.Versioning}}{{end}}{{end}}{{if .Form.Ticket}}{{if .Form.Versioning}}\n{{.Form.Versioning}}{{end}}{{end}}{{else}}{{if .Form.Ticket}}\n\n{{.Form.Ticket}}{{if .Form.Versioning}}\n{{.Form.Versioning}}{{end}}{{else}}{{if .Form.Versioning}}\n\n{{.Form.Versioning}}{{end}}{{end}}{{end}}'"
     loadingText: "Creating conventional commit..."
 
   - key: "n"
