@@ -116,7 +116,7 @@ customCommands:
     command: "git commit --allow-empty --message '{{.Form.Type}}{{ if .Form.Scope }}({{ .Form.Scope }}){{ end }}: {{.Form.Message}} {{if .Form.Body}}\n\n{{.Form.Body}}{{if .Form.Ticket}}\n\n{{.Form.Ticket}}{{else}}{{if .Form.Versioning}}\n\n{{.Form.Versioning}}{{end}}{{end}}{{if .Form.Ticket}}{{if .Form.Versioning}}\n{{.Form.Versioning}}{{end}}{{end}}{{else}}{{if .Form.Ticket}}\n\nFix {{.Form.Ticket}}{{if .Form.Versioning}}\n{{.Form.Versioning}}{{end}}{{else}}{{if .Form.Versioning}}\n\n{{.Form.Versioning}}{{end}}{{end}}{{end}}'"
     loadingText: "Creating conventional commit..."
 
-  - key: "n"
+  - key: "N"
     context: "localBranches"
     prompts:
       - type: "menu"
