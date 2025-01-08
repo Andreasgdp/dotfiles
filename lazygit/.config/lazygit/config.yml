@@ -142,5 +142,5 @@ customCommands:
         title: "What is the new branch name?"
         key: "BranchName"
         initialValue: ""
-    command: "git {{if .Form.BranchType}}flow {{.Form.BranchType}} start $(echo {{.Form.BranchName}} | sed 's/ /-/g'){{else}}checkout -b $(echo {{.Form.BranchName}} | sed 's/ /-/g'){{end}}"
+    command: "git {{if .Form.BranchType}}checkout -b {{.Form.BranchType}}/$(echo {{.Form.BranchName}} | sed 's/ /-/g'){{else}}checkout -b $(echo {{.Form.BranchName}} | sed 's/ /-/g'){{end}}"
     loadingText: "Creating branch"
