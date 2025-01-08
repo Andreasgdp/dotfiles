@@ -111,3 +111,7 @@ map("n", "<C-g>", function()
 end, { desc = "Lazygit (Root Dir)" })
 
 map("n", "<C-q>", "<cmd>qa<cr>", { desc = "Quit All" })
+
+map("n", "<leader>aa", function()
+  require("avante.api").toggle()
+end, { desc = "Toggle Avante API" })
