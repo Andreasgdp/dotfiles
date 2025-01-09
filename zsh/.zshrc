@@ -168,3 +168,7 @@ export PATH="$PATH:$HOME/.rvm/bin"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Add Go binaries to PATH
+export PATH=$PATH:$(go env GOPATH)/bin
+alias go="go1.22.10"
