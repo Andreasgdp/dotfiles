@@ -436,7 +436,7 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 		description = "change windows from right to left",
 		group = "awesome",
 	}), -- Configue hotkeys for opening specific applications
-	awful.key({ modkey }, "f", function()
+	awful.key({ modkey }, "b", function()
 		if is_personal_desktop() then
 			awful.spawn("firefox")
 		else
@@ -714,7 +714,7 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 )
 
 clientkeys = gears.table.join(
-	awful.key({ "Mod1" }, "Return", function(c)
+	awful.key({ modkey }, "f", function(c)
 		c.fullscreen = not c.fullscreen
 		c:raise()
 	end, {
