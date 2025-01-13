@@ -368,6 +368,22 @@ local function open_page(url)
 	end
 end
 
+-- Function to focus a client with a specific class if it is already running
+local function focus_or_open(class, spawn_cmd)
+	for _, c in ipairs(client.get()) do
+		if c.class == class then
+			-- Focus the tag the client is on
+			local tag = c.first_tag
+			if tag then
+				tag:view_only()
+			end
+			c:emit_signal("request::activate", "key.unminimize", { raise = true })
+			return
+		end
+	end
+	awful.spawn(spawn_cmd)
+end
+
 -- {{{ Key bindings
 globalkeys = gears.table.join(
 	-- Configure the hotkeys for screenshot
@@ -468,16 +484,18 @@ globalkeys = gears.table.join(
 	}), -- Configue hotkeys for opening specific applications
 	awful.key({ modkey }, "b", function()
 		if is_personal_desktop() then
-			awful.spawn("firefox")
+			-- awful.spawn("firefox")
+			focus_or_open("firefox", "firefox")
 		else
-			awful.spawn("google-chrome-stable")
+			-- awful.spawn("google-chrome-stable")
+			focus_or_open("Google-chrome", "google-chrome-stable")
 		end
 	end, {
 		description = "open chrome",
 		group = "launcher",
 	}), -- Akiflow (akiflow is installed as a chrome PWA)
 	awful.key({ modkey }, "a", function()
-		awful.spawn("google-chrome-stable --app=https://web.akiflow.com/#/planner/today")
+		focus_or_open("Google-chrome", "google-chrome-stable --app=https://web.akiflow.com/#/planner/today")
 	end, {
 		description = "open akiflow",
 		group = "launcher",
@@ -511,7 +529,8 @@ globalkeys = gears.table.join(
 		group = "client",
 	}),
 	awful.key({ modkey }, "d", function()
-		awful.spawn(
+		focus_or_open(
+			"discord",
 			"discord --no-sandbox --ignore-gpu-blocklist --disable-features=UseOzonePlatform --enable-features=VaapiVideoDecoder --use-gl=desktop --enable-gpu-rasterization --enable-zero-copy"
 		)
 	end, {
@@ -537,13 +556,13 @@ globalkeys = gears.table.join(
 		group = "launcher",
 	}),
 	awful.key({ modkey, "Shift" }, "s", function()
-		awful.spawn("spotify")
+		focus_or_open("Spotify", "spotify")
 	end, {
 		description = "open spotify",
 		group = "launcher",
 	}), -- Open obsidian with super + shift + o
-	awful.key({ modkey, "Shift" }, "o", function()
-		awful.spawn("obsidian")
+	awful.key({ modkey }, "o", function()
+		focus_or_open("obsidian", "obsidian")
 	end, {
 		description = "open obsidian",
 		group = "launcher",
@@ -686,7 +705,13 @@ globalkeys = gears.table.join(
 		group = "client",
 	}), -- Standard program
 	awful.key({ modkey }, "Return", function()
-		awful.spawn(terminal)
+		focus_or_open("com.mitchellh.ghostty", "ghostty")
+	end, {
+		description = "open a terminal",
+		group = "launcher",
+	}),
+	awful.key({ modkey }, "t", function()
+		focus_or_open("com.mitchellh.ghostty", "ghostty")
 	end, {
 		description = "open a terminal",
 		group = "launcher",
