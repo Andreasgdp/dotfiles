@@ -1,0 +1,22 @@
+theme = "catppuccin_mocha"
+
+[editor]
+line-number = "relative"
+mouse = false
+
+# [editor.persistence]
+# old-files = true
+# commands = true
+# search = true
+# clipboard = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal]
+d = { d = ["extend_to_line_bounds", "delete_selection"] }
