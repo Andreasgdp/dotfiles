@@ -172,3 +172,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Add Go binaries to PATH
 export PATH=$PATH:$(go env GOPATH)/bin
 alias go="go1.22.10"
+path+=('/home/anpe/.cargo/bin')
