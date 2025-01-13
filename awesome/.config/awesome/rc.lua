@@ -339,8 +339,38 @@ root.buttons(gears.table.join(
 ))
 -- }}}
 
+-- Function to open a page in the right browser and workspace
+local function open_page(url)
+	local browser = is_personal_desktop() and "firefox" or "google-chrome-stable"
+	local tag
+	if not is_personal_desktop() then
+		local screen = awful.screen.focused()
+		tag = screen.tags[2]
+	else
+		-- grab the first tag on the first screen
+		tag = screen[1].tags[1]
+	end
+	if tag then
+		tag:view_only()
+		local browser_class = is_personal_desktop() and "firefox" or "Google-chrome"
+		local found_browser = false
+		for _, c in ipairs(client.get()) do
+			if c.class == browser_class and c.first_tag == tag then
+				found_browser = true
+				c:emit_signal("request::activate", "key.unminimize", { raise = true })
+				awful.spawn(browser .. " --new-tab " .. url)
+				break
+			end
+		end
+		if not found_browser then
+			awful.spawn("firefox --new-window " .. url)
+		end
+	end
+end
+
 -- {{{ Key bindings
-globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
+globalkeys = gears.table.join(
+	-- Configure the hotkeys for screenshot
 	awful.key({ modkey, "Shift" }, "q", function()
 		for _, c in ipairs(client.get()) do
 			c:kill()
@@ -517,7 +547,25 @@ globalkeys = gears.table.join( -- Configure the hotkeys for screenshot
 	end, {
 		description = "open obsidian",
 		group = "launcher",
-	}), -- Open awesome config in Code - Insiders with super + a
+	}), -- Open specific pages with super + shift + key
+	awful.key({ modkey, "Shift" }, "y", function()
+		open_page("https://www.youtube.com")
+	end, {
+		description = "open YouTube",
+		group = "launcher",
+	}),
+	awful.key({ modkey, "Shift" }, "g", function()
+		open_page("https://www.google.com")
+	end, {
+		description = "open Google",
+		group = "launcher",
+	}),
+	awful.key({ modkey, "Shift" }, "d", function()
+		open_page("https://duckduckgo.com")
+	end, {
+		description = "open DuckDuckGo",
+		group = "launcher",
+	}),
 	awful.key({ modkey }, "space", function()
 		awful.util.spawn("bash -c  '~/.config/awesome/launch-files/akiflow-command-bar.sh'")
 	end, {
