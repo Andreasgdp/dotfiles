@@ -95,6 +95,10 @@ if ! command_exists "lazygit"; then
 	cd ~/dotfiles/
 fi
 
+if ! command_exists "lazydocker"; then
+  go install github.com/jesseduffield/lazydocker@latest
+fi
+
 # check if homebrew is installed and install if not
 if ! command_exists "brew"; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
