@@ -49,6 +49,9 @@ return {
         "HakonHarnes/img-clip.nvim",
         event = "VeryLazy",
         opts = {
+          behaviour = {
+            auto_focus_sidebar = false,
+          },
           -- recommended settings
           default = {
             embed_image_as_base64 = false,
