@@ -243,6 +243,10 @@ if ! command_exists "google-chrome-stable"; then
 	sudo apt --fix-broken install
 fi
 
+if ! command_exists "brave-browser"; then
+  curl -fsS https://dl.brave.com/install.sh | sh
+fi
+
 # intsall flatpak
 if ! command_exists "flatpak"; then
 	sudo apt install -y flatpak
