@@ -83,7 +83,7 @@ return {
               Search = "None",
             },
           },
-          zindex = 50,
+          zindex = 2000,
         },
       })
     end,
