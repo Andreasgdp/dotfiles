@@ -341,7 +341,7 @@ root.buttons(gears.table.join(
 
 -- Function to open a page in the right browser and workspace
 local function open_page(url)
-	local browser = is_personal_desktop() and "firefox" or "google-chrome-stable"
+	local browser = is_personal_desktop() and "brave-browser" or "google-chrome-stable"
 	local tag
 	if not is_personal_desktop() then
 		local screen = awful.screen.focused()
@@ -352,7 +352,7 @@ local function open_page(url)
 	end
 	if tag then
 		tag:view_only()
-		local browser_class = is_personal_desktop() and "firefox" or "Google-chrome"
+		local browser_class = is_personal_desktop() and "brave-browser" or "Google-chrome"
 		local found_browser = false
 		for _, c in ipairs(client.get()) do
 			if c.class == browser_class and c.first_tag == tag then
@@ -363,7 +363,7 @@ local function open_page(url)
 			end
 		end
 		if not found_browser then
-			awful.spawn("firefox --new-window " .. url)
+			awful.spawn("Brave-browser --new-window " .. url)
 		end
 	end
 end
@@ -484,8 +484,7 @@ globalkeys = gears.table.join(
 	}), -- Configue hotkeys for opening specific applications
 	awful.key({ modkey }, "b", function()
 		if is_personal_desktop() then
-			-- awful.spawn("firefox")
-			focus_or_open("firefox", "firefox")
+			focus_or_open("Brave-browser", "brave-browser")
 		else
 			-- awful.spawn("google-chrome-stable")
 			focus_or_open("Google-chrome", "google-chrome-stable")
@@ -495,14 +494,15 @@ globalkeys = gears.table.join(
 		group = "launcher",
 	}), -- Akiflow (akiflow is installed as a chrome PWA)
 	awful.key({ modkey }, "a", function()
-		focus_or_open("Google-chrome", "google-chrome-stable --app=https://web.akiflow.com/#/planner/today")
+		-- focus_or_open("Google-chrome", "google-chrome-stable --app=https://web.akiflow.com/#/planner/today")
+		awful.spawn("Brave-browser --app=https://web.akiflow.com/#/planner/today")
 	end, {
 		description = "open akiflow",
 		group = "launcher",
 	}), -- Messages
 	awful.key({ modkey }, "i", function()
 		if is_personal_desktop() then
-			awful.spawn("firefox --new-window https://mail.google.com/mail/u/0/#inbox")
+			awful.spawn("Brave-browser --new-window https://mail.google.com/mail/u/0/#inbox")
 		else
 			awful.spawn("google-chrome-stable --new-window https://outlook.office.com/mail/inbox")
 		end
@@ -538,13 +538,13 @@ globalkeys = gears.table.join(
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "m", function()
-		awful.spawn("firefox --new-window https://www.facebook.com/messages")
+		awful.spawn("Brave-browser --new-window https://www.facebook.com/messages")
 	end, {
 		description = "open messenger",
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "y", function()
-		awful.spawn("firefox --new-window https://www.youtube.com/feed/subscriptions")
+		awful.spawn("Brave-browser --new-window https://www.youtube.com/feed/subscriptions")
 	end, {
 		description = "open messenger",
 		group = "launcher",
@@ -999,7 +999,7 @@ awful.rules.rules = { -- All clients will match this rule.
 	{
 		rule_any = {
 			instance = {
-				"DTA", -- Firefox addon DownThemAll.
+				"DTA", -- brave-browser addon DownThemAll.
 				"copyq", -- Includes session name in class.
 				"pinentry",
 			},
