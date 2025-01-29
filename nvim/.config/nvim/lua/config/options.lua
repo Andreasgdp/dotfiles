@@ -20,4 +20,4 @@ opt.path:append("**")
 opt.wildignore:append("*/node_modules/*")
 
 -- disable format on save can format using cf or cF
--- vim.g.autoformat = false
+vim.g.autoformat = false
