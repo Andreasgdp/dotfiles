@@ -258,16 +258,7 @@ if [ ! -d "~/.config/yazi" ]; then
 fi
 # Install Yazi (terminal file manager)
 if ! command_exists "yazi"; then
-  curl -s https://api.github.com/repos/sxyazi/yazi/releases/latest |
-    grep "browser_download_url.*yazi-x86_64-unknown-linux-gnu.snap" |
-    cut -d : -f 2,3 |
-    tr -d \" |
-    wget -i - -O yazi.snap
-
-  # Install Yazi from the downloaded file
-  sudo snap install --dangerous --classic ~/dotfiles/yazi.snap
-  rm ~/dotfiles/yazi.snap
-  cd ~/dotfiles/
+  brew install yazi
 fi
 
 if ! command_exists "picom"; then # if on a system with the earlier version of picom, first uninstall it from the repo with sudo ninja -C build uninstall and then move the contents of the repo somewhereelse, as the other will ocuppy the picom folder from now on.
