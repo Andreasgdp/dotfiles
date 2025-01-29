@@ -40,6 +40,7 @@ alias mkdir='mkdir -p'
 alias bat='batcat'
 alias cat=batcat
 alias lg='lazygit'
+alias ld='lazydocker'
 
 # Docker aliases
 # kill absolutely everything
