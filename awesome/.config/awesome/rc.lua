@@ -363,7 +363,7 @@ local function open_page(url)
 			end
 		end
 		if not found_browser then
-			awful.spawn("Brave-browser --new-window " .. url)
+			awful.spawn("brave-browser --new-window " .. url)
 		end
 	end
 end
@@ -483,26 +483,20 @@ globalkeys = gears.table.join(
 		group = "awesome",
 	}), -- Configue hotkeys for opening specific applications
 	awful.key({ modkey }, "b", function()
-		if is_personal_desktop() then
-			focus_or_open("Brave-browser", "brave-browser")
-		else
-			-- awful.spawn("google-chrome-stable")
-			focus_or_open("Google-chrome", "google-chrome-stable")
-		end
+    awful.spawn("brave-browser")
 	end, {
 		description = "open chrome",
 		group = "launcher",
 	}), -- Akiflow (akiflow is installed as a chrome PWA)
 	awful.key({ modkey }, "a", function()
-		-- focus_or_open("Google-chrome", "google-chrome-stable --app=https://web.akiflow.com/#/planner/today")
-		awful.spawn("Brave-browser --app=https://web.akiflow.com/#/planner/today")
+		awful.spawn("brave-browser --app=https://web.akiflow.com/#/planner/today")
 	end, {
 		description = "open akiflow",
 		group = "launcher",
 	}), -- Messages
 	awful.key({ modkey }, "i", function()
 		if is_personal_desktop() then
-			awful.spawn("Brave-browser --new-window https://mail.google.com/mail/u/0/#inbox")
+			awful.spawn("brave-browser --new-window https://mail.google.com/mail/u/0/#inbox")
 		else
 			awful.spawn("google-chrome-stable --new-window https://outlook.office.com/mail/inbox")
 		end
@@ -538,13 +532,13 @@ globalkeys = gears.table.join(
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "m", function()
-		awful.spawn("Brave-browser --new-window https://www.facebook.com/messages")
+		awful.spawn("brave-browser --new-window https://www.facebook.com/messages")
 	end, {
 		description = "open messenger",
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "y", function()
-		awful.spawn("Brave-browser --new-window https://www.youtube.com/feed/subscriptions")
+		awful.spawn("brave-browser --new-window https://www.youtube.com/feed/subscriptions")
 	end, {
 		description = "open messenger",
 		group = "launcher",
