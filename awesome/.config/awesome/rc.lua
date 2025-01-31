@@ -483,7 +483,7 @@ globalkeys = gears.table.join(
 		group = "awesome",
 	}), -- Configue hotkeys for opening specific applications
 	awful.key({ modkey }, "b", function()
-    awful.spawn("brave-browser")
+		awful.spawn("brave-browser")
 	end, {
 		description = "open chrome",
 		group = "launcher",
