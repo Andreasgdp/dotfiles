@@ -496,7 +496,7 @@ globalkeys = gears.table.join(
 	}), -- Messages
 	awful.key({ modkey }, "i", function()
 		if is_personal_desktop() then
-			awful.spawn("brave-browser --new-window https://mail.google.com/mail/u/0/#inbox")
+			awful.spawn("brave-browser --new-window https://app.shortwave.com/")
 		else
 			awful.spawn("google-chrome-stable --new-window https://outlook.office.com/mail/inbox")
 		end
