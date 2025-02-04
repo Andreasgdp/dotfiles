@@ -1071,21 +1071,7 @@ client.connect_signal("manage", function(c)
 end)
 
 client.connect_signal("property::maximized", function(c)
-	if c.maximized and c.class == "Code - Insiders" then
-		c.maximized = false
-	end
-	if c.maximized and c.class == "gazebo" then
-		c.maximized = false
-	end
-	if c.maximized and c.class == "Spotify" then
-		c.maximized = false
-	end
-	if c.maximized and c.name == "Akiflow" then
-		c.maximized = false
-	end
-	if c.maximized and c.name == "Messages" then
-		c.maximized = false
-	end
+	c.maximized = false
 end)
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
