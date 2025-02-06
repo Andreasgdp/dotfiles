@@ -341,7 +341,7 @@ root.buttons(gears.table.join(
 
 -- Function to open a page in the right browser and workspace
 local function open_page(url)
-	local browser = is_personal_desktop() and "brave-browser" or "google-chrome-stable"
+	local browser = "brave-browser"
 	local tag
 	if not is_personal_desktop() then
 		local screen = awful.screen.focused()
@@ -352,7 +352,7 @@ local function open_page(url)
 	end
 	if tag then
 		tag:view_only()
-		local browser_class = is_personal_desktop() and "brave-browser" or "Google-chrome"
+    local browser_class = "Brave-browser"
 		local found_browser = false
 		for _, c in ipairs(client.get()) do
 			if c.class == browser_class and c.first_tag == tag then
@@ -498,7 +498,7 @@ globalkeys = gears.table.join(
 		if is_personal_desktop() then
 			awful.spawn("brave-browser --new-window https://app.shortwave.com/")
 		else
-			awful.spawn("google-chrome-stable --new-window https://outlook.office.com/mail/inbox")
+			awful.spawn("brave-browser --new-window https://outlook.office.com/mail/inbox")
 		end
 	end, {
 		description = "open outlook inbox",
