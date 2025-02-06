@@ -261,16 +261,8 @@ if ! command_exists "yazi"; then
   brew install yazi
 fi
 
-if ! command_exists "picom"; then # if on a system with the earlier version of picom, first uninstall it from the repo with sudo ninja -C build uninstall and then move the contents of the repo somewhereelse, as the other will ocuppy the picom folder from now on.
-  sudo apt install -y libconfig-dev libdbus-1-dev libegl-dev libev-dev libgl-dev libepoxy-dev libpcre2-dev libpixman-1-dev libx11-xcb-dev libxcb1-dev libxcb-composite0-dev libxcb-damage0-dev libxcb-glx0-dev libxcb-image0-dev libxcb-present-dev libxcb-randr0-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-shape0-dev libxcb-util-dev libxcb-xfixes0-dev meson ninja-build uthash-dev
-
-  git clone https://github.com/pijulius/picom ~/picom
-  cd picom
-  meson setup --buildtype=release build
-  ninja -C build
-  # To install the binaries in /usr/local/bin (optional)
-  sudo ninja -C build install
-  cd ~/dotfiles
+if ! command_exists "picom"; then 
+  "$HOME"/dotfiles/install-scripts/setups/picom.sh
 fi
 
 # Install Arc GTK theme

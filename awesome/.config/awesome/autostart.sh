@@ -24,7 +24,7 @@ run "greenclip daemon"
 run "blueman-applet"
 
 # if picom is installed, run picom
-# run "picom -b"
+run "picom -b"
 
 # ensure displays does not sleep
 run "xset s off"
