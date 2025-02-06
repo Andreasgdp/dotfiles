@@ -44,6 +44,7 @@
 
 # Config options
 theme = catppuccin-mocha
+background = #262637
 font-size = 18
 initial-command = /bin/zsh -l -c "tmux a || tmux"
 
@@ -53,8 +54,8 @@ gtk-adwaita = false
 gtk-titlebar = false
 
 window-padding-color = extend
-window-padding-x = 10
-window-padding-y = 10
+window-padding-x = 5
+window-padding-y = 5
 
 # window draw
 window-vsync = false
