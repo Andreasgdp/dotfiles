@@ -265,6 +265,10 @@ if ! command_exists "picom"; then
   "$HOME"/dotfiles/install-scripts/setups/picom.sh
 fi
 
+if ! command_exists "simplescreenrecorder"; then 
+  "$HOME"/dotfiles/install-scripts/setups/SimpleScreenRecorder.sh
+fi
+
 # Install Arc GTK theme
 if [ ! -d "$HOME/arc-icon-theme" ]; then
   git clone --depth 1 https://github.com/horst3180/arc-icon-theme ~/arc-icon-theme/ && cd ~/arc-icon-theme/
