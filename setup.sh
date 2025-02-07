@@ -55,7 +55,7 @@ fi
 sudo apt-get update && sudo apt-get upgrade -y
 
 # Install essential packages
-sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol btop htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr duf ack kazam cmatrix gpick
+sudo apt-get install -y git stow gcc zsh python-is-python3 python3-pip pipx tmux flameshot awesome tree bat rofi pavucontrol htop autoconf luarocks iw ripgrep xdotool peek fd-find direnv tldr duf ack kazam cmatrix gpick
 
 #blueman
 sudo apt install -y blueman bluez bluez-obexd
@@ -121,6 +121,10 @@ fi
 
 if ! command_exists "delta"; then
   brew install git-delta
+fi
+
+if ! command_exists "btop"; then
+  brew install btop
 fi
 
 if ! command_exists "atuin"; then
