@@ -32,3 +32,8 @@ run "xset -dpms"
 run "xset s noblank"
 
 feh --bg-fill ~/wallpaper.jpg
+
+# wait for a bit
+sleep 1
+
+feh --bg-fill ~/wallpaper.jpg
