@@ -297,13 +297,15 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
 
-# setup monaspace font and symbols
+# setup monaspace, jetbrains nerd fonts and symbols
 if [ ! -d "$HOME/monaspace" ]; then
   git clone https://github.com/githubnext/monaspace.git ~/monaspace
   cd ~/monaspace
   ./util/install_linux.sh
   cd ~/dotfiles
 fi
+# Install JetBrains Nerd Font Mono - it has it's own condition check to avoid reinstallation
+./install-scripts/fonts/jetbrains-nerd-mono.sh
 if [ ! -f "$HOME/.local/share/fonts/SymbolsNerdFont-Regular.ttf" ]; then
   cd ~/Downloads
   curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip

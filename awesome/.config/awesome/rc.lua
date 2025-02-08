@@ -96,8 +96,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "warp-terminal"
-terminal = "ghostty"
--- terminal = "kitty"
+-- terminal = "ghostty"
+terminal = "kitty"
 -- terminal = "terminator -p Catppuccin_Mocha"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
@@ -699,13 +699,15 @@ globalkeys = gears.table.join(
 		group = "client",
 	}), -- Standard program
 	awful.key({ modkey }, "Return", function()
-		focus_or_open("com.mitchellh.ghostty", "ghostty")
+		-- focus_or_open("com.mitchellh.ghostty", "ghostty")
+		focus_or_open("kitty", "kitty")
 	end, {
 		description = "open a terminal",
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "t", function()
-		focus_or_open("com.mitchellh.ghostty", "ghostty")
+		-- focus_or_open("com.mitchellh.ghostty", "ghostty")
+    focus_or_open("kitty", "kitty")
 	end, {
 		description = "open a terminal",
 		group = "launcher",
