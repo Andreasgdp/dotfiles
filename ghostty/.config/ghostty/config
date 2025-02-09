@@ -54,8 +54,8 @@ gtk-adwaita = false
 gtk-titlebar = false
 
 window-padding-color = extend
-window-padding-x = 5
-window-padding-y = 5
+window-padding-x = 10
+window-padding-y = 15
 
 # window draw
 window-vsync = false
