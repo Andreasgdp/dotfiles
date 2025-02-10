@@ -236,7 +236,9 @@ awful.screen.connect_for_each_screen(function(s)
 	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-	if is_personal_desktop() then
+    local hasThreeScreens = screen.count() == 3
+
+	if is_personal_desktop() and hasThreeScreens then
 		if s.index == 2 then
 			awful.tag({ "3", "5" }, s, awful.layout.layouts[2])
 		elseif s.index == 1 then
@@ -343,7 +345,9 @@ root.buttons(gears.table.join(
 local function open_page(url)
 	local browser = "brave-browser"
 	local tag
-	if not is_personal_desktop() then
+  local hasThreeScreens = screen.count() == 3
+
+	if not is_personal_desktop() or not hasThreeScreens then
 		local screen = awful.screen.focused()
 		tag = screen.tags[2]
 	else
@@ -849,7 +853,8 @@ clientkeys = gears.table.join(
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-if is_personal_desktop() then
+local hasThreeScreens = screen.count() == 3
+if is_personal_desktop() and hasThreeScreens then
 	local tagMapper = {
 		[1] = { screen = 3, tag = 1 },
 		[2] = { screen = 1, tag = 1 },
