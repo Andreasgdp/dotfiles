@@ -177,3 +177,15 @@ path+=('/home/anpe/.cargo/bin')
 
 # kitty stuff
 alias d="kitten diff"
+
+apt() { 
+  command nala "$@"
+}
+sudo() {
+  if [ "$1" = "apt" ]; then
+    shift
+    command sudo nala "$@"
+  else
+    command sudo "$@"
+  fi
+}
