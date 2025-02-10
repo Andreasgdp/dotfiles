@@ -23,7 +23,7 @@ alias  l='eza -lh  --icons=auto' # long list
 alias ls='eza -1   --icons=auto' # short list
 alias ll='eza -lha --icons=auto --sort=name --group-directories-first' # long list all
 alias ld='eza -lhD --icons=auto' # long list dirs
-alias vim='nvim' # use neovim
+alias vim='NVIM_APPNAME=nvim-lazyvim nvim' # use neovim
 alias vi='nvim' # use neovim
 alias v='nvim' # use neovim
 alias tldrf='tldr --list | fzf --preview "tldr {1} --color=always" --preview-window=right,70% | xargs tldr'
