@@ -49,6 +49,9 @@ return {
         "HakonHarnes/img-clip.nvim",
         event = "VeryLazy",
         opts = {
+          file_selector = {
+            provider = "snacks",
+          },
           behaviour = {
             auto_focus_sidebar = false,
           },
