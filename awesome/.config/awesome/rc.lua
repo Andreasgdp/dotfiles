@@ -96,8 +96,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "warp-terminal"
--- terminal = "ghostty"
-terminal = "kitty"
+terminal = "ghostty"
+-- terminal = "kitty"
 -- terminal = "terminator -p Catppuccin_Mocha"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
@@ -236,7 +236,7 @@ awful.screen.connect_for_each_screen(function(s)
 	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-    local hasThreeScreens = screen.count() == 3
+	local hasThreeScreens = screen.count() == 3
 
 	if is_personal_desktop() and hasThreeScreens then
 		if s.index == 2 then
@@ -345,7 +345,7 @@ root.buttons(gears.table.join(
 local function open_page(url)
 	local browser = "brave-browser"
 	local tag
-  local hasThreeScreens = screen.count() == 3
+	local hasThreeScreens = screen.count() == 3
 
 	if not is_personal_desktop() or not hasThreeScreens then
 		local screen = awful.screen.focused()
@@ -356,7 +356,7 @@ local function open_page(url)
 	end
 	if tag then
 		tag:view_only()
-    local browser_class = "Brave-browser"
+		local browser_class = "Brave-browser"
 		local found_browser = false
 		for _, c in ipairs(client.get()) do
 			if c.class == browser_class and c.first_tag == tag then
@@ -703,15 +703,15 @@ globalkeys = gears.table.join(
 		group = "client",
 	}), -- Standard program
 	awful.key({ modkey }, "Return", function()
-		-- focus_or_open("com.mitchellh.ghostty", "ghostty")
-		focus_or_open("kitty", "kitty")
+		focus_or_open("com.mitchellh.ghostty", "ghostty")
+		-- focus_or_open("kitty", "kitty")
 	end, {
 		description = "open a terminal",
 		group = "launcher",
 	}),
 	awful.key({ modkey }, "t", function()
-		-- focus_or_open("com.mitchellh.ghostty", "ghostty")
-    focus_or_open("kitty", "kitty")
+		focus_or_open("com.mitchellh.ghostty", "ghostty")
+		-- focus_or_open("kitty", "kitty")
 	end, {
 		description = "open a terminal",
 		group = "launcher",
