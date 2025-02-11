@@ -127,6 +127,10 @@ if ! command_exists "btop"; then
   brew install btop
 fi
 
+if ! command_exists "google-java-format"; then
+  brew install google-java-format
+fi
+
 if ! command_exists "atuin"; then
   # atuin command history
   curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
@@ -193,6 +197,7 @@ fi
 
 # Install Neovim
 if ! command_exists "nvim"; then
+  # TODO: consider if the installation method should be different
   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
   sudo rm -rf /opt/nvim
   sudo tar -C /opt -xzf nvim-linux64.tar.gz
@@ -265,11 +270,11 @@ if ! command_exists "yazi"; then
   brew install yazi
 fi
 
-if ! command_exists "picom"; then 
+if ! command_exists "picom"; then
   "$HOME"/dotfiles/install-scripts/setups/picom.sh
 fi
 
-if ! command_exists "simplescreenrecorder"; then 
+if ! command_exists "simplescreenrecorder"; then
   "$HOME"/dotfiles/install-scripts/setups/SimpleScreenRecorder.sh
 fi
 
