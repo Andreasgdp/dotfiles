@@ -16,8 +16,3 @@ vim.g.lazyvim_prettier_needs_config = true
 
 -- disable format on save can format using cf or cF
 -- vim.g.autoformat = false
-
--- colorcolumn
-opt.colorcolumn = "100"
--- line width
-opt.textwidth = 100
