@@ -178,6 +178,8 @@ path+=('/home/anpe/.cargo/bin')
 # kitty stuff
 alias d="kitten diff"
 
+alias h="hx"
+
 apt() { 
   command nala "$@"
 }
