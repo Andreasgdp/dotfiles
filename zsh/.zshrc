@@ -180,6 +180,8 @@ alias d="kitten diff"
 
 alias h="hx"
 
+alias ssh="TERM=xterm-256color ssh"
+
 apt() { 
   command nala "$@"
 }
