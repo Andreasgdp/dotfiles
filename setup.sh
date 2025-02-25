@@ -127,10 +127,6 @@ if ! command_exists "btop"; then
   brew install btop
 fi
 
-if ! command_exists "google-java-format"; then
-  brew install google-java-format
-fi
-
 if ! command_exists "atuin"; then
   # atuin command history
   curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
