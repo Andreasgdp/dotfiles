@@ -1021,6 +1021,7 @@ awful.rules.rules = { -- All clients will match this rule.
 			-- and the name shown there might not match defined rules here.
 			name = {
 				"Event Tester", -- xev.
+				"Picture in picture", -- Picture in picture mode for brave
 			},
 			role = {
 				"AlarmWindow", -- Thunderbird's calendar.
