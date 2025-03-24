@@ -27,6 +27,16 @@ return {
       copilot_node_command = "node", -- Node.js version must be > 18.x
       server_opts_overrides = {},
     },
+    keys = {
+      {
+        "<leader>aq",
+        function()
+          require("avante.api").ask()
+          require("avante.api").toggle()
+        end,
+        { desc = "Find Files (Root Dir)", remap = true },
+      },
+    },
   },
   {
     "yetone/avante.nvim",
