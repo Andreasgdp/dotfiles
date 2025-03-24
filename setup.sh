@@ -224,6 +224,10 @@ if ! command_exists "conventional-pre-commit"; then
   pipx ensurepath
 fi
 
+if ! command_exists "pypeek"; then
+  pipx install pypeek
+fi
+
 # Install and set up Tmux plugin manager
 if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
