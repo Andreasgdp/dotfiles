@@ -10,6 +10,10 @@ opt.autochdir = false
 opt.wrap = true
 opt.scrolloff = 8
 
+-- use spaces instead of tabs and set the tab width to 4
+opt.expandtab = true
+opt.tabstop = 4
+
 -- Enable the option to require a Prettier config file
 -- If no prettier config file is found, the formatter will not be used
 vim.g.lazyvim_prettier_needs_config = true
