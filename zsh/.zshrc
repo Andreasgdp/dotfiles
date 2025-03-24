@@ -175,6 +175,9 @@ export PATH=$PATH:$(go env GOPATH)/bin
 alias go="go1.22.10"
 path+=('/home/anpe/.cargo/bin')
 
+# Add Rust binaries to PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # kitty stuff
 alias d="kitten diff"
 
