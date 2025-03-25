@@ -446,9 +446,7 @@ keys.globalkeys = gears.table.join(
     -- Screenshot
     -- ========================================
     awful.key({}, "Print", function()
-        awful.spawn.with_shell(
-            Apps.screenshot .. "  | xclip -sel clip -t image/png"
-        )
+        awful.spawn.with_shell(Apps.screenshot)
         naughty.notify({
             icon = beautiful.icons_path .. "screenshot.svg",
             title = "Screenshot",
