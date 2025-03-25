@@ -54,7 +54,7 @@ theme.font = font .. " 12"
 theme.bg_normal = color.bg
 theme.bg_dark = color.bg
 theme.bg_focus = color.blue
-theme.bg_urgent = color.bg
+theme.bg_urgent = color.red
 theme.bg_minimize = color.bg
 theme.bg_systray = color.bg
 
@@ -84,9 +84,9 @@ theme.notification_margin = dpi(15)
 theme.notification_border_width = dpi(3)
 theme.notification_icon_size = dpi(48)
 theme.notification_border_color = color.green
-theme.notification_fg = color.blue
+theme.notification_fg = color.cyan
 theme.notification_bg = color.bg
-theme.notification_bg_critical = color.red .. "aa"
+theme.notification_bg_critical = color.red
 theme.notification_font = theme.font
 
 -- ========================================

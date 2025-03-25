@@ -261,7 +261,7 @@ keys.globalkeys = gears.table.join(
     awful.key({ modkey }, "u", function()
         -- if no urgent client, move the cursor to the center of the focused client
         if awful.client.urgent.get() == nil then
-            move_mouse_onto_focused_client(client.focus)
+            helpers.move_mouse_onto_focused_client(client.focus)
         else
             awful.client.urgent.jumpto()
         end
