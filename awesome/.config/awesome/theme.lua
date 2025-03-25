@@ -60,7 +60,7 @@ theme.bg_systray = color.bg
 
 -- Foreground
 theme.fg_normal = color.white
-theme.fg_focus = color.bg
+theme.fg_focus = color.green
 theme.fg_urgent = color.red
 theme.fg_minimize = color.bg
 
