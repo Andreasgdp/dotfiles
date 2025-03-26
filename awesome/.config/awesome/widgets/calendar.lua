@@ -12,14 +12,14 @@ local create_widget = function(screen)
     -- Clock Widget
     local clock_widget = wibox.widget({
         widget = wibox.widget.textclock,
-        format = "%a %b %d %R",
-        refresh = 30,
+        format = "%a %b %d %H:%M:%S",
+        refresh = 1,
     })
 
     -- Calendar Widget
     local month_calendar = awful.widget.calendar_popup.month({
         screen = screen,
-        start_sunday = true,
+        start_sunday = false,
         long_weekdays = true,
         spacing = beautiful.calendar_spacing,
         style_month = {
