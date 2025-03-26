@@ -160,6 +160,12 @@ export PATH=$PATH:/usr/local/go/bin
 eval "$(zoxide init zsh)"
 alias cd='z'
 
+# Key bindings for Home and End keys
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
