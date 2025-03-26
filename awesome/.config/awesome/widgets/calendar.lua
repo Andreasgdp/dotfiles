@@ -12,7 +12,7 @@ local create_widget = function(screen)
     -- Clock Widget
     local clock_widget = wibox.widget({
         widget = wibox.widget.textclock,
-        format = "%a %b %d %H:%M:%S",
+        format = "%a %b %d    %H:%M:%S",
         refresh = 1,
     })
 
