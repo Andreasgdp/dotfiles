@@ -57,6 +57,10 @@ awful.layout.layouts = {
 client.connect_signal("property::maximized", function(c)
     c.maximized = false
 end)
+-- disable minimize using signals
+client.connect_signal("property::minimized", function(c)
+    c.minimized = false
+end)
 
 -- tag configs
 Tags = {

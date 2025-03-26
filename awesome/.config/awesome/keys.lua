@@ -192,9 +192,6 @@ keys.clientkeys = gears.table.join(
     awful.key({ modkey }, "q", function(c)
         c:kill()
     end, { description = "close", group = "client" }),
-    awful.key({ modkey }, "n", function(c)
-        c.minimized = true
-    end, { description = "minimize", group = "client" }),
     awful.key(
         { modkey, ctrlkey },
         "space",
@@ -375,6 +372,9 @@ keys.globalkeys = gears.table.join(
         awful.spawn(Apps.launcher)
     end, { description = "application launcher", group = "hotkeys" }),
     awful.key({ modkey }, "b", function()
+        awful.spawn(Apps.web_browser)
+    end, { description = "web browser", group = "hotkeys" }),
+    awful.key({ modkey }, "n", function()
         awful.spawn(Apps.web_browser)
     end, { description = "web browser", group = "hotkeys" }),
     awful.key({ modkey }, "a", function()
