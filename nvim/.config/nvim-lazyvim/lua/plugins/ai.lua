@@ -31,7 +31,6 @@ return {
       {
         "<leader>aq",
         function()
-          require("avante.api").ask()
           require("avante.api").toggle()
         end,
         { desc = "Find Files (Root Dir)", remap = true },
