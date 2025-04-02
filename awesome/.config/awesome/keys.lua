@@ -357,6 +357,60 @@ keys.globalkeys = gears.table.join(
     -- ========================================
     -- Applications
     -- ========================================
+
+    -- Macro keybinding
+    awful.key({ modkey, shiftkey }, "m", function()
+        -- Define the sequence of key presses
+        local key_sequence = {
+            "Super_L+1",
+            "Super_L+a",
+            "Super_L+a",
+            "Super_L+2",
+            "Super_L+y",
+            "Super_L+3",
+            "Super_L+d",
+            "Super_L+i",
+            "Super_L+m",
+            "Super_L+4",
+            "Super_L+Return",
+            "Super_L+5",
+            "Super_L+b",
+            "Super_L+2",
+        }
+
+        if not helpers.is_personal_desktop() then
+            key_sequence = {
+                "Super_L+1",
+                "Super_L+a",
+                "Super_L+a",
+                "Super_L+2",
+                "Super_L+b",
+                "Super_L+3",
+                "Super_L+t",
+                "Super_L+i",
+                "Super_L+4",
+                "Super_L+Return",
+                "Super_L+5",
+                "Super_L+b",
+                "Super_L+2",
+            }
+        end
+
+        -- Function to simulate key presses with a delay
+        local function simulate_key_sequence(keys, index, delay)
+            if index > #keys then
+                return
+            end
+            awful.util.spawn("xdotool key --clearmodifiers " .. keys[index])
+            gears.timer.start_new(delay, function()
+                simulate_key_sequence(keys, index + 1, delay)
+                return false
+            end)
+        end
+
+        -- Start the sequence with a delay of 0.2 seconds between each key press
+        simulate_key_sequence(key_sequence, 1, 0.5)
+    end, { description = "macro sequence", group = "custom" }),
     awful.key({ modkey }, "`", function()
         awesome.emit_signal("floating_terminal::toggle")
     end, { description = "toggle floating terminal", group = "hotkeys" }),
@@ -385,6 +439,9 @@ keys.globalkeys = gears.table.join(
         description = "open akiflow",
         group = "launcher",
     }),
+    awful.key({ modkey }, "t", function()
+        awful.spawn("brave-browser --app=https://teams.microsoft.com")
+    end, { description = "open Microsoft Teams", group = "launcher" }),
     awful.key({ modkey }, "space", function()
         awful.util.spawn(
             "bash -c " .. Config_Dir .. "'/scripts/akiflow-command-bar.sh'"
@@ -519,6 +576,17 @@ keys.globalkeys = gears.table.join(
     )
 )
 
+-- mapper to map numbers to tag index
+-- 1=1, 2=1, 3=2, 4=3, 5=2, 6=4
+local tagMapper = {
+    [1] = { screen = 1, tag = 1 },
+    [2] = { screen = 2, tag = 1 },
+    [3] = { screen = 2, tag = 2 },
+    [4] = { screen = 2, tag = 3 },
+    [5] = { screen = 1, tag = 2 },
+    [6] = { screen = 2, tag = 4 },
+}
+
 -- Bind all key numbers to tags
 for i = 1, #Tags do
     local tag_name = string.format("#%s: %s", i, Tags[i].name)
@@ -527,43 +595,66 @@ for i = 1, #Tags do
         keys.globalkeys,
         -- Switch to tags
         awful.key({ modkey }, "#" .. i + 9, function()
-            local screen = awful.screen.focused()
-            local tag = screen.tags[i]
+            if helpers.is_screen_count(1) then
+                local screen = awful.screen.focused()
+                local tag = screen.tags[i]
+
+                if tag then
+                    tag:view_only()
+                end
+                return
+            end
+
+            local localScreen, tag
+            local mapping = tagMapper[i]
+
+            if mapping then
+                localScreen = screen[mapping.screen]
+                tag = localScreen.tags[mapping.tag]
+            end
 
             if tag then
+                local geometry = localScreen.geometry
+                local x = geometry.x + geometry.width / 2
+                local y = geometry.y + geometry.height / 2
+                mouse.coords({ x = x, y = y }, true)
+
                 tag:view_only()
+                -- focus the first client on the tag
+                local clients = tag:clients()
+                if clients[1] then
+                    clients[1]:emit_signal(
+                        "request::activate",
+                        "key.unminimize",
+                        { raise = true }
+                    )
+                end
             end
         end, { description = "view tag " .. tag_name, group = "tag" }),
-        -- Toggle tag display
-        awful.key({ modkey, ctrlkey }, "#" .. i + 9, function()
-            local screen = awful.screen.focused()
-            local tag = screen.tags[i]
-            if tag then
-                awful.tag.viewtoggle(tag)
-            end
-        end, { description = "toggle tag " .. tag_name, group = "tag" }),
         -- Move client to tag.
         awful.key({ modkey, shiftkey }, "#" .. i + 9, function()
             if client.focus then
-                local tag = client.focus.screen.tags[i]
+                if helpers.is_screen_count(1) then
+                    local tag = client.focus.screen.tags[i]
+                    if tag then
+                        client.focus:move_to_tag(tag)
+                    end
+                end
+
+                local localScreen, tag
+                local mapping = tagMapper[i]
+
+                if mapping then
+                    localScreen = screen[mapping.screen]
+                    tag = localScreen.tags[mapping.tag]
+                end
+
                 if tag then
                     client.focus:move_to_tag(tag)
                 end
             end
         end, {
             description = "move focused client to tag " .. tag_name,
-            group = "tag",
-        }),
-        -- Toggle tag on focused client.
-        awful.key({ modkey, ctrlkey, shiftkey }, "#" .. i + 9, function()
-            if client.focus then
-                local tag = client.focus.screen.tags[i]
-                if tag then
-                    client.focus:toggle_tag(tag)
-                end
-            end
-        end, {
-            description = "toggle focused client on tag " .. tag_name,
             group = "tag",
         })
     )

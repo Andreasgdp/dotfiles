@@ -23,6 +23,11 @@ helpers.is_personal_desktop = function()
     return hostname == personal_desktop_hostname
 end
 
+-- is screen count parameter
+helpers.is_screen_count = function(count)
+    return screen.count() == count
+end
+
 -- ========================================
 -- Package
 -- ========================================

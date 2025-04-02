@@ -99,6 +99,16 @@ local rules = {
         },
     },
 
+    {
+        rule = {
+            class = "discord", -- Replace with the actual class name if different
+        },
+        properties = {
+            screen = 1, -- Adjust if you have multiple screens
+            tag = "chat", -- The name of the tag (workspace) you want Discord to open in
+        },
+    },
+
     -- Fullscreen clients
     -- {
     --   rule_any = {

@@ -149,7 +149,17 @@ end
 
 -- Each screen has its own tag table.
 awful.screen.connect_for_each_screen(function(s)
-    awful.tag(tag_names, s, tag_layouts)
+    if s.index == 2 then
+        -- Tags for screen 1
+        awful.tag(
+            { "web", "chat", "terminal", "music" },
+            s,
+            awful.layout.layouts[1]
+        )
+    elseif s.index == 1 then
+        -- Tags for screen 2
+        awful.tag({ "calendar", "output" }, s, awful.layout.layouts[1])
+    end
 end)
 
 -- Remove gaps if layout is set to max
