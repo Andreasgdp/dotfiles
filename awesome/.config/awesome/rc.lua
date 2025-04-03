@@ -149,16 +149,21 @@ end
 
 -- Each screen has its own tag table.
 awful.screen.connect_for_each_screen(function(s)
-    if s.index == 2 then
-        -- Tags for screen 1
-        awful.tag(
-            { "web", "chat", "terminal", "music" },
-            s,
-            awful.layout.layouts[1]
-        )
-    elseif s.index == 1 then
-        -- Tags for screen 2
-        awful.tag({ "calendar", "output" }, s, awful.layout.layouts[1])
+    if helpers.is_screen_count(1) then
+        -- Create tags for the screen
+        awful.tag(tag_names, s, tag_layouts)
+    else
+        if s.index == 2 then
+            -- Tags for screen 1
+            awful.tag(
+                { "web", "chat", "terminal", "music" },
+                s,
+                awful.layout.layouts[1]
+            )
+        elseif s.index == 1 then
+            -- Tags for screen 2
+            awful.tag({ "calendar", "output" }, s, awful.layout.layouts[1])
+        end
     end
 end)
 

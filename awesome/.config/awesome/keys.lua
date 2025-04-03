@@ -639,6 +639,7 @@ for i = 1, #Tags do
                     if tag then
                         client.focus:move_to_tag(tag)
                     end
+                    return
                 end
 
                 local localScreen, tag
