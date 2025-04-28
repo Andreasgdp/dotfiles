@@ -184,6 +184,9 @@ path+=('/home/anpe/.cargo/bin')
 # Add Rust binaries to PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 
+# sdkman
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 # kitty stuff
 alias d="kitten diff"
 
@@ -202,3 +205,7 @@ sudo() {
     command sudo "$@"
   fi
 }
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
