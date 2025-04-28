@@ -1,5 +1,5 @@
 return {
-  -- filename in bottom right corner of all file buffers
+  -- filename in top right corner of all file buffers
   {
     "b0o/incline.nvim",
     dependencies = {},
@@ -68,7 +68,7 @@ return {
           padding_char = " ",
           placement = {
             horizontal = "right",
-            vertical = "bottom",
+            vertical = "top",
           },
           width = "fit",
           winhighlight = {
