@@ -167,7 +167,7 @@ disabled = false
 [git_status]
 style = "fg:color_git"
 format = '([$ahead_behind]($style) )([$all_status]($style) )'
-stashed = "*${count}"
+stashed = " ${count}"
 ahead = "⇡${count}"
 behind = "⇣${count}"
 up_to_date = ""
@@ -176,8 +176,8 @@ conflicted = "=${count}"
 deleted = "×${count}"
 renamed = "»${count}"
 modified = "!${count}"
-staged = "+${count}"
-untracked = "?${count}"
+staged = "󰌹${count}"
+untracked = "󰌺${count}"
 ignore_submodules = false
 disabled = false
 
@@ -258,7 +258,7 @@ style = "fg:color_docker"
 format = '( [$symbol( $context)]($style) )'
 
 [dotnet]
-format = '[ ](bold green)[$symbol($version)(\($tfm\))]($style) '
+format = '[$symbol($version)(\($tfm\))]($style) '
 symbol = '.NET'
 style = 'bright-purple'
 detect_extensions = ['csproj', 'fsproj', 'xproj']
