@@ -9,11 +9,10 @@ return {
     "lewis6991/gitsigns.nvim",
   },
   {
+    "sindrets/diffview.nvim",
+  },
+  {
     "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
-    },
-    config = true,
+    enabled = false,
   },
 }

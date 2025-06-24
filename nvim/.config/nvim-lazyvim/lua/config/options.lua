@@ -10,6 +10,8 @@ opt.autochdir = false
 opt.wrap = true
 opt.scrolloff = 8
 
+vim.opt.swapfile = false
+
 -- use spaces instead of tabs and set the tab width to 4
 opt.expandtab = true
 opt.tabstop = 4
