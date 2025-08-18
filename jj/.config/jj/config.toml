@@ -1,0 +1,338 @@
+[user]
+name = "Andreas Petersen"
+email = "andreasgdp@gmail.com"
+
+[ui]
+default-command = "log"
+conflict-marker-style = "git"
+color = "auto"
+paginate = "auto"
+
+[git]
+push-bookmark-prefix = "anpe/"
+
+[aliases]
+# Alias to fetch latest changes and then run 'jj new' on the provided argument.
+# Usage: jj switch <branch>
+# e.g., jj switch main@origin
+switch = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+
+# First, fetch all remote updates
+echo "Fetching latest changes..."
+jj git fetch
+
+# Check if @origin is already part of the argument
+if [[ "$1" != *@origin ]]; then
+  echo "Appending @origin to the argument..."
+  set -- "$1@origin"
+fi
+
+# Then, create a new change based on the provided target revision
+echo "Creating new change on '$@'..."
+jj new "$1"
+
+echo "Successfully switched. Current change is now based on the latest '$@'."
+""",
+  "$1",
+]
+
+# Rebase alias to rebase @ on origin of provided branch or revset.
+# Usage: jj rb <branch> e.g. jj rb main -> jj jj rebase -s @ -d main@origin
+rb = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+  #!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+# Check if the user provided an argument
+if [ $# -eq 0 ]; then
+  echo "Usage: jj rb <branch>"
+  exit 1
+fi
+# Extract the first argument
+branch="$1"
+# Check if the argument ends with @origin, if not, append it
+if [[ "$branch" != *@origin ]]; then
+  branch="$branch@origin"
+fi
+# Perform the rebase operation
+jj rebase -s @ -d "$branch"
+""",
+  "$1",
+]
+
+
+# in a standard git repo init jj. So check if .jj exists and if not, initialize it.
+setup = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+# Check if .jj directory exists
+if [ ! -d ".jj" ]; then
+  echo "Initializing jj in the current directory..."
+  jj git init --colocate
+else
+  echo ".jj already exists, skipping initialization."
+fi
+""",
+]
+
+todo = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+jj diff | grep 'TODO\\|NOTE' > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "TODO items found in the diff:"
+  jj diff | grep 'TODO\\|NOTE'
+else
+  echo "No TODO items found in the diff."
+fi
+""",
+]
+
+# should check for commit message. Ensure here is a jira ticket id in the commit message e.g. CT-1234 or UR-1234 or EP-14 or the likes some commit message
+# Ensure there is a +patch, +minor, or +major in the commit message
+# set the current bookmark to be pr/main/<ticket-id>-anpe-<first line of commit message ofrmatted to lowercase and with spaces replaced by dashes as well as remove special characters like :>
+pr = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+
+# get the actual commit message only, using jj
+# NOTE the commit message is tabbed in slightly where all other lines are not, so we can locate the commit message easily based on that
+# commit_message=$(jj show -s | grep '^[[:space:]]' | xargs -I {} echo "{}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+commit_message=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+echo "commit_message: \n$commit_message"
+
+# Check if the commit message contains a JIRA ticket ID and a patch level
+if ! echo $commit_message | grep -qE '([A-Z]{1,5}-[0-9]+)'; then
+  echo "Error: Commit message must contain a JIRA ticket ID (e.g., CT-1234, UR-1234, EP-14)."
+  exit 1
+fi
+if ! echo $commit_message | grep -qE '(\\+patch|\\+minor|\\+major)'; then
+  echo "Error: Commit message must contain a +patch, +minor, or +major."
+  exit 1
+fi
+
+# Extract the first line of the commit message before first newline
+first_line=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | head -n1)
+
+echo "First line of commit message: $first_line"
+  
+# check if there is an actual commit message before the ticket id and patch level
+if ! echo "$first_line" | grep -qE '[^[:space:]]'; then
+  echo "Error: Commit message must not be empty."
+  exit 1
+fi
+  
+# check if first line is not just the ticket id and/or patch level
+if echo "$first_line" | grep -qE '^[[:space:]]*([A-Z]{2,}-[0-9]+|[A-Z]{2,}[0-9]+|\\+patch|\\+minor|\\+major)[[:space:]]*$'; then
+  echo "Error: Commit message must contain a descriptive first line."
+  exit 1
+fi
+
+# Extract the JIRA ticket ID from the commit message
+# This regex captures the first occurrence of a JIRA ticket ID pattern
+ticket_id=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -oE '([A-Z]{2,}-[0-9]+|[A-Z]{2,}[0-9]+)' | head -n 1)
+
+# Format the first line to lowercase, replace spaces with dashes, and remove special characters
+formatted_line=$(echo "$first_line" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
+pr_name="pr/main/${ticket_id}-anpe-${formatted_line}"
+echo "Setting bookmark to: $pr_name"
+# Set the current bookmark to pr/main/<ticket-id>-anpe-<formatted-line>
+jj bookmark set --revision=@ "$pr_name" || {
+  echo "Error: Failed to set bookmark. It might already exist."
+  exit 1
+}
+echo "Current bookmark set to pr/main/${ticket_id}-anpe-${formatted_line}."
+""",
+]
+
+# dev alias - excatly the same as pr but for dev branch so dev- instead of pr/main/
+dev = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+# get the actual commit message only, using jj
+# NOTE the commit message is tabbed in slightly where all other lines are not, so we can locate the commit message easily based on that
+# commit_message=$(jj show -s | grep '^[[:space:]]' | xargs -I {} echo "{}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+commit_message=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+echo "commit_message: \n$commit_message"
+# Check if the commit message contains a JIRA ticket ID and a patch level
+if ! echo $commit_message | grep -qE '([A-Z]{1,5}-[0-9]+)'; then
+  echo "Error: Commit message must contain a JIRA ticket ID (e.g., CT-1234, UR-1234, EP-14)."
+  exit 1
+fi
+if ! echo $commit_message | grep -qE '(\\+patch|\\+minor|\\+major)'; then
+  echo "Error: Commit message must contain a +patch, +minor, or +major."
+  exit 1
+fi
+# Extract the first line of the commit message before first newline
+first_line=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | head -n1)
+
+echo "First line of commit message: $first_line"
+# check if there is an actual commit message before the ticket id and patch level
+if ! echo "$first_line" | grep -qE '[^[:space:]]'; then
+  echo "Error: Commit message must not be empty."
+  exit 1
+fi
+# check if first line is not just the ticket id and/or patch level
+if echo "$first_line" | grep -qE '^[[:space:]]*([A-Z]{2,}-[0-9]+|[A-Z]{2,}[0-9]+|\\+patch|\\+minor|\\+major)[[:space:]]*$'; then
+  echo "Error: Commit message must contain a descriptive first line."
+  exit 1
+fi
+# Extract the JIRA ticket ID from the commit message
+# This regex captures the first occurrence of a JIRA ticket ID pattern
+ticket_id=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -oE '([A-Z]{2,}-[0-9]+|[A-Z]{2,}[0-9]+)' | head -n 1)
+# Format the first line to lowercase, replace spaces with dashes, and remove special characters
+formatted_line=$(echo "$first_line" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
+pr_name="dev/${ticket_id}-anpe-${formatted_line}"
+echo "Setting bookmark to: $pr_name"
+# Set the current bookmark to dev/<ticket-id>-anpe-<formatted-line>
+jj bookmark set --revision=@ "$pr_name" || {
+  echo "Error: Failed to set bookmark. It might already exist."
+  exit 1
+}
+echo "Current bookmark set to dev/${ticket_id}-anpe-${formatted_line}."
+""",
+]
+
+newpush = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+jj git push --allow-new --remote origin
+""",
+]
+
+# "prmaster <branch_name>" alias  - should, grab all the commit messages from the diff between origin master and origin <branch_name> store in var, jj new, then git switch master, git pull, create new tmp-<some_unique_id> branch, git merge --squash <branch_name>, git commit with all the commit messages stored (note if not already the first commit should be on top), jj edit tmp-<some_unique_id>, jj pr
+prmaster = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+#!/usr/bin/env bash
+set -euo pipefail # Exit on error, undefined variable, or pipe failure
+# Check if the user provided an argument
+if [ $# -eq 0 ]; then
+  echo "Usage: jj prmaster <branch_name>"
+  exit 1
+fi
+# Extract the first argument
+branch="$1"
+
+# Check if the argument ends with @origin, if not, append it
+# if [[ "$branch" != *@origin ]]; then
+#   branch="$branch@origin"
+# fi
+
+# check if the branch exists in origin
+if ! git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+  echo "Error: Branch 'origin/$branch' does not exist."
+  exit 1
+fi
+
+# jj switch to the specified branch
+echo "Switching to branch: $branch..."
+jj switch "$branch" || {
+  echo "Error: Failed to switch to branch '$branch'."
+  exit 1
+}
+
+# gather all the commit messages (full content including headers and bodies) from the diff between origin master and origin <branch_name>
+commit_messages=$(git log origin/master..origin/"$branch" --reverse --pretty=format:"%s%n%b" | sed 's/^/  /') # indent each line with 2 spaces
+if [ -z "$commit_messages" ]; then
+  echo "No commits found between origin/master and origin/$branch."
+  exit 0
+fi
+# Create a new change
+#echo "Creating a new change based on the latest origin/$branch..."
+#jj new # this is just so git does not see changes in staging area and will allow git operations from here
+# Switch to master branch
+echo "Switching to master branch..."
+git switch master || {
+  echo "Error: Failed to switch to master branch. It might not exist."
+  exit 1
+}
+# Pull the latest changes from origin master
+echo "Pulling latest changes from origin master..."
+git pull origin master || {
+  echo "Error: Failed to pull latest changes from origin master."
+  exit 1
+}
+# Create a new temporary branch with a unique name
+tmp_branch="tmp-$(date +%s)"
+echo "Creating a new temporary branch: $tmp_branch..."
+git checkout -b "$tmp_branch" || {
+  echo "Error: Failed to create temporary branch."
+  exit 1
+}
+# Merge the changes from the specified branch into the temporary branch with squash
+echo "Merging changes from origin/$branch into $tmp_branch with squash..."
+git merge --squash "origin/$branch" || {
+  echo "Error: Failed to merge changes from origin/$branch."
+  exit 1
+}
+ 
+# Commit the changes with all the commit messages
+echo "Committing the changes with all commit messages..."
+if [ -n "$commit_messages" ]; then
+  git commit -m "$commit_messages"
+else
+  git commit -m "Merged changes from origin/$branch"
+fi
+# Edit the commit message using jj
+echo "Editing the commit message using jj..."
+jj edit $tmp_branch || {
+  echo "Error: Failed attacj jj to the temporary branch."
+  exit 1
+}
+jj pr || {
+  echo "Error: Failed to create a pull request structured branch."
+  exit 1
+}
+echo "Pull request structured branch created successfully: $tmp_branch."
+# forget the temporary branch
+jj b f "$tmp_branch" || {
+  echo "Error: Failed to forget the temporary branch."
+  exit 1
+}
+""",
+  "$1",
+]
