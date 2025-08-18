@@ -104,7 +104,7 @@ local rules = {
             class = "discord", -- Replace with the actual class name if different
         },
         properties = {
-            screen = 1, -- Adjust if you have multiple screens
+            screen = 2, -- Adjust if you have multiple screens
             tag = "chat", -- The name of the tag (workspace) you want Discord to open in
         },
     },

@@ -375,6 +375,7 @@ keys.globalkeys = gears.table.join(
             "Super_L+Return",
             "Super_L+5",
             "Super_L+b",
+            "Super_L+1",
             "Super_L+2",
         }
 
@@ -409,7 +410,7 @@ keys.globalkeys = gears.table.join(
         end
 
         -- Start the sequence with a delay of 0.2 seconds between each key press
-        simulate_key_sequence(key_sequence, 1, 0.5)
+        simulate_key_sequence(key_sequence, 1, 1)
     end, { description = "macro sequence", group = "custom" }),
     awful.key({ modkey }, "`", function()
         awesome.emit_signal("floating_terminal::toggle")
@@ -432,8 +433,14 @@ keys.globalkeys = gears.table.join(
         awful.spawn(Apps.web_browser)
     end, { description = "web browser", group = "hotkeys" }),
     awful.key({ modkey }, "a", function()
-        awful.spawn(
-            "brave-browser --app=https://web.akiflow.com/#/planner/today"
+        -- awful.spawn(
+        --     "brave-browser --app=https://web.akiflow.com/#/planner/today"
+        -- )
+
+        helpers.focus_or_open(
+            "Akiflow",
+            Apps.web_browser
+                .. " --new-window https://web.akiflow.com/#/planner/today"
         )
     end, {
         description = "open akiflow",
@@ -481,7 +488,10 @@ keys.globalkeys = gears.table.join(
     }),
     awful.key({ modkey }, "i", function()
         if helpers.is_personal_desktop() then
-            awful.spawn("brave-browser --new-window https://app.shortwave.com/")
+            helpers.focus_or_open(
+                "Shortwave",
+                Apps.web_browser .. " --new-window https://app.shortwave.com/"
+            )
         else
             awful.spawn(
                 "brave-browser --new-window https://outlook.office.com/mail/inbox"

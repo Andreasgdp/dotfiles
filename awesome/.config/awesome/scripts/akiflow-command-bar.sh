@@ -1,26 +1,25 @@
 #!/bin/bash
 
-
-# Get window id of akiflow window with name "Akiflow" and class "Brave-browser"
+# Get window id of akiflow window with name "Akiflow" and class of browser
+# NOTE: use xprop to get the class of the browser
 akiflow_window_id=$(comm -12 \
-  <(xdotool search --name  'Akiflow'  | sort) \
-  <(xdotool search --class 'Brave-browser'  | sort))
+  <(xdotool search --name 'Akiflow' | sort) \
+  <(xdotool search --class 'zen' | sort))
 
-
-# If window not open, open it with google-chrome-stable --app=https://web.akiflow.com/#/planner/today and make sure to wait for it to load before focusing it and opening command bar
+# If window not open, open it with <chromium browser> --app=https://web.akiflow.com/#/planner/today and wait for it to load before focusing it and opening command bar
 if [ -z "$akiflow_window_id" ]; then
-    brave-browser --app="https://web.akiflow.com/#/planner/today"
-    sleep 3
-    akiflow_window_id=$(comm -12 \
-      <(xdotool search --name  'Akiflow'  | sort) \
-      <(xdotool search --class 'Brave-browser'  | sort))
+  zen --app="https://web.akiflow.com/#/planner/today"
+  sleep 3
+  akiflow_window_id=$(comm -12 \
+    <(xdotool search --name 'Akiflow — Zen Browser' | sort) \
+    <(xdotool search --class 'zen' | sort))
 fi
 
 # Focus akiflow window
-xdotool windowactivate $akiflow_window_id
+xdotool windowactivate "$akiflow_window_id"
 
 # Wait for window to be focused
 sleep 0.1
 
 # Open command bar with ctrl+k in akiflow window
-xdotool key --window $akiflow_window_id ctrl+alt+k
+xdotool key --window "$akiflow_window_id" ctrl+k
