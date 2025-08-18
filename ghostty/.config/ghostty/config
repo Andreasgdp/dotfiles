@@ -45,11 +45,11 @@
 # Config options
 theme = catppuccin-mocha
 background = #262637
-font-size = 18
+font-size = 15
 initial-command = /bin/zsh -l -c "tmux a || tmux"
 
 # window appearance
-window-decoration = false
+window-decoration = true
 gtk-adwaita = false
 gtk-titlebar = false
 
