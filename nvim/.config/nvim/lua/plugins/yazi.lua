@@ -4,10 +4,6 @@
 ---@type LazySpec
 return {
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    enabled = false,
-  },
-  {
     "mikavilpas/yazi.nvim",
     version = "5.7.0",
     event = "VeryLazy",

@@ -1,6 +1,22 @@
 return {
-  "snacks.nvim",
+  "folke/snacks.nvim",
+  ---@type snacks.Config
   opts = {
-    scroll = { enabled = false },
+    image = {
+      enabled = true,
+    },
+    picker = {
+      sources = {
+        files = {
+          hidden = true,
+        },
+        explorer = {
+          hidden = true,
+        },
+        grep = {
+          hidden = true,
+        },
+      },
+    },
   },
 }

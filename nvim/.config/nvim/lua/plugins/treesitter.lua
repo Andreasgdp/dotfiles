@@ -5,6 +5,7 @@ return {
       ensure_installed = {
         "javascript",
         "typescript",
+        "c_sharp",
         "css",
         "gitignore",
         "graphql",
@@ -14,8 +15,9 @@ return {
         "sql",
         "vim",
         "lua",
-        "rust",
         "prisma",
+        "nu",
+        "groovy",
       },
       query_linter = {
         enable = true,

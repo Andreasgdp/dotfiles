@@ -1,5 +1,5 @@
 -- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/luautochdira/lazyvim/config/options.lua
+-- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
 local opt = vim.opt
@@ -10,14 +10,15 @@ opt.autochdir = false
 opt.wrap = true
 opt.scrolloff = 8
 
-opt.smarttab = true
-opt.breakindent = true
-opt.shiftwidth = 2
-opt.tabstop = 2
+vim.opt.swapfile = false
 
-opt.backspace = { "indent", "eol", "start" }
-opt.path:append("**")
-opt.wildignore:append("*/node_modules/*")
+-- use spaces instead of tabs and set the tab width to 4
+opt.expandtab = true
+opt.tabstop = 4
+
+-- Enable the option to require a Prettier config file
+-- If no prettier config file is found, the formatter will not be used
+vim.g.lazyvim_prettier_needs_config = true
 
 -- disable format on save can format using cf or cF
-vim.g.autoformat = false
+-- vim.g.autoformat = false
