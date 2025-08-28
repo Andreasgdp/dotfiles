@@ -160,16 +160,23 @@ fi
 # This regex captures the first occurrence of a JIRA ticket ID pattern
 ticket_id=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -oE '([A-Z]{2,}-[0-9]+|[A-Z]{2,}[0-9]+)' | head -n 1)
 
-# Format the first line to lowercase, replace spaces with dashes, and remove special characters
-formatted_line=$(echo "$first_line" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
-pr_name="pr/main/${ticket_id}-anpe-${formatted_line}"
+# Extract type and scope from first line
+# type: fix, feat, etc. (before '(' or ':')
+type=$(echo "$first_line" | sed -nE 's/^([a-zA-Z0-9]+)(\\([^)]+\\))?:.*/\\1/p')
+# scope: core, api, etc. (inside parentheses)
+scope=$(echo "$first_line" | sed -nE 's/^[a-zA-Z0-9]+\\(([^)]+)\\):.*/\\1/p')
+if [ -n "$scope" ]; then
+  branch_part="${type}-${scope}"
+else
+  branch_part="${type}"
+fi
+pr_name="pr/main/${ticket_id}-anpe-${branch_part}"
 echo "Setting bookmark to: $pr_name"
-# Set the current bookmark to pr/main/<ticket-id>-anpe-<formatted-line>
 jj bookmark set --revision=@ "$pr_name" || {
   echo "Error: Failed to set bookmark. It might already exist."
   exit 1
 }
-echo "Current bookmark set to pr/main/${ticket_id}-anpe-${formatted_line}."
+echo "Current bookmark set to $pr_name."
 """,
 ]
 
@@ -213,16 +220,23 @@ fi
 # Extract the JIRA ticket ID from the commit message
 # This regex captures the first occurrence of a JIRA ticket ID pattern
 ticket_id=$(jj show -s | grep '^[[:space:]]' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -oE '([A-Z]{2,}-[0-9]+|[A-Z]{2,}[0-9]+)' | head -n 1)
-# Format the first line to lowercase, replace spaces with dashes, and remove special characters
-formatted_line=$(echo "$first_line" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-')
-pr_name="dev/${ticket_id}-anpe-${formatted_line}"
-echo "Setting bookmark to: $pr_name"
-# Set the current bookmark to dev/<ticket-id>-anpe-<formatted-line>
-jj bookmark set --revision=@ "$pr_name" || {
+# Extract type and scope from first line
+# type: fix, feat, etc. (before '(' or ':')
+type=$(echo "$first_line" | sed -nE 's/^([a-zA-Z0-9]+)(\\([^)]+\\))?:.*/\\1/p')
+# scope: core, api, etc. (inside parentheses)
+scope=$(echo "$first_line" | sed -nE 's/^[a-zA-Z0-9]+\\(([^)]+)\\):.*/\\1/p')
+if [ -n "$scope" ]; then
+  branch_part="${type}-${scope}"
+else
+  branch_part="${type}"
+fi
+dev_name="dev/${ticket_id}-anpe-${branch_part}"
+echo "Setting bookmark to: $dev_name"
+jj bookmark set --revision=@ "$dev_name" || {
   echo "Error: Failed to set bookmark. It might already exist."
   exit 1
 }
-echo "Current bookmark set to dev/${ticket_id}-anpe-${formatted_line}."
+echo "Current bookmark set to $dev_name."
 """,
 ]
 
