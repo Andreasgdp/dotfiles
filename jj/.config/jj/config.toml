@@ -8,8 +8,8 @@ conflict-marker-style = "git"
 color = "auto"
 paginate = "auto"
 
-[git]
-push-bookmark-prefix = "anpe/"
+[templates]
+git_push_bookmark = '"anpe/" ++ change_id.short()'
 
 [aliases]
 # Alias to fetch latest changes and then run 'jj new' on the provided argument.
