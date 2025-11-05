@@ -43,14 +43,17 @@
 # resize-overlay-duration = 4s 200ms
 
 # Config options
-theme = catppuccin-mocha
+theme = catppuccin-mocha.conf
 background = #262637
 font-size = 15
 initial-command = /bin/zsh -l -c "tmux a || tmux"
 
+# Enable all bell features
+bell-features = system, audio, attention, title, border
+desktop-notifications = true
+
 # window appearance
 window-decoration = true
-gtk-adwaita = false
 gtk-titlebar = false
 
 window-padding-color = extend
@@ -68,3 +71,5 @@ confirm-close-surface = false
 keybind = option+backspace=csi:117;5u
 # delete whole word
 keybind = ctrl+backspace=csi:119;5u
+
+# custom-shader = /Users/anpe/.config/ghostty/cursor-blaze.glsl

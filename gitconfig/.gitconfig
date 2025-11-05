@@ -1,5 +1,5 @@
 [user]
-  email = andreasgdp@gmail.com
+  email = anpe@universal-robots.com
   name = Andreas Petersen
 
 [core]
@@ -23,6 +23,7 @@
 
 [diff]
   colorMoved = default
+#  algorithm = histogram
 
 [alias]
   s = status
