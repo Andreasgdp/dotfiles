@@ -45,7 +45,9 @@
 # Config options
 theme = catppuccin-mocha.conf
 background = #262637
-font-size = 15
+background-opacity = 0.96
+background-blur-radius = 250
+font-size = 18
 initial-command = /bin/zsh -l -c "tmux a || tmux"
 
 # Enable all bell features

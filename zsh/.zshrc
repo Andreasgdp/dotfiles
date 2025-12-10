@@ -7,7 +7,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 # List of plugins used
-plugins=(nx-completion thefuck colored-man-pages fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(nx-completion colored-man-pages fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 eval "$(starship init zsh)"
@@ -81,50 +81,50 @@ alias cl='clear'
 alias l="eza -l --icons --git -a"
 alias lt="eza --tree --level=2 --long --icons --git"
 
-# Source of custom fzf setup: https://www.josean.com/posts/7-amazing-cli-tools
-# -- Use fd instead of fzf --
-
-export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-
-# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --exclude .git . "$1"
-}
-
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type=d --hidden --exclude .git . "$1"
-}
-
-show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else cat -n --color=always --line-range :500 {}; fi"
-
-export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
-export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
-
-# Advanced customization of fzf options via _fzf_comprun function
-# - The first argument to the function is the name of the command.
-# - You should make sure to pass the rest of the arguments to fzf.
-_fzf_comprun() {
-  local command=$1
-  shift
-
-  case "$command" in
-    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-    export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
-    ssh)          fzf --preview 'dig {}'                   "$@" ;;
-    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
-  esac
-}
-
-# navigation
-cx() { cd "$@" && l; }
-fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
-f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
-fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
+# # Source of custom fzf setup: https://www.josean.com/posts/7-amazing-cli-tools
+# # -- Use fd instead of fzf --
+#
+# export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+#
+# # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+# # - The first argument to the function ($1) is the base path to start traversal
+# # - See the source code (completion.{bash,zsh}) for the details.
+# _fzf_compgen_path() {
+#   fd --hidden --exclude .git . "$1"
+# }
+#
+# # Use fd to generate the list for directory completion
+# _fzf_compgen_dir() {
+#   fd --type=d --hidden --exclude .git . "$1"
+# }
+#
+# show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else cat -n --color=always --line-range :500 {}; fi"
+#
+# export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+# export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+#
+# # Advanced customization of fzf options via _fzf_comprun function
+# # - The first argument to the function is the name of the command.
+# # - You should make sure to pass the rest of the arguments to fzf.
+# _fzf_comprun() {
+#   local command=$1
+#   shift
+#
+#   case "$command" in
+#     cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+#     export|unset) fzf --preview "eval 'echo ${}'"         "$@" ;;
+#     ssh)          fzf --preview 'dig {}'                   "$@" ;;
+#     *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+#   esac
+# }
+#
+# # navigation
+# cx() { cd "$@" && l; }
+# fcd() { cd "$(find . -type d -not -path '*/.*' | fzf)" && l; }
+# f() { echo "$(find . -type f -not -path '*/.*' | fzf)" | pbcopy }
+# fv() { nvim "$(find . -type f -not -path '*/.*' | fzf)" }
 
 
 alias t='tmux attach'
@@ -191,20 +191,14 @@ alias h="hx"
 
 alias ssh="TERM=xterm-256color ssh"
 
-apt() { 
-  command nala "$@"
-}
-sudo() {
-  if [ "$1" = "apt" ]; then
-    shift
-    command sudo nala "$@"
-  else
-    command sudo "$@"
-  fi
-}
-
 alias jjlog="watch -n 1 -c \"jj --color=always --ignore-working-copy\""
 alias jjs="jj show"
+jjl() {
+  jj -r 'all()' --limit "${1:-100}" --color=always
+}
+jjtouch() {
+  jj touch -r "${1}-..@"
+}
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -214,13 +208,13 @@ fpath=(/Users/anpe/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
-if [[ -o interactive ]]; then
-    fastfetch
-fi
+# if [[ -o interactive ]]; then
+#     fastfetch
+# fi
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 alias readlink=greadlink
 
-source ~/.oh-my-zsh/custom/plugins/nx-completion/nx-completion.plugin.zsh
+# source ~/.oh-my-zsh/custom/plugins/nx-completion/nx-completion.plugin.zsh
 
 # --- Long-running command notification (added by opencode) ---
 # Notifies if a command takes longer than 2 seconds to run

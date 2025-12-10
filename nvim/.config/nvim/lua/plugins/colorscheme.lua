@@ -1,99 +1,68 @@
 return {
   {
     "catppuccin/nvim",
+    lazy = false, -- Keep this as default theme
     name = "catppuccin",
-    opts = {
-      term_colors = true,
-      transparent_background = false,
-      dim_inactive = {
-        enabled = true,
-        shade = "dark",
-        percentage = 0,
-      },
-      styles = {
-        comments = {},
-        conditionals = {},
-        loops = {},
-        functions = {},
-        keywords = {},
-        strings = {},
-        variables = {},
-        numbers = {},
-        booleans = {},
-        properties = {},
-        types = {},
-      },
-      integrations = {
-        aerial = true,
-        cmp = true,
-        dashboard = true,
-        flash = true,
-        gitsigns = true,
-        headlines = true,
-        illuminate = true,
-        indent_blankline = { enabled = true },
-        leap = true,
-        lsp_trouble = true,
-        mason = true,
-        markdown = true,
-        mini = true,
-        native_lsp = {
-          enabled = true,
-          underlines = {
-            errors = { "undercurl" },
-            hints = { "undercurl" },
-            warnings = { "undercurl" },
-            information = { "undercurl" },
+    priority = 1000,
+
+    config = function()
+      local transparent = true -- Set to false to disable transparency
+
+      require("catppuccin").setup({
+        transparent_background = transparent,
+        integrations = {
+          cmp = true,
+          gitsigns = true,
+          nvimtree = true,
+          treesitter = true,
+          notify = false,
+          mini = {
+            enabled = true,
+            indentscope_color = "",
+          },
+          snacks = true,
+          which_key = true,
+          fidget = true,
+          mason = true,
+          native_lsp = {
+            enabled = true,
+            virtual_text = {
+              errors = { "italic" },
+              hints = { "italic" },
+              warnings = { "italic" },
+              information = { "italic" },
+            },
+            underlines = {
+              errors = { "underline" },
+              hints = { "underline" },
+              warnings = { "underline" },
+              information = { "underline" },
+            },
           },
         },
-        navic = { enabled = true, custom_bg = "lualine" },
-        neotest = true,
-        neotree = true,
-        noice = true,
-        notify = true,
-        semantic_tokens = true,
-        telescope = true,
-        treesitter = true,
-        treesitter_context = true,
-        which_key = true,
-      },
-      custom_highlights = function(C)
-        return {
-          CmpItemKindSnippet = { fg = C.base, bg = C.mauve },
-          CmpItemKindKeyword = { fg = C.base, bg = C.red },
-          CmpItemKindText = { fg = C.base, bg = C.teal },
-          CmpItemKindMethod = { fg = C.base, bg = C.blue },
-          CmpItemKindConstructor = { fg = C.base, bg = C.blue },
-          CmpItemKindFunction = { fg = C.base, bg = C.blue },
-          CmpItemKindFolder = { fg = C.base, bg = C.blue },
-          CmpItemKindModule = { fg = C.base, bg = C.blue },
-          CmpItemKindConstant = { fg = C.base, bg = C.peach },
-          CmpItemKindField = { fg = C.base, bg = C.green },
-          CmpItemKindProperty = { fg = C.base, bg = C.green },
-          CmpItemKindEnum = { fg = C.base, bg = C.green },
-          CmpItemKindUnit = { fg = C.base, bg = C.green },
-          CmpItemKindClass = { fg = C.base, bg = C.yellow },
-          CmpItemKindVariable = { fg = C.base, bg = C.flamingo },
-          CmpItemKindFile = { fg = C.base, bg = C.blue },
-          CmpItemKindInterface = { fg = C.base, bg = C.yellow },
-          CmpItemKindColor = { fg = C.base, bg = C.red },
-          CmpItemKindReference = { fg = C.base, bg = C.red },
-          CmpItemKindEnumMember = { fg = C.base, bg = C.red },
-          CmpItemKindStruct = { fg = C.base, bg = C.blue },
-          CmpItemKindValue = { fg = C.base, bg = C.peach },
-          CmpItemKindEvent = { fg = C.base, bg = C.blue },
-          CmpItemKindOperator = { fg = C.base, bg = C.blue },
-          CmpItemKindTypeParameter = { fg = C.base, bg = C.blue },
-          CmpItemKindCopilot = { fg = C.base, bg = C.teal },
-          GitSignsCurrentLineBlame = { fg = "#565a6d", bg = "#16171f" },
-        }
-      end,
-    },
-  },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "catppuccin",
-    },
+        custom_highlights = function(colors)
+          if not transparent then
+            return {}
+          end
+          return {
+            -- Make these backgrounds transparent
+            -- You can add more if you find other plugins that need it
+            -- You can also disable transparency for specific plugins here
+            NormalFloat = { bg = colors.none },
+            FloatBorder = { bg = colors.none },
+            TelescopeNormal = { bg = colors.none },
+            TelescopeBorder = { bg = colors.none },
+            NvimTreeNormal = { bg = colors.none },
+            NvimTreeNormalNC = { bg = colors.none },
+            SnacksNormal = { bg = colors.none },
+            SnacksDashboardNormal = { bg = colors.none },
+            WhichKeyFloat = { bg = colors.none },
+            LspInfoBorder = { bg = colors.none },
+            BufferLineFill = { bg = colors.none },
+          }
+        end,
+      })
+      vim.cmd.colorscheme("catppuccin-mocha")
+    end,
   },
 }

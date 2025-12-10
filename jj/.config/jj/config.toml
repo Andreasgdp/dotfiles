@@ -26,6 +26,9 @@ merge-tool-edits-conflict-markers = true
 git_push_bookmark = '"anpe/" ++ change_id.short()'
 
 [aliases]
+# Updates the date of the current revision to 'now'
+touch = ["describe", "--reset-author", "--no-edit"]
+
 # Alias to fetch latest changes and then run 'jj new' on the provided argument.
 # Usage: jj switch <branch>
 # e.g., jj switch main@origin
