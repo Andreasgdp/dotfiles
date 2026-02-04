@@ -4,15 +4,21 @@ add_newline = true
 
 command_timeout = 2000
 
+# Setup for git before if needed if jj setup is not enough
+# $git_branch\
+# $git_commit\
+# $git_status\
+# $git_metrics\
+# $git_state\
+
+
 format = """
 $os\
 $username\
 $directory\
+${custom.jj}\
 $git_branch\
 $git_commit\
-$git_status\
-$git_metrics\
-$git_state\
 $dotnet\
 $c\
 $rust\
@@ -143,6 +149,14 @@ truncation_length = 0
 truncate_to_repo = true
 fish_style_pwd_dir_length = 0
 use_logical_path = true
+
+[custom.jj]
+command = "prompt"
+format = "$output"
+ignore_timeout = true
+shell = ["starship-jj", "--ignore-working-copy", "starship"]
+use_stdin = false
+when = true
 
 [git_branch]
 symbol = ""

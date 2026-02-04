@@ -46,8 +46,12 @@
 theme = catppuccin-mocha.conf
 background = #262637
 background-opacity = 0.90
+background-blur = true
+# Dim the text of inactive panes (0.0 to 1.0)
+# This fades the text colors without touching the background
+unfocused-split-opacity = 0.7
 background-blur-radius = 250
-font-size = 18
+font-size = 12
 initial-command = /bin/zsh -l -c "tmux a || tmux"
 
 # Enable all bell features

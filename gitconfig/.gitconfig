@@ -23,7 +23,7 @@
 
 [diff]
   colorMoved = default
-#  algorithm = histogram
+  algorithm = histogram
 
 [alias]
   s = status
