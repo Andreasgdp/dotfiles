@@ -34,3 +34,13 @@ vim.api.nvim_create_autocmd({ "InsertEnter" }, {
     end, 100)
   end,
 })
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "JJDiffConflicts", -- The plugin triggers this user event
+  callback = function()
+    -- This disables auto-format on save for the current buffer
+    vim.b.autoformat = false
+    -- Optional: Disable diagnostics to clear up the UI noise
+    vim.diagnostic.disable(0)
+  end,
+})

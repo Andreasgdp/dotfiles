@@ -1,0 +1,90 @@
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+[revset-aliases]
+"trunk()" = "master@origin"
+
+[aliases]
+check = ["util", "exec", "--", "bash", "-c", """
+#!/usr/bin/env bash
+set -euo pipefail
+echo "Running jj fix (Prettier)..."
+jj fix
+
+echo "Running ESLint, TypeScript check, and tests in parallel..."
+
+GREEN=$(tput setaf 2 2>/dev/null || true)
+RED=$(tput setaf 1 2>/dev/null || true)
+RESET=$(tput sgr0 2>/dev/null || true)
+
+LOG0=$(mktemp); LOG1=$(mktemp); LOG2=$(mktemp)
+
+FORCE_COLOR=1 npm run test-js -- frontend/scripts/insurance --colors >"$LOG0" 2>&1 &
+PID0=$!
+FORCE_COLOR=1 npm run lint -- --quiet --color >"$LOG1" 2>&1 &
+PID1=$!
+npm run typecheck >"$LOG2" 2>&1 &
+PID2=$!
+
+PIDS=($PID0 $PID1 $PID2)
+LOGS=($LOG0 $LOG1 $LOG2)
+LABELS=("Tests" "ESLint" "Typecheck")
+DONE=(0 0 0)
+PASS=(0 0 0)
+
+frames='⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+frame=0
+
+printf "  ...  Tests\n"
+printf "  ...  ESLint\n"
+printf "  ...  Typecheck\n"
+
+while true; do
+  tput cuu1; tput cuu1; tput cuu1
+
+  all_done=1
+  for i in 0 1 2; do
+    tput el
+    if [ "${DONE[$i]}" -eq 0 ]; then
+      if ! kill -0 "${PIDS[$i]}" 2>/dev/null; then
+        DONE[$i]=1
+        if wait "${PIDS[$i]}"; then PASS[$i]=1; fi
+      else
+        all_done=0
+      fi
+    fi
+    f="${frames:$((frame % ${#frames})):1}"
+    if   [ "${DONE[$i]}" -eq 0 ]; then printf "  %s  %s...\n" "$f" "${LABELS[$i]}"
+    elif [ "${PASS[$i]}" -eq 1 ]; then printf "  %s%s%s  %s\n" "$GREEN" "✔" "$RESET" "${LABELS[$i]}"
+    else                                printf "  %s%s%s  %s\n" "$RED"   "✘" "$RESET" "${LABELS[$i]}"
+    fi
+  done
+
+  [ "$all_done" -eq 1 ] && break
+  frame=$((frame + 1))
+  sleep 0.1
+done
+
+FAIL=0
+for i in 0 1 2; do
+  if [ "${PASS[$i]}" -eq 0 ]; then
+    printf "\n--- %s output ---\n" "${LABELS[$i]}"
+    cat "${LOGS[$i]}"
+    FAIL=1
+  fi
+  rm -f "${LOGS[$i]}"
+done
+
+[ $FAIL -eq 0 ] && echo "All checks passed." || exit 1
+"""]
+
+[fix.tools.prettier]
+command = ["node_modules/.bin/prettier", "--stdin-filepath=$path"]
+patterns = [
+  "glob:'**/*.ts'",
+  "glob:'**/*.tsx'",
+  "glob:'**/*.js'",
+  "glob:'**/*.jsx'",
+  "glob:'**/*.scss'",
+  "glob:'**/*.css'",
+  "glob:'**/*.json'",
+]

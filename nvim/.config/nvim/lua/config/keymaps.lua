@@ -34,3 +34,6 @@ map("n", "<leader>gd", function()
     vim.cmd("DiffviewClose")
   end
 end, { silent = true, remap = true, desc = "Neogit Diff" })
+
+-- Text Formatting
+map("x", "<leader>gq", "gq", { desc = "Format to textwidth" })

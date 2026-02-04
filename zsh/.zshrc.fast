@@ -14,10 +14,8 @@ _lazy_load() {
   local cmd=$1
   local init_cmd="$2"
   eval "$init_cmd"
-  if declare -f "$cmd" >/dev/null; then
-    unfunction "$cmd"
-  fi
-  command "$cmd" "$@"
+  unfunction "$cmd"
+  $cmd "$@"
 }
 
 # Basic aliases that are always available
@@ -35,7 +33,6 @@ alias vi='nvim'
 alias v='nvim'
 alias h='hx'
 alias ssh="TERM=xterm-256color ssh"
-# zoxide replaces cd (set up above)
 
 # Tool aliases (lazy load)
 alias cat='bat'
@@ -57,9 +54,6 @@ alias dclean='dka && dca && dprune'
 # JJ aliases
 alias jjlog="watch -n 1 -c \"jj --color=always --ignore-working-copy\""
 alias jjs="jj show"
-alias jjc="jj check"
-alias jjfetch="jj git fetch"
-alias jjnew="jj new"
 jjl() {
   jj -r 'all()' --limit "${1:-100}" --color=always
 }
@@ -67,23 +61,20 @@ jjtouch() {
   jj touch -r "${1}-..@"
 }
 
-#claude
-alias claudesession="claude -r"
-
 # Kitty alias
 alias d="kitten diff"
 
 # Environment variables for tools
 export BAT_THEME="Catppuccin Mocha"
 export PYENV_ROOT="$HOME/.pyenv"
-# export N_PREFIX="$HOME/n"
+export N_PREFIX="$HOME/n"
 export SDKMAN_DIR="$HOME/.sdkman"
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
-# setup pyenv
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-eval "$(pyenv init - zsh)"
 
+# Lazy load pyenv
+pyenv() {
+  _lazy_load pyenv '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$(pyenv init - zsh)"'
+}
 
 # Lazy load starship
 starship_prompt() {
@@ -96,12 +87,25 @@ precmd() {
   unfunction precmd
 }
 
-# direnv and atuin are already initialized above
+# Lazy load direnv
+direnv() {
+  _lazy_load direnv 'eval "$(direnv hook zsh)"'
+}
 
-# Initialize zoxide for smarter cd
-eval "$(zoxide init zsh)"
-alias cd='z'
+# Lazy load atuin
+atuin() {
+  _lazy_load atuin 'eval "$(atuin init zsh)"'
+}
 
+# Lazy load zoxide with cd alias
+z() {
+  _lazy_load z 'eval "$(zoxide init zsh)" && alias cd=z'
+}
+
+# Lazy load n (node version manager)
+n() {
+  _lazy_load n '[[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"'
+}
 
 # Lazy load RVM
 rvm() {
@@ -113,24 +117,14 @@ sdk() {
   _lazy_load sdk '[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"'
 }
 
-# load Rust environment
-path+=('/home/anpe/.cargo/bin')
-export PATH="$HOME/.cargo/bin:$PATH"
-. "$HOME/.cargo/env"
-
-# Initialize shell hooks that must run immediately
-eval "$(direnv hook zsh)"
-eval "$(atuin init zsh)"
-
-# Load ZSH plugins directly (faster than Oh-my-zsh)
-source /Users/anpe/dotfiles/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
-source /Users/anpe/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /Users/anpe/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Lazy load Rust environment
+cargo() {
+  _lazy_load cargo '. "$HOME/.cargo/env"'
+}
 
 # Minimal ZSH setup for speed
 autoload -Uz compinit
-fpath=(/Users/anpe/.docker/completions /Users/anpe/dotfiles/zsh/plugins/fzf-tab $fpath)
-# export PATH="$N_PREFIX/bin:$PATH"
+fpath=(/Users/anpe/.docker/completions $fpath)
 
 # Only run compinit once a day
 if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null || echo 0) ]; then
@@ -147,8 +141,3 @@ bindkey "^[[4~" end-of-line
 
 # Readlink alias
 alias readlink=greadlink
- 
-# Force 'n' to the front of the PATH
-export N_PREFIX="$HOME/n"
-# This removes any existing n/bin from PATH and re-inserts it at the very start
-export PATH="$N_PREFIX/bin:${PATH//"$N_PREFIX/bin:"/}"
