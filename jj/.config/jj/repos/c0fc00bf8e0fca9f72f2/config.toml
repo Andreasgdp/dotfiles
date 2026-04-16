@@ -1,8 +1,0 @@
-#:schema https://docs.jj-vcs.dev/latest/config-schema.json
-
-[revset-aliases]
-"trunk()" = "qa@origin"
-
-[fix.tools.black]
-command = ["/Users/anpe/work/ff-insurance-backend/.venv/bin/black", "-", "--stdin-filename=$path"]
-patterns = ["glob:'**/*.py'"]

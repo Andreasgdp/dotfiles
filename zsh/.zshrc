@@ -1,154 +1,208 @@
-# Fast .zshrc - Lazy loading for speed
+# Fast .zshrc without oh-my-zsh
 
-# Set up basic environment first
 export LANG=en_US.UTF-8
 export EDITOR=nvim
+export BAT_THEME="Catppuccin Mocha"
+export PYENV_ROOT="$HOME/.pyenv"
+export SDKMAN_DIR="$HOME/.sdkman"
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+export N_PREFIX="$HOME/n"
 
-# PATH setup
-export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="$PATH:/opt/nvim-linux64/bin:/usr/local/bin:/usr/local/share:/usr/bin:/bin:/usr/sbin:/sbin:/snap/bin:/Users/anpe/.local/bin:/home/anpe/dotfiles/localbin/.local/bin:/home/anpe/.cargo/bin"
-export PATH="$PATH:$HOME/.rvm/bin"
+typeset -U path fpath
 
-# Lazy loading helper
+path=(
+  "$N_PREFIX/bin"
+  "$HOME/.cargo/bin"
+  "$HOME/.local/bin"
+  "$HOME/dotfiles/localbin/.local/bin"
+  /opt/nvim-linux64/bin
+  /usr/local/bin
+  /usr/local/share
+  /usr/bin
+  /bin
+  /usr/sbin
+  /sbin
+  /snap/bin
+  $path
+)
+
+[[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]] && path=(/opt/homebrew/opt/coreutils/libexec/gnubin $path)
+[[ -d "$PYENV_ROOT/bin" ]] && path=("$PYENV_ROOT/bin" $path)
+[[ -d "$HOME/.rvm/bin" ]] && path+=("$HOME/.rvm/bin")
+
 _lazy_load() {
   local cmd=$1
   local init_cmd="$2"
+
   eval "$init_cmd"
-  if declare -f "$cmd" >/dev/null; then
-    unfunction "$cmd"
-  fi
+  (( $+functions[$cmd] )) && unfunction "$cmd"
   command "$cmd" "$@"
 }
 
-# Basic aliases that are always available
+_source_first() {
+  local candidate
+
+  for candidate in "$@"; do
+    if [[ -r "$candidate" ]]; then
+      source "$candidate"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+_add_fpath_if_dir() {
+  [[ -d "$1" ]] && fpath=("$1" $fpath)
+}
+
 alias c='clear'
 alias cl='clear'
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 alias mkdir='mkdir -p'
 alias rmrf='rm -rf'
 alias vim='nvim'
 alias vi='nvim'
 alias v='nvim'
 alias h='hx'
-alias ssh="TERM=xterm-256color ssh"
-# zoxide replaces cd (set up above)
+alias ssh='TERM=xterm-256color ssh'
 
-# Tool aliases (lazy load)
 alias cat='bat'
 alias l='eza -lh --icons=auto'
 alias ls='eza -1 --icons=auto'
 alias ll='eza -lha --icons=auto --sort=name --group-directories-first'
 alias ld='eza -lhD --icons=auto'
-alias lt="eza --tree --level=2 --long --icons --git"
+alias lt='eza --tree --level=2 --long --icons --git'
 alias lg='lazygit'
 alias ldocker='lazydocker'
 alias f='fastfetch'
 
-# Docker aliases
 alias dka='docker kill $(docker ps -q)'
 alias dca='docker rm $(docker ps -a -q)'
 alias dprune='docker system prune -af --volumes'
 alias dclean='dka && dca && dprune'
 
-# JJ aliases
-alias jjlog="watch -n 1 -c \"jj --color=always --ignore-working-copy\""
-alias jjs="jj show"
-alias jjc="jj check"
-alias jjfetch="jj git fetch"
-alias jjnew="jj new"
+alias jjlog='watch -n 1 -c "jj --color=always --ignore-working-copy"'
+alias jjs='jj show'
+alias jjc='jj check'
+alias jjfetch='jj git fetch'
+alias jjnew='jj new'
+
 jjl() {
   jj -r 'all()' --limit "${1:-100}" --color=always
 }
+
 jjtouch() {
   jj touch -r "${1}-..@"
 }
 
-#claude
-alias claudesession="claude -r"
+alias claudesession='claude -r'
 
-# Kitty alias
-alias d="kitten diff"
+if command -v kitten >/dev/null 2>&1; then
+  alias d='kitten diff'
+fi
 
-# Environment variables for tools
-export BAT_THEME="Catppuccin Mocha"
-export PYENV_ROOT="$HOME/.pyenv"
-# export N_PREFIX="$HOME/n"
-export SDKMAN_DIR="$HOME/.sdkman"
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
-# setup pyenv
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-eval "$(pyenv init - zsh)"
+if command -v greadlink >/dev/null 2>&1; then
+  alias readlink='greadlink'
+fi
 
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
 
-# Lazy load starship
-starship_prompt() {
+if command -v atuin >/dev/null 2>&1; then
+  eval "$(atuin init zsh)"
+fi
+
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+  alias cd='z'
+fi
+
+pyenv() {
+  _lazy_load pyenv '[[ -x "$PYENV_ROOT/bin/pyenv" ]] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$("$PYENV_ROOT/bin/pyenv" init - zsh)"'
+}
+
+rvm() {
+  _lazy_load rvm '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"'
+}
+
+sdk() {
+  _lazy_load sdk '[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"'
+}
+
+starship_precmd() {
   if command -v starship >/dev/null 2>&1; then
     eval "$(starship init zsh)"
   fi
-}
-precmd() {
-  starship_prompt
-  unfunction precmd
-}
 
-# direnv and atuin are already initialized above
-
-# Initialize zoxide for smarter cd
-eval "$(zoxide init zsh)"
-alias cd='z'
-
-
-# Lazy load RVM
-rvm() {
-  _lazy_load rvm '[[ -s "$HOME/.rvm/bin/sdkman-init.sh" ]] && source "$HOME/.rvm/bin/rvm"'
+  unfunction starship_precmd
+  precmd_functions=(${precmd_functions:#starship_precmd})
 }
 
-# Lazy load SDKMAN
-sdk() {
-  _lazy_load sdk '[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"'
-}
+precmd_functions+=(starship_precmd)
 
-# load Rust environment
-path+=('/home/anpe/.cargo/bin')
-export PATH="$HOME/.cargo/bin:$PATH"
-. "$HOME/.cargo/env"
+autoload -Uz compinit up-line-or-beginning-search down-line-or-beginning-search
+zmodload -F zsh/stat b:zstat 2>/dev/null
 
-# Initialize shell hooks that must run immediately
-eval "$(direnv hook zsh)"
-eval "$(atuin init zsh)"
+command mkdir -p "$HOME/.zsh/cache"
 
-# Load ZSH plugins directly (faster than Oh-my-zsh)
-source /Users/anpe/dotfiles/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
-source /Users/anpe/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /Users/anpe/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+_add_fpath_if_dir "$HOME/.docker/completions"
+_add_fpath_if_dir "$HOME/dotfiles/zsh/plugins/fzf-tab"
+_add_fpath_if_dir /usr/share/zsh/plugins/fzf-tab
 
-# Minimal ZSH setup for speed
-autoload -Uz compinit
-fpath=(/Users/anpe/.docker/completions /Users/anpe/dotfiles/zsh/plugins/fzf-tab $fpath)
-# export PATH="$N_PREFIX/bin:$PATH"
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path "$HOME/.zsh/cache"
 
-# Only run compinit once a day
-if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump 2>/dev/null || echo 0) ]; then
-  compinit
-else
-  compinit -C
+zcompdump_file="${ZDOTDIR:-$HOME}/.zcompdump"
+zcompdump_mtime=0
+
+if [[ -s "$zcompdump_file" ]]; then
+  zstat -A zcompdump_stat +mtime -- "$zcompdump_file" 2>/dev/null || zcompdump_stat=()
+  (( ${#zcompdump_stat} )) && zcompdump_mtime=$zcompdump_stat[1]
 fi
 
-# Basic key bindings
-bindkey "^[[H" beginning-of-line
-bindkey "^[[F" end-of-line
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
+if (( EPOCHSECONDS - zcompdump_mtime > 86400 )); then
+  compinit -d "$zcompdump_file"
+else
+  compinit -C -d "$zcompdump_file"
+fi
 
-# Readlink alias
-alias readlink=greadlink
- 
-# Force 'n' to the front of the PATH
-export N_PREFIX="$HOME/n"
-# This removes any existing n/bin from PATH and re-inserts it at the very start
-export PATH="$N_PREFIX/bin:${PATH//"$N_PREFIX/bin:"/}"
+_source_first \
+  /usr/share/fzf/key-bindings.zsh \
+  /usr/local/share/fzf/key-bindings.zsh \
+  "$HOME/.fzf/shell/key-bindings.zsh"
+
+_source_first \
+  /usr/share/fzf/completion.zsh \
+  /usr/local/share/fzf/completion.zsh \
+  "$HOME/.fzf/shell/completion.zsh"
+
+_source_first \
+  "$HOME/dotfiles/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh" \
+  /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh \
+  /usr/share/fzf-tab/fzf-tab.plugin.zsh
+
+_source_first \
+  "$HOME/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" \
+  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+_source_first \
+  "$HOME/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+  /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search

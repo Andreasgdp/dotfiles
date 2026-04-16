@@ -1,2 +1,5 @@
 localbin/.local/bin/pypeek-gui
 localbin/.local/bin/pypeek
+.DS_Store
+**/.DS_Store
+jj/.config/jj/repos/
