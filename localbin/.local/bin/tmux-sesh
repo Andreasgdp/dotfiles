@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+self=${BASH_SOURCE[0]}
+script_dir=$(dirname "$self")
+
+list_entries() {
+	local mode=${1:-all}
+
+	case "$mode" in
+	all)
+		sesh list -j | jq -r '.[] | if .Src == "tmux" or .Src == "config" or .Src == "tmuxinator" then ["session", .Name, .Src + "  " + .Name] else ["dir", .Path, "dir    " + .Name] end | @tsv'
+		;;
+	tmux)
+		sesh list -t -j | jq -r '.[] | ["session", .Name, "tmux   " + .Name] | @tsv'
+		;;
+	config)
+		sesh list -c -j | jq -r '.[]? | ["session", .Name, "config " + .Name] | @tsv'
+		;;
+	zoxide)
+		sesh list -z -j | jq -r '.[] | ["dir", .Path, "dir    " + .Name] | @tsv'
+		;;
+	find)
+		fd -H -d 2 -t d -E .Trash . ~ | while IFS= read -r path; do
+			printf 'dir\t%s\tfind   %s\n' "$path" "$path"
+		done
+		;;
+	esac
+}
+
+connect_selection() {
+	local selection=$1
+	local kind value
+
+	IFS=$'\t' read -r kind value _ <<< "$selection"
+
+	if [[ $kind == "session" ]]; then
+		sesh connect "$value"
+	else
+		"$script_dir/tmux-sessionizer" "$value"
+	fi
+}
+
+preview_selection() {
+	local selection=$1
+	local kind value
+
+	IFS=$'\t' read -r kind value _ <<< "$selection"
+	sesh preview "$value"
+}
+
+kill_selection() {
+	local selection=$1
+	local kind value
+
+	IFS=$'\t' read -r kind value _ <<< "$selection"
+
+	if [[ $kind == "session" ]]; then
+		tmux kill-session -t "$value"
+	fi
+}
+
+picker() {
+	local selected
+
+	selected="$(
+		list_entries all | fzf-tmux -p 80%,70% \
+			--delimiter=$'\t' --with-nth=3 \
+			--no-sort --border-label ' sesh ' --prompt '⚡  ' \
+			--header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
+			--bind 'tab:down,btab:up' \
+			--bind "ctrl-a:change-prompt(⚡  )+reload($self list all)" \
+			--bind "ctrl-t:change-prompt(🪟  )+reload($self list tmux)" \
+			--bind "ctrl-g:change-prompt(⚙️  )+reload($self list config)" \
+			--bind "ctrl-x:change-prompt(📁  )+reload($self list zoxide)" \
+			--bind "ctrl-f:change-prompt(🔎  )+reload($self list find)" \
+			--bind "ctrl-d:execute-silent($self kill-line {})+change-prompt(⚡  )+reload($self list all)" \
+			--preview-window 'right:55%' \
+			--preview "$self preview-line {}"
+	)"
+
+	[[ -n $selected ]] || exit 0
+	connect_selection "$selected"
+}
+
+preview_entry() {
+	local _kind=$1
+	local value=$2
+
+	sesh preview "$value"
+}
+
+kill_entry() {
+	local kind=$1
+	local value=$2
+
+	if [[ $kind == "session" ]]; then
+		tmux kill-session -t "$value"
+	fi
+}
+
+case ${1:-} in
+	picker)
+		picker
+		;;
+	list)
+		list_entries "${2:-all}"
+		;;
+	connect)
+		connect_selection "$2"
+		;;
+	connect-line)
+		connect_selection "$2"
+		;;
+	preview-line)
+		preview_selection "$2"
+		;;
+	kill-line)
+		kill_selection "$2"
+		;;
+	preview)
+		preview_entry "$2" "$3"
+		;;
+	kill)
+		kill_entry "$2" "$3"
+		;;
+	*)
+		exit 1
+		;;
+esac
