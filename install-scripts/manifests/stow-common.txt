@@ -12,6 +12,7 @@ jj
 lazygit
 localbin
 nvim
+sesh
 starship
 tmux
 yazi
