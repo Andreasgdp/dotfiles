@@ -124,5 +124,13 @@ if confirm "Sync dotfile packages with GNU Stow?" "Y"; then
   "$DOTFILES_ROOT/install-scripts/sync-dotfiles.sh"
 fi
 
+case $platform in
+  linux-omarchy|linux)
+    if confirm "Install TESmart KVM suspend-on-power-off rule?" "N"; then
+      "$DOTFILES_ROOT/install-scripts/install-kvm-suspend-rule.sh"
+    fi
+    ;;
+esac
+
 say ""
 say "Bootstrap complete."

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+LOGGER="/usr/bin/logger"
+SYSTEMCTL="/usr/bin/systemctl"
+
+$LOGGER -t kvm-suspend "Suspending after TESmart KVM power-off"
+exec $SYSTEMCTL suspend

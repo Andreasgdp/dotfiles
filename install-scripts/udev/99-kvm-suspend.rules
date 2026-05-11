@@ -1,0 +1,1 @@
+ACTION=="remove", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ENV{PRODUCT}=="1a86/e010/*", RUN+="/usr/bin/systemd-run --quiet --no-block /usr/local/bin/kvm-suspend-on-poweroff"
