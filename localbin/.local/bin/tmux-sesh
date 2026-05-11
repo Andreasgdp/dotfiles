@@ -71,7 +71,7 @@ kill_selection() {
 picker() {
 	local selected
 
-	selected="$(
+	if ! selected="$(
 		list_entries all | fzf-tmux -p 80%,70% \
 			--delimiter=$'\t' --with-nth=3 \
 			--no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
@@ -85,7 +85,9 @@ picker() {
 			--bind "ctrl-d:execute-silent($self kill-line {})+change-prompt(⚡  )+reload($self list all)" \
 			--preview-window 'right:55%' \
 			--preview "$self preview-line {}"
-	)"
+	)"; then
+		exit 0
+	fi
 
 	[[ -n $selected ]] || exit 0
 	connect_selection "$selected"
