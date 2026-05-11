@@ -68,7 +68,6 @@ alias rmrf='rm -rf'
 alias vim='nvim'
 alias vi='nvim'
 alias v='nvim'
-alias h='hx'
 alias ssh='TERM=xterm-256color ssh'
 
 alias cat='bat'
@@ -101,6 +100,10 @@ jjtouch() {
 }
 
 alias claudesession='claude -r'
+
+if command -v hx >/dev/null 2>&1; then
+  alias h='hx'
+fi
 
 if command -v kitten >/dev/null 2>&1; then
   alias d='kitten diff'
@@ -195,6 +198,20 @@ _source_first \
   /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
   /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
+history_search_up_widget='up-line-or-beginning-search'
+history_search_down_widget='down-line-or-beginning-search'
+
+if _source_first \
+  "$HOME/dotfiles/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" \
+  /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh \
+  /usr/share/zsh-history-substring-search/zsh-history-substring-search.zsh; then
+  history_search_up_widget='history-substring-search-up'
+  history_search_down_widget='history-substring-search-down'
+else
+  zle -N up-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+fi
+
 _source_first \
   "$HOME/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
   /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
@@ -204,5 +221,5 @@ bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[1~' beginning-of-line
 bindkey '^[[4~' end-of-line
-bindkey '^[[A' up-line-or-beginning-search
-bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[[A' "$history_search_up_widget"
+bindkey '^[[B' "$history_search_down_widget"

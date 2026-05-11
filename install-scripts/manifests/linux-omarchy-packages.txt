@@ -26,6 +26,7 @@ mako
 nautilus
 neovim
 obsidian
+ripgrep
 signal-desktop
 spotify
 starship
@@ -36,3 +37,8 @@ tmux
 typora
 yazi
 zoxide
+zsh
+zsh-autosuggestions
+zsh-completions
+zsh-history-substring-search
+zsh-syntax-highlighting
