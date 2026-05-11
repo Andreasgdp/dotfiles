@@ -13,8 +13,22 @@
 - Detects `linux-omarchy` or `macos`
 - Ensures the package manager prerequisites are available
 - Offers interactive SSH setup
-- Reviews packages one by one before installing them
+- Reviews repo packages, AUR packages, and Flatpak apps one by one before installing them
 - Offers interactive `stow` syncing for the dotfile packages
+
+## Linux manifest layout
+
+Use these files as the source of truth for Linux setup:
+
+- `install-scripts/manifests/linux-omarchy-packages.txt`: packages installed from the main Omarchy/pacman repos
+- `install-scripts/manifests/linux-omarchy-aur-packages.txt`: packages installed from AUR
+- `install-scripts/manifests/linux-flatpak-apps.txt`: Flatpak apps installed from Flathub
+
+Rule of thumb:
+
+- command line tools and desktop packages from pacman go in `linux-omarchy-packages.txt`
+- AUR-only packages go in `linux-omarchy-aur-packages.txt`
+- Flatpak app IDs go in `linux-flatpak-apps.txt`
 
 ## Sync strategy
 

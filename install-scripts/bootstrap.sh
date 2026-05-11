@@ -30,6 +30,35 @@ linux_install_manifest() {
   done < <(read_manifest "$manifest")
 }
 
+flatpak_install_manifest() {
+  local title=$1
+  local manifest=$2
+  local app
+
+  command_exists flatpak || {
+    say ""
+    say "$title"
+    say "  - flatpak is not installed; skipping Flatpak apps"
+    return
+  }
+
+  say ""
+  say "$title"
+
+  while IFS= read -r app; do
+    if flatpak info "$app" >/dev/null 2>&1; then
+      say "  - $app (installed)"
+      continue
+    fi
+
+    if confirm "Install $app?" "Y"; then
+      flatpak install -y flathub "$app"
+    else
+      say "  - skipped $app"
+    fi
+  done < <(read_manifest "$manifest")
+}
+
 macos_install_manifest() {
   local title=$1
   local manifest=$2
@@ -80,6 +109,7 @@ case $platform in
     if confirm "Review Linux packages to install?" "Y"; then
       linux_install_manifest "Repo packages" "$MANIFEST_ROOT/linux-omarchy-packages.txt" omarchy-pkg-add
       linux_install_manifest "AUR packages" "$MANIFEST_ROOT/linux-omarchy-aur-packages.txt" omarchy-pkg-aur-add
+      flatpak_install_manifest "Flatpak apps" "$MANIFEST_ROOT/linux-flatpak-apps.txt"
     fi
     ;;
   macos)

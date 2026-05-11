@@ -2,36 +2,47 @@
 
 > **_Important_** This repo is made for personal use and is not intended to be used by others. However, feel free to use it as a reference or inspiration for your own dotfiles.
 
-This repository contains my dotfiles and use GNU Stow to manage them.
+This repository contains my dotfiles and uses GNU Stow to manage them.
 
-## OS-Post-Install process
+## First Thing After Installing Omarchy ISO
 
-This is the process I follow after a fresh install of a Ubuntu based system.
+This is the first thing to do on a fresh Omarchy install to get back to a working setup quickly.
 
-Run the following command and follow the instructions to get the system up and running.
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/entrypoint.sh)
-```
-
-## Basic setup of only configuration files
-
-This is part of the above script but can be run separately.
-
-- Clone the repo **into your user home directory**
-- Stow
+1. Clone this repo into `~/dotfiles`.
+2. Run `./setup.sh`.
+3. Follow the prompts to install repo packages, AUR packages, Flatpak apps, and stowed dotfile packages.
 
 ```bash
-sudo apt install stow
+git clone https://github.com/Andreasgdp/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./setup.sh
 ```
 
-- Stow the desired configuration (from the root of the dotfiles repo) e.g. for neovim
+That bootstrap flow is the source of truth for getting the machine back into a usable state.
+
+## What Setup Manages
+
+- repo packages from `install-scripts/manifests/linux-omarchy-packages.txt`
+- AUR packages from `install-scripts/manifests/linux-omarchy-aur-packages.txt`
+- Flatpak apps from `install-scripts/manifests/linux-flatpak-apps.txt`
+- dotfile packages via GNU Stow
+
+## Dotfiles Only
+
+If packages are already installed and only the config needs to be synced:
+
+```bash
+cd ~/dotfiles
+./install-scripts/sync-dotfiles.sh
+```
+
+Or stow a single package manually, for example:
 
 ```bash
 stow nvim
 ```
 
-For this case it will create a symlink from `~/.config/nvim` to `dotfiles/nvim`
+That creates a symlink from `~/.config/nvim` to `~/dotfiles/nvim`.
 
 ## Notes
 
@@ -54,7 +65,7 @@ IdleAction=hybrid-sleep
 IdleActionSec=30min
 ...
 ```
-# NeoVim setup
+## NeoVim setup
 
 This is my neovim setup. I use it for web development, so it's optimized for that.
 

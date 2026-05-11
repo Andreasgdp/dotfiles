@@ -1,2 +1,3 @@
 fzf-tab
+sesh-bin
 zen-browser-bin
