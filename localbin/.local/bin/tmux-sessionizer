@@ -4,10 +4,10 @@ create_session_layout() {
 	local session_name=$1
 	local session_path=$2
 
-	tmux new-session -d -s "$session_name" -c "$session_path" -n "Editor" "nvim"
+	tmux new-session -d -s "$session_name" -c "$session_path" -n "Editor" "/bin/zsh -lc 'nvim; exec /bin/zsh -l'"
 	tmux new-window -t "$session_name:" -c "$session_path" -n "Server"
-	tmux new-window -t "$session_name:" -c "$session_path" -n "AI" "opencode"
-	tmux new-window -t "$session_name:" -c "$session_path" -n "Version-Control" "jjui"
+	tmux new-window -t "$session_name:" -c "$session_path" -n "AI" "/bin/zsh -lc 'opencode; exec /bin/zsh -l'"
+	tmux new-window -t "$session_name:" -c "$session_path" -n "Version-Control" "/bin/zsh -lc 'jjui; exec /bin/zsh -l'"
 	tmux new-window -t "$session_name:" -c "$session_path" -n "Terminal"
 	tmux select-window -t "$session_name:Editor"
 }

@@ -7,6 +7,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 export SDKMAN_DIR="$HOME/.sdkman"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export N_PREFIX="$HOME/n"
+export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+export HISTSIZE=100000
+export SAVEHIST=100000
 
 typeset -U path fpath
 
@@ -55,6 +58,17 @@ _source_first() {
 _add_fpath_if_dir() {
   [[ -d "$1" ]] && fpath=("$1" $fpath)
 }
+
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
 
 alias c='clear'
 alias cl='clear'
@@ -153,6 +167,7 @@ autoload -Uz compinit up-line-or-beginning-search down-line-or-beginning-search
 zmodload -F zsh/stat b:zstat 2>/dev/null
 
 command mkdir -p "$HOME/.zsh/cache"
+command mkdir -p "${HISTFILE:h}"
 
 _add_fpath_if_dir "$HOME/.docker/completions"
 _add_fpath_if_dir "$HOME/dotfiles/zsh/plugins/fzf-tab"
