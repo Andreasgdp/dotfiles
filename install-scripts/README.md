@@ -4,9 +4,26 @@
 
 - `./setup.sh`
 - `./install-scripts/bootstrap.sh`
+- `./install-scripts/entrypoint.sh`
 - `./install-scripts/sync-dotfiles.sh`
 
 `setup.sh` runs the platform-aware bootstrap for the cloned repo.
+
+## Remote Entrypoint Flow
+
+Use `install-scripts/entrypoint.sh` when the machine is fresh and the repo is not cloned yet.
+
+It does this:
+
+1. Ensures the minimum bootstrap tools are present.
+2. Clones the repo into `~/dotfiles` if needed.
+3. Hands off to `./setup.sh`, which then runs `install-scripts/bootstrap.sh`.
+
+## Local Repo Flow
+
+Use `./setup.sh` when the repo is already present locally.
+
+It hands off to `install-scripts/bootstrap.sh`, which manages package installation and dotfile sync.
 
 ## What bootstrap does
 
