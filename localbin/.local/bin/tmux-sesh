@@ -7,23 +7,30 @@ script_dir=$(dirname "$self")
 
 list_entries() {
 	local mode=${1:-all}
+	local tmux_icon dir_icon config_icon find_icon tmuxinator_icon
+
+	tmux_icon=$'\033[34m\033[39m'
+	dir_icon=$'\033[36m\033[39m'
+	config_icon=$'\033[35m⚙\033[39m'
+	find_icon=$'\033[33m🔎\033[39m'
+	tmuxinator_icon=$'\033[32m\033[39m'
 
 	case "$mode" in
 	all)
-		sesh list -j | jq -r '.[] | if .Src == "tmux" or .Src == "config" or .Src == "tmuxinator" then ["session", .Name, .Src + "  " + .Name] else ["dir", .Path, "dir    " + .Name] end | @tsv'
+		sesh list -j | jq -r --arg tmux_icon "$tmux_icon" --arg dir_icon "$dir_icon" --arg config_icon "$config_icon" --arg tmuxinator_icon "$tmuxinator_icon" '.[] | if .Src == "tmux" then ["session", .Name, ($tmux_icon + " " + .Name)] elif .Src == "config" then ["session", .Name, ($config_icon + " " + .Name)] elif .Src == "tmuxinator" then ["session", .Name, ($tmuxinator_icon + " " + .Name)] else ["dir", .Path, ($dir_icon + " " + .Name)] end | @tsv'
 		;;
 	tmux)
-		sesh list -t -j | jq -r '.[] | ["session", .Name, "tmux   " + .Name] | @tsv'
+		sesh list -t -j | jq -r --arg tmux_icon "$tmux_icon" '.[] | ["session", .Name, ($tmux_icon + " " + .Name)] | @tsv'
 		;;
 	config)
-		sesh list -c -j | jq -r '.[]? | ["session", .Name, "config " + .Name] | @tsv'
+		sesh list -c -j | jq -r --arg config_icon "$config_icon" '.[]? | ["session", .Name, ($config_icon + " " + .Name)] | @tsv'
 		;;
 	zoxide)
-		sesh list -z -j | jq -r '.[] | ["dir", .Path, "dir    " + .Name] | @tsv'
+		sesh list -z -j | jq -r --arg dir_icon "$dir_icon" '.[] | ["dir", .Path, ($dir_icon + " " + .Name)] | @tsv'
 		;;
 	find)
 		fd -H -d 2 -t d -E .Trash . ~ | while IFS= read -r path; do
-			printf 'dir\t%s\tfind   %s\n' "$path" "$path"
+			printf 'dir\t%s\t%s %s\n' "$path" "$find_icon" "$path"
 		done
 		;;
 	esac
@@ -67,7 +74,7 @@ picker() {
 	selected="$(
 		list_entries all | fzf-tmux -p 80%,70% \
 			--delimiter=$'\t' --with-nth=3 \
-			--no-sort --border-label ' sesh ' --prompt '⚡  ' \
+			--no-sort --ansi --border-label ' sesh ' --prompt '⚡  ' \
 			--header '  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find' \
 			--bind 'tab:down,btab:up' \
 			--bind "ctrl-a:change-prompt(⚡  )+reload($self list all)" \
