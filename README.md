@@ -8,6 +8,23 @@ This repository contains my dotfiles and uses GNU Stow to manage them.
 
 This is the first thing to do on a fresh Omarchy install to get back to a working setup quickly.
 
+### Remote Entrypoint Flow
+
+If the machine is fresh and the repo is not cloned yet, use the entrypoint:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Andreasgdp/dotfiles/master/install-scripts/entrypoint.sh)
+```
+
+That flow does this:
+
+1. Ensures the minimum bootstrap tools are present.
+2. Clones the repo into `~/dotfiles` if it is not already there.
+3. Hands off to `./setup.sh` / `install-scripts/bootstrap.sh`.
+4. Prompts through repo packages, AUR packages, Flatpak apps, and stowed dotfiles.
+
+### Local Repo Flow
+
 1. Clone this repo into `~/dotfiles`.
 2. Run `./setup.sh`.
 3. Follow the prompts to install repo packages, AUR packages, Flatpak apps, and stowed dotfile packages.
