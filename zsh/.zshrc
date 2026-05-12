@@ -59,6 +59,7 @@ alias jjlog="watch -n 1 -c \"jj --color=always --ignore-working-copy\""
 alias jjs="jj show"
 alias jjc="jj check"
 alias jjfetch="jj git fetch"
+alias jjf="jj git fetch"
 alias jjnew="jj new"
 jjl() {
   jj -r 'all()' --limit "${1:-100}" --color=always
@@ -69,6 +70,10 @@ jjtouch() {
 
 #claude
 alias claudesession="claude -r"
+alias clanker="claude"
+
+# opencode
+alias oc="opencode"
 
 # Kitty alias
 alias d="kitten diff"
