@@ -11,7 +11,6 @@ while [ "$elapsed" -lt "$timeout_seconds" ]; do
         omarchy-launch-webapp "https://www.facebook.com/messages/e2ee/t" &
         omarchy-launch-webapp "https://discord.com/channels/@me" &
         omarchy-launch-webapp "https://app.shortwave.com/" &
-        flatpak run com.core447.StreamController &
         wait
         exit 0
     fi

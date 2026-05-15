@@ -73,7 +73,7 @@ window-vsync = false
 confirm-close-surface = false
 
 # Slow down mouse wheel scrolling in Ghostty specifically.
-mouse-scroll-multiplier = discrete:1,precision:1
+mouse-scroll-multiplier = discrete:0.1,precision:0.1
 
 # keys
 # delete all to the left of cursor
