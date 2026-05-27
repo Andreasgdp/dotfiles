@@ -3,7 +3,7 @@
   name = Andreas Petersen
 
 [core]
-  pager = delta
+  pager = hunk pager
   editor = nvim
   hooksPath = ~/gitconfig/hooks
 

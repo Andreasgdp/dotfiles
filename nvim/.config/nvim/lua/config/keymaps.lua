@@ -37,3 +37,36 @@ end, { silent = true, remap = true, desc = "Neogit Diff" })
 
 -- Text Formatting
 map("x", "<leader>gq", "gq", { desc = "Format to textwidth" })
+
+local function navigate_pane(wincmd, dir)
+  local prev = vim.api.nvim_get_current_win()
+  vim.cmd("wincmd " .. wincmd)
+  if vim.api.nvim_get_current_win() ~= prev then
+    return
+  end
+
+  if vim.env.HERDR_PANE_ID and vim.env.HERDR_PANE_ID ~= "" then
+    local herdr = vim.env.HERDR_BIN_PATH
+    if herdr == nil or herdr == "" then
+      herdr = "herdr"
+    end
+    vim.fn.system({ herdr, "pane", "focus", "--direction", dir, "--current" })
+  elseif vim.env.TMUX and vim.env.TMUX ~= "" then
+    local tmux = { left = "Left", down = "Down", up = "Up", right = "Right" }
+    pcall(vim.cmd, "TmuxNavigate" .. tmux[dir])
+  end
+end
+
+-- Load after LazyVim's default <C-h/j/k/l> window mappings so these win.
+map("n", "<C-h>", function()
+  navigate_pane("h", "left")
+end, { silent = true, noremap = true, desc = "Navigate left (vim/herdr)" })
+map("n", "<C-j>", function()
+  navigate_pane("j", "down")
+end, { silent = true, noremap = true, desc = "Navigate down (vim/herdr)" })
+map("n", "<C-k>", function()
+  navigate_pane("k", "up")
+end, { silent = true, noremap = true, desc = "Navigate up (vim/herdr)" })
+map("n", "<C-l>", function()
+  navigate_pane("l", "right")
+end, { silent = true, noremap = true, desc = "Navigate right (vim/herdr)" })

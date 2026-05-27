@@ -10,11 +10,21 @@ paginate = "auto"
 # This tells jj to use your 'diffconflicts' definition by default
 merge-editor = "diffconflicts"
 
+pager = ["hunk", "pager"]
+diff-formatter = ":git"
+
+
+# ----------- JJUI --------------
+[[--scope]]
+--when.environments = ["JJUI"]
+[--scope.ui]
 diff-formatter = "delta"
 
-[merge-tools.delta]
+[--scope.merge-tools.delta]
 diff-args = ["$left", "$right", "--width=$width"]
 diff-expected-exit-codes = [0, 1]
+# ----------- JJUI --------------
+
 
 [merge-tools.diffconflicts]
 program = "nvim"
@@ -62,6 +72,10 @@ if [[ "$1" != *@origin ]]; then
   set -- "$1@origin"
 fi
 
+# Track the remote bookmark so the local bookmark follows it
+echo "Tracking '$1'..."
+jj bookmark track "$1" 2>/dev/null || true
+
 # Then, create a new change based on the provided target revision
 echo "Creating new change on '$@'..."
 jj new "$1"
@@ -71,8 +85,23 @@ echo "Successfully switched. Current change is now based on the latest '$@'."
   "$1",
 ]
 
+review = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+hunk show --watch
+""",
+]
+
 # Rebase alias to rebase @ on origin of provided branch or revset.
-# Usage: jj rb <branch> e.g. jj rb main -> jj jj rebase -s @ -d main@origin
+# Usage:
+#   jj rb <target>          -> jj rebase -s @ -d <target>@origin
+#   jj rb <source> <target> -> jj rebase -s <source> -d <target>@origin
+# e.g. jj rb main           -> jj rebase -s @ -d main@origin
+#      jj rb wks master      -> jj rebase -s wks -d master@origin
 rb = [
   "util",
   "exec",
@@ -84,19 +113,26 @@ rb = [
 set -euo pipefail # Exit on error, undefined variable, or pipe failure
 # Check if the user provided an argument
 if [ $# -eq 0 ]; then
-  echo "Usage: jj rb <branch>"
+  echo "Usage: jj rb <target> | jj rb <source> <target>"
   exit 1
 fi
-# Extract the first argument
-branch="$1"
-# Check if the argument ends with @origin, if not, append it
-if [[ "$branch" != *@origin ]]; then
-  branch="$branch@origin"
+# One arg: source defaults to @, target is the arg
+# Two args: source is first arg, target is second
+if [ $# -eq 1 ]; then
+  source="@"
+  target="$1"
+else
+  source="$1"
+  target="$2"
+fi
+# Append @origin to the target if not already present
+if [[ "$target" != *@origin ]]; then
+  target="$target@origin"
 fi
 # Perform the rebase operation
-jj rebase -s @ -d "$branch"
+jj rebase -s "$source" -d "$target"
 """,
-  "$1",
+  "",
 ]
 
 
@@ -436,3 +472,34 @@ jj b f "$tmp_branch" || {
 
 # check alias map directly to jj fix
 check = ["fix"]
+
+# This defines a shell alias (prefixed with '!')
+clean-slate = [
+  "util",
+  "exec",
+  "--", # Core command to execute an external script/command
+  "bash",
+  "-c", # Use bash to execute the following inline script
+  """
+  echo '🔄 Fetching latest from remote...';
+  jj git fetch;
+  
+  # 1. Automatically detect the default remote branch name
+  DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5);
+  if [ -z \"$DEFAULT_BRANCH\" ]; then
+    # Fallback if git command fails or is detached
+    DEFAULT_BRANCH='main';
+  fi;
+  echo \"🌿 Detected default branch: $DEFAULT_BRANCH@origin\";
+  
+  # 2. Abandon everything that isn't sitting on a remote bookmark
+  echo '🧹 Abandoning local clutter...';
+  jj abandon 'mutable() ~ ::(bookmarks() | remote_bookmarks())';
+  
+  # 3. Create a fresh working copy on top of the detected default branch
+  echo '✨ Creating clean working copy...';
+  jj new \"$DEFAULT_BRANCH@origin\";
+  
+  echo '✅ Success! Your workspace is now a clean slate.';
+  """,
+]
