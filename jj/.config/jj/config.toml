@@ -14,16 +14,17 @@ pager = ["hunk", "pager"]
 diff-formatter = ":git"
 
 
-# ----------- JJUI --------------
+# jjui runs jj with JJUI=1. Render its diffs with delta directly and never
+# invoke the shell pager, which remains hunk for normal jj commands.
 [[--scope]]
 --when.environments = ["JJUI"]
 [--scope.ui]
+paginate = "never"
 diff-formatter = "delta"
 
 [--scope.merge-tools.delta]
 diff-args = ["$left", "$right", "--width=$width"]
 diff-expected-exit-codes = [0, 1]
-# ----------- JJUI --------------
 
 
 [merge-tools.diffconflicts]
@@ -116,6 +117,8 @@ if [ $# -eq 0 ]; then
   echo "Usage: jj rb <target> | jj rb <source> <target>"
   exit 1
 fi
+jj git fetch
+
 # One arg: source defaults to @, target is the arg
 # Two args: source is first arg, target is second
 if [ $# -eq 1 ]; then

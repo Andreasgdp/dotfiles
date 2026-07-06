@@ -68,6 +68,17 @@ jjtouch() {
   jj touch -r "${1}-..@"
 }
 
+# Review a GitHub PR in Hunk without fetching or checking out its branches.
+review() {
+  if (( $# != 1 )); then
+    print -u2 'usage: review <pull-request-url>'
+    return 2
+  fi
+
+  setopt localoptions pipefail
+  command gh pr diff --patch --color=never "$1" | command hunk patch
+}
+
 #claude
 alias claudesession="claude -r"
 alias clanker="claude"
@@ -157,3 +168,4 @@ alias readlink=greadlink
 export N_PREFIX="$HOME/n"
 # This removes any existing n/bin from PATH and re-inserts it at the very start
 export PATH="$N_PREFIX/bin:${PATH//"$N_PREFIX/bin:"/}"
+export PATH="/Users/anpe/.bun/bin:$PATH"

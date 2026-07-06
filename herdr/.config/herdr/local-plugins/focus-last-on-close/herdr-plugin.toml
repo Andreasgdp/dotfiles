@@ -1,0 +1,10 @@
+id = "local.focus-last-on-close"
+name = "Focus Last Workspace On Close"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "Focus the previously focused workspace after any workspace closes."
+platforms = ["macos", "linux"]
+
+[[events]]
+on = "workspace.closed"
+command = ["./focus-last-on-close.sh"]

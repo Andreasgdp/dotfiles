@@ -3,6 +3,7 @@ return { -- add any tools you want to have installed below
   opts = {
     ensure_installed = {
       "roslyn", -- C# language server
+      "copilot-language-server",
     },
   },
 }
