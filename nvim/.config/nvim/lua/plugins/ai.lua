@@ -28,4 +28,8 @@ return {
       server_opts_overrides = {},
     },
   },
+  {
+    "folke/sidekick.nvim",
+    lazy = false,
+  },
 }
