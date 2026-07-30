@@ -13,6 +13,12 @@ merge-editor = "diffconflicts"
 pager = ["hunk", "pager"]
 diff-formatter = ":git"
 
+# Keep the interactive hunk pager for `jj diff`, but render commit views with delta.
+[[--scope]]
+--when.commands = ["show"]
+[--scope.ui]
+pager = "delta"
+
 
 # jjui runs jj with JJUI=1. Render its diffs with delta directly and never
 # invoke the shell pager, which remains hunk for normal jj commands.
@@ -93,7 +99,8 @@ review = [
   "bash",
   "-c", # Use bash to execute the following inline script
   """
-hunk show --watch
+# hunk show --watch
+tuicr -w
 """,
 ]
 

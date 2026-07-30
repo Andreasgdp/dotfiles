@@ -69,7 +69,7 @@ jjtouch() {
 }
 
 # Review a GitHub PR in Hunk without fetching or checking out its branches.
-review() {
+review-prev() {
   if (( $# != 1 )); then
     print -u2 'usage: review <pull-request-url>'
     return 2
@@ -78,6 +78,8 @@ review() {
   setopt localoptions pipefail
   command gh pr diff --patch --color=never "$1" | command hunk patch
 }
+
+alias review="tuicr tui pr"
 
 #claude
 alias claudesession="claude -r"
