@@ -1,0 +1,23 @@
+==> Formulae
+aom			dav1d			glib			jpeg-turbo		libnghttp2		libvorbis		mpdecimal		pango			terminal-notifier	x265
+aribb24			direnv			gmp			jpeg-xl			libogg			libvpx			mpg123			pcre2			terraform		xorgproto
+atuin			dpkg			gnu-tar			jq			libpng			libx11			n			perl			tesseract		xvid
+azure-cli		eza			gnutls			lame			librist			libxau			ncurses			pixman			thefuck			xz
+bash			fastfetch		go			lazydocker		libsamplerate		libxcb			neovim			python@3.13		theora			yazi
+bat			ffmpeg			goku			lazygit			libsndfile		libxdmcp		nettle			rav1e			tmux			yyjson
+berkeley-db@5		fish			gpatch			leptonica		libsodium		libxext			nushell			readline		tree			zeromq
+block-goose-cli		flac			graphite2		libarchive		libsoxr			libxrender		oniguruma		ripgrep			tree-sitter		zimg
+borders			fontconfig		gum			libass			libssh			libyaml			opencode		rubberband		tree-sitter-cli		zoxide
+brotli			freetype		harfbuzz		libb2			libssh2			little-cms2		opencore-amr		sdl2			tree-sitter@0.25	zstd
+btop			frei0r			helix			libbluray		libtasn1		locateme		openexr			sesh			unbound
+ca-certificates		fribidi			highway			libdeflate		libtiff			lpeg			openjdk			snappy			unibilium
+cairo			fzf			icu4c@77		libevent		libudfread		luajit			openjpeg		speex			utf8proc
+carapace		gdbm			icu4c@78		libgit2			libunibreak		luv			openjph			sqlite			watch
+cjson			gettext			imath			libiconv		libunistring		lz4			openssl@3		srt			watchexec
+cmake			giflib			jj			libidn2			libuv			lzo			opus			starship		webp
+coreutils		git			jjui			libmd			libvidstab		maven			p11-kit			stow			wget
+countdown		git-delta		joker			libmicrohttpd		libvmaf			mbedtls@3		pandoc			svt-av1			x264
+
+==> Casks
+aerospace			basictex			discord				font-hack-nerd-font		font-sketchybar-app-font	karabiner-elements		shortwave			spotify
+alt-tab				blender				firefox				font-sf-pro			ghostty@tip			nomachine			slack				visual-studio-code

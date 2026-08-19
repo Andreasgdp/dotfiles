@@ -1,0 +1,22 @@
+#:schema https://github.com/joshmedeski/sesh/raw/main/sesh.schema.json
+
+[default_session]
+windows = ["Editor", "Server", "AI", "Version-Control", "Terminal"]
+
+[[window]]
+name = "Editor"
+startup_script = "/bin/zsh -lc 'nvim; exec /bin/zsh -l'"
+
+[[window]]
+name = "Server"
+
+[[window]]
+name = "AI"
+startup_script = "/bin/zsh -lc 'opencode; exec /bin/zsh -l'"
+
+[[window]]
+name = "Version-Control"
+startup_script = "/bin/zsh -lc 'jjui; exec /bin/zsh -l'"
+
+[[window]]
+name = "Terminal"

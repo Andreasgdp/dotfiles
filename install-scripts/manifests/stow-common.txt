@@ -1,0 +1,19 @@
+# Core dotfile packages that should usually be in use everywhere.
+bash
+atuin
+bat
+btop
+fastfetch
+ghostty
+gitconfig
+helix
+htop
+jj
+lazygit
+localbin
+nvim
+sesh
+starship
+tmux
+yazi
+zsh

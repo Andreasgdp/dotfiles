@@ -1,17 +1,44 @@
 [user]
 name = "Andreas Petersen"
-email = "andreasgdp@gmail.com"
+email = "andreas.petersen@jepp.com"
 
 [ui]
 default-command = "log"
-conflict-marker-style = "git"
+conflict-marker-style = "diff"
 color = "auto"
 paginate = "auto"
+# This tells jj to use your 'diffconflicts' definition by default
+merge-editor = "diffconflicts"
+
+diff-formatter = "delta"
+
+[merge-tools.delta]
+diff-args = ["$left", "$right", "--width=$width"]
+diff-expected-exit-codes = [0, 1]
+
+[merge-tools.diffconflicts]
+program = "nvim"
+merge-args = [
+  "-c",
+  "let g:jj_diffconflicts_marker_length=$marker_length",
+  "-c",
+  "lua vim.g.autoformat = false",                        # Disables LazyVim formatting globally for this session
+  "-c",
+  "JJDiffConflicts!",
+  "$output",
+  "$base",
+  "$left",
+  "$right",
+]
+merge-tool-edits-conflict-markers = true
 
 [templates]
 git_push_bookmark = '"anpe/" ++ change_id.short()'
 
 [aliases]
+# Updates the date of the current revision to 'now'
+touch = ["describe", "--reset-author", "--no-edit"]
+
 # Alias to fetch latest changes and then run 'jj new' on the provided argument.
 # Usage: jj switch <branch>
 # e.g., jj switch main@origin
@@ -170,7 +197,14 @@ if [ -n "$scope" ]; then
 else
   branch_part="${type}"
 fi
-pr_name="pr/main/${ticket_id}-anpe-${branch_part}"
+  
+# eg shorten like this echo "This is a very long sentence that I want to make shorter." | awk '{for(i=1; i<=5; i++) printf "%s ", $i; print ""}'
+shortenedFirstLine=$(echo "$first_line" | awk '{for(i=1; i<=4; i++) printf "%s ", $i; print ""}')
+# remove special characters like : and , and . and ([{}]) from shortenedFirstLine
+shortenedFirstLine=$(echo "$shortenedFirstLine" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]/-/g' | sed 's/[^a-z0-9-]//g' | sed 's/-\\{2,\\}/-/g' | sed 's/^-\\|-$//g')
+# remove trailing dash if any
+shortenedFirstLine=$(echo "$shortenedFirstLine" | sed 's/-$//g')
+pr_name="anpe/${ticket_id}/${shortenedFirstLine}"
 echo "Setting bookmark to: $pr_name"
 jj bookmark set --revision=@ "$pr_name" || {
   echo "Error: Failed to set bookmark. It might already exist."
@@ -230,7 +264,9 @@ if [ -n "$scope" ]; then
 else
   branch_part="${type}"
 fi
-dev_name="dev/${ticket_id}-anpe-${branch_part}"
+# eg shorten like this echo "This is a very long sentence that I want to make shorter." | awk '{for(i=1; i<=5; i++) printf "%s ", $i; print ""}'
+shortenedFirstLine=$(echo "$first_line" | awk '{for(i=1; i<=5; i++) printf "%s ", $i; print ""}')
+dev_name="dev/${ticket_id}-anpe-${shortenedFirstLine}"
 echo "Setting bookmark to: $dev_name"
 jj bookmark set --revision=@ "$dev_name" || {
   echo "Error: Failed to set bookmark. It might already exist."
@@ -252,6 +288,53 @@ set -euo pipefail # Exit on error, undefined variable, or pipe failure
 jj git push --allow-new --remote origin
 """,
 ]
+
+# Create a fixup commit targeting another change
+# Usage: jj fixup <target-revset>
+# e.g., jj fixup abc123 or jj fixup @-
+fixup = [
+  "util",
+  "exec",
+  "--",
+  "bash",
+  "-c",
+  """
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Check if the user provided an argument
+if [ $# -eq 0 ]; then
+  echo "Usage: jj fixup <target-revset>"
+  echo "Example: jj fixup @- (fixup the parent commit)"
+  exit 1
+fi
+
+target="$1"
+
+# Get the first line of the target's description
+target_desc=$(jj show -s "$target" | grep '^[[:space:]]' | head -n1 | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+
+if [ -z "$target_desc" ]; then
+  echo "Error: Could not get description for target revset '$target'"
+  exit 1
+fi
+
+echo "Creating fixup commit for: $target_desc"
+
+# Set current change's description to fixup message
+jj describe -m "fixup! $target_desc"
+
+# Create a new change so user can continue working
+jj new
+
+echo "Fixup commit created. You can now continue working in the new change."
+echo "To apply the fixup later, use: jj squash --from <fixup-change-id> --into $target"
+""",
+  "$1",
+]
+
+# plops in a new commit after the specified commit and moves any children of the target to be children of the new commit
+insert = ["new", "--insert-after"]
 
 # "prmaster <branch_name>" alias  - should, grab all the commit messages from the diff between origin master and origin <branch_name> store in var, jj new, then git switch master, git pull, create new tmp-<some_unique_id> branch, git merge --squash <branch_name>, git commit with all the commit messages stored (note if not already the first commit should be on top), jj edit tmp-<some_unique_id>, jj pr
 prmaster = [
@@ -350,3 +433,6 @@ jj b f "$tmp_branch" || {
 """,
   "$1",
 ]
+
+# check alias map directly to jj fix
+check = ["fix"]

@@ -9,6 +9,7 @@ vim.g.root_spec = {}
 opt.autochdir = false
 opt.wrap = true
 opt.scrolloff = 8
+opt.colorcolumn = "+1" -- Show ruler at textwidth + 1
 
 vim.opt.swapfile = false
 
@@ -22,3 +23,9 @@ vim.g.lazyvim_prettier_needs_config = true
 
 -- disable format on save can format using cf or cF
 -- vim.g.autoformat = false
+
+-- LSP Server to use for Python.
+-- Set to "basedpyright" to use basedpyright instead of pyright.
+vim.g.lazyvim_python_lsp = "basedpyright"
+-- Set to "ruff_lsp" to use the old LSP implementation version.
+vim.g.lazyvim_python_ruff = "ruff"

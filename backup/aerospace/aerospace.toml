@@ -1,0 +1,263 @@
+# Run Sketchybar together with AeroSpace
+# sketchbar has a built-in detection of already running process,
+# so it won't be run twice on AeroSpace restart
+#after-startup-command = ['exec-and-forget sketchybar']
+
+# Notify Sketchybar about workspace change
+#exec-on-workspace-change = ['/bin/bash', '-c',
+#    'sketchybar --trigger aerospace_workspace_change #FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+#]
+
+# AEROSPACE CONFIG
+#https://github.com/edunfelt/base16-rose-pine-scheme/blob/main/assets/palette.png
+start-at-login = true
+
+after-startup-command = [
+  'exec-and-forget borders active_color="glow(0xd98fbc8f)" inactive_color=0x20494d64 width=8.0',
+  'exec-and-forget borders',
+  'layout tiles',
+]
+
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
+  '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change AEROSPACE_FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE AEROSPACE_PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE',
+]
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+on-focus-changed = [
+  # 'move-mouse window-lazy-center',
+  'exec-and-forget /bin/bash -c /opt/homebrew/bin/sketchybar --trigger front_app_switched',
+  'exec-and-forget sketchybar --trigger update_windows',
+]
+
+enable-normalization-flatten-containers = false
+enable-normalization-opposite-orientation-for-nested-containers = false
+
+accordion-padding = 300
+
+default-root-container-layout = 'tiles'
+
+default-root-container-orientation = 'horizontal'
+
+key-mapping.preset = 'qwerty'
+
+[gaps]
+#outer.bottom numbers have to match presentation.sh variables. built-in retina display is excluded from presentation mode, so this only works on external monitors.
+outer.bottom = [{ monitor.'^built-in retina display$' = 15 }, 15]
+outer.top = [{ monitor.'^built-in retina display$' = 10 }, 10]
+outer.left = 20
+outer.right = 20
+inner.horizontal = 20
+inner.vertical = 20
+
+[exec] # Again, you don't need to copy all config sections to your config.
+inherit-env-vars = true # If you don't touch "exec" section,
+[exec.env-vars] # it will fallback to "default-config.toml"
+PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
+[mode.main.binding]
+alt-cmd-ctrl-q = ['close --quit-if-last-window']
+cmd-q = ['close --quit-if-last-window']
+
+# disabled since cmd + enter is used for many things in macOS
+# cmd-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
+alt-cmd-ctrl-enter = 'exec-and-forget open -n /Applications/Ghostty.app'
+
+alt-cmd-ctrl-shift-f = 'macos-native-fullscreen'
+alt-cmd-ctrl-f = 'fullscreen'
+
+alt-cmd-ctrl-g = 'split horizontal'
+alt-cmd-ctrl-v = 'split vertical'
+
+alt-cmd-ctrl-h = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop left'
+alt-cmd-ctrl-j = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop down'
+alt-cmd-ctrl-k = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop up'
+alt-cmd-ctrl-l = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop right'
+alt-cmd-ctrl-left = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop left'
+alt-cmd-ctrl-down = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop down'
+alt-cmd-ctrl-up = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop up'
+alt-cmd-ctrl-right = 'focus --boundaries all-monitors-outer-frame --boundaries-action stop right'
+
+alt-cmd-ctrl-shift-h = 'move left'
+alt-cmd-ctrl-shift-j = 'move down'
+alt-cmd-ctrl-shift-k = 'move up'
+alt-cmd-ctrl-shift-l = 'move right'
+alt-cmd-ctrl-shift-left = 'move left'
+alt-cmd-ctrl-shift-down = 'move down'
+alt-cmd-ctrl-shift-up = 'move up'
+alt-cmd-ctrl-shift-right = 'move right'
+
+#cmd-1 = 'summon-workspace 1'  # Notes
+alt-cmd-ctrl-1 = 'workspace 1'  # Notes
+alt-cmd-ctrl-2 = 'workspace 2'  # Terminal
+alt-cmd-ctrl-3 = 'workspace 3'  # Browser
+alt-cmd-ctrl-4 = 'workspace 4'  # AltBrowser
+alt-cmd-ctrl-5 = 'workspace 5'  # Remote
+alt-cmd-ctrl-6 = 'workspace 6'  # Database
+alt-cmd-ctrl-7 = 'workspace 7'  # Chat
+alt-cmd-ctrl-8 = 'workspace 8'  # Mail
+alt-cmd-ctrl-9 = 'workspace 9'  # Music
+alt-cmd-ctrl-0 = 'workspace 10' # Secrets
+
+alt-cmd-ctrl-shift-1 = 'move-node-to-workspace 1'
+alt-cmd-ctrl-shift-2 = 'move-node-to-workspace 2'
+alt-cmd-ctrl-shift-3 = 'move-node-to-workspace 3'
+alt-cmd-ctrl-shift-4 = 'move-node-to-workspace 4'
+alt-cmd-ctrl-shift-5 = 'move-node-to-workspace 5'
+alt-cmd-ctrl-shift-6 = 'move-node-to-workspace 6'
+alt-cmd-ctrl-shift-7 = 'move-node-to-workspace 7'
+alt-cmd-ctrl-shift-8 = 'move-node-to-workspace 8'
+alt-cmd-ctrl-shift-9 = 'move-node-to-workspace 9'
+alt-cmd-ctrl-shift-0 = 'move-node-to-workspace 10'
+alt-cmd-ctrl-shift-t = 'move-node-to-workspace t'
+
+alt-cmd-ctrl-tab = 'workspace-back-and-forth'
+alt-cmd-ctrl-p = 'move-workspace-to-monitor --wrap-around next'
+alt-cmd-ctrl-shift-p = [
+  'move-node-to-monitor --wrap-around next',
+  'focus-monitor next --wrap-around',
+]
+cmd-h = []
+# cmd-esc to shotcut the lock screen keybind
+# osascript -e 'tell application "System Events" to keystroke "q" using {control down, command down}'
+# TODO: ensure this runs caffeinate indefinitely until login/logout/reboot to prevent sleep while locked
+cmd-esc = [
+  "exec-and-forget caffeinate",
+  "exec-and-forget osascript -e 'tell application \"System Events\" to keystroke \"q\" using {control down, command down}'",
+]
+
+alt-cmd-ctrl-m = ["exec-and-forget afplay ~/migmig/meme.mp3"]
+
+alt-cmd-ctrl-shift-s = [
+  'mode service',
+  'exec-and-forget sketchybar --trigger send_message MESSAGE="SERVICE MODE" HOLD="true"',
+]
+
+[mode.service.binding]
+esc = [
+  'reload-config',
+  'exec-and-forget sketchybar --trigger hide_message',
+  'exec-and-forget sketchybar --reload',
+  'mode main',
+]
+
+s = [
+  'exec-and-forget cat ~/.config/aerospace/shrugstring| pbcopy',
+  'exec-and-forget sketchybar --trigger hide_message',
+  'mode main',
+]
+
+b = [
+  'exec-and-forget ~/.config/aerospace/presentation.sh on',
+  'exec-and-forget sketchybar --bar height=0',
+  'exec-and-forget sketchybar --trigger hide_message',
+  'mode main',
+]
+shift-b = [
+  'exec-and-forget ~/.config/aerospace/presentation.sh off',
+  'exec-and-forget sketchybar --bar height=36',
+  'exec-and-forget sketchybar --trigger hide_message',
+  'mode main',
+]
+
+backspace = ['close-all-windows-but-current', 'mode main']
+
+[mode.resize.binding]
+keypadMinus = 'resize smart -70'
+keypadPlus = 'resize smart +70'
+h = ['resize width -64']
+j = ['resize height -64']
+k = ['resize height +64']
+l = ['resize width +64']
+esc = ['mode main', 'exec-and-forget sketchybar --trigger hide_message']
+enter = ['mode main', 'exec-and-forget sketchybar --trigger hide_message']
+
+[mode.join.binding]
+h = ['join-with left', 'mode main']
+j = ['join-with down', 'mode main']
+k = ['join-with up', 'mode main']
+l = ['join-with right', 'mode main']
+cmd-h = ['join-with left', 'mode main']
+cmd-alt-cmd-ctrl-h = ['join-with left', 'mode main']
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = ['layout tiling', 'move-node-to-workspace 7']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = ['layout floating']
+
+# Float the Flameshot screenshot tool
+[[on-window-detected]]
+if.app-id = 'org.flameshot'
+run = 'layout floating'
+
+# NOTE: this is why we can't have nice things
+# For some reason having some handling of akiflow here messes with the different floating windows akiflow has like the command bar and notifications.
+
+# move windows to specific predetermined workspaces --------------------
+# [[on-window-detected]]
+# if.app-id = 'com.akiflow.akiflow'
+# # regex for if not "Akiflow - Notifications" or "Akiflow - Cli" to allow command bar and notifications to show where I am
+# if.window-title-regex-substring = '^(?!Akiflow - Notifications|Akiflow - Cli|Akiflow - Tray).*$'
+# # if.window-title-regex-substring = '^(?!Akiflow - Notifications).*$'
+# run = ['move-node-to-workspace 1']
+# NOTE: things I've tried
+# if.window-title-regex-substring = '^(?!Akiflow - Notifications|Akiflow - Cli|Akiflow - Tray).*Akiflow.*$'
+# if.window-title-regex-substring = '^(?!Akiflow - Notifications).*$'
+[[on-window-detected]]
+if.app-id = 'com.akiflow.akiflow'
+if.window-title-regex-substring = '^(?!Akiflow - Notifications|Akiflow - Cli|Akiflow - Tray).*$'
+check-further-callbacks = true
+run = ['move-node-to-workspace 1']
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = ['move-node-to-workspace 2']
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+if.window-title-regex-substring = 'Picture-in-Picture'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.facebook.archon'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.MobileSMS'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = ['move-node-to-workspace 4']
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = ['move-node-to-workspace 5']
+
+[[on-window-detected]]
+if.app-id = 'com.spotify.client'
+run = ['move-node-to-workspace 6']
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = ['move-node-to-workspace 7']
+
+[[on-window-detected]]
+if.app-id = 'com.electron.shortwave'
+run = ['move-node-to-workspace 10']

@@ -1,0 +1,166 @@
+{
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "fn + Esc",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "escape",
+                                    "modifiers": { "mandatory": ["fn"] }
+                                },
+                                "to": [{ "shell_command": "~/scripts/toggle_function_keys.sh" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Map the Left Option key to simulate pressing Left Command, Left Option, and Left Control simultaneously",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "identifiers": [
+                                            { "vendor_id": 1452 },
+                                            { "vendor_id": 76 },
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 13364 }
+                                        ],
+                                        "type": "device_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "left_option",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command",
+                                        "modifiers": ["left_option", "left_control"]
+                                    }
+                                ],
+                                "to_if_alone": [{ "key_code": "f17" }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 6519,
+                        "vendor_id": 12951
+                    },
+                    "simple_modifications": [
+                        {
+                            "from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+                            "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
+                        },
+                        {
+                            "from": { "key_code": "left_control" },
+                            "to": [{ "key_code": "left_control" }]
+                        }
+                    ]
+                },
+                {
+                    "identifiers": { "is_keyboard": true },
+                    "simple_modifications": [
+                        {
+                            "from": { "apple_vendor_top_case_key_code": "keyboard_fn" },
+                            "to": [{ "key_code": "left_control" }]
+                        },
+                        {
+                            "from": { "key_code": "caps_lock" },
+                            "to": [{ "key_code": "right_option" }]
+                        },
+                        {
+                            "from": { "key_code": "left_control" },
+                            "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
+                        },
+                        {
+                            "from": { "key_code": "right_command" },
+                            "to": [{ "key_code": "right_option" }]
+                        }
+                    ]
+                },
+                {
+                    "fn_function_keys": [
+                        {
+                            "from": { "key_code": "f1" },
+                            "to": [{ "key_code": "f1" }]
+                        },
+                        {
+                            "from": { "key_code": "f2" },
+                            "to": [{ "key_code": "f2" }]
+                        },
+                        {
+                            "from": { "key_code": "f3" },
+                            "to": [{ "key_code": "f3" }]
+                        },
+                        {
+                            "from": { "key_code": "f4" },
+                            "to": [{ "key_code": "f4" }]
+                        },
+                        {
+                            "from": { "key_code": "f5" },
+                            "to": [{ "key_code": "f5" }]
+                        },
+                        {
+                            "from": { "key_code": "f6" },
+                            "to": [{ "key_code": "f6" }]
+                        },
+                        {
+                            "from": { "key_code": "f7" },
+                            "to": [{ "key_code": "f7" }]
+                        },
+                        {
+                            "from": { "key_code": "f8" },
+                            "to": [{ "key_code": "f8" }]
+                        },
+                        {
+                            "from": { "key_code": "f9" },
+                            "to": [{ "key_code": "f9" }]
+                        },
+                        {
+                            "from": { "key_code": "f10" },
+                            "to": [{ "key_code": "f10" }]
+                        },
+                        {
+                            "from": { "key_code": "f11" },
+                            "to": [{ "key_code": "f11" }]
+                        },
+                        {
+                            "from": { "key_code": "f12" },
+                            "to": [{ "key_code": "f12" }]
+                        }
+                    ],
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 643,
+                        "vendor_id": 13364
+                    },
+                    "ignore": false,
+                    "simple_modifications": [
+                        {
+                            "from": { "key_code": "caps_lock" },
+                            "to": [{ "key_code": "right_option" }]
+                        },
+                        {
+                            "from": { "key_code": "right_command" },
+                            "to": [{ "key_code": "right_option" }]
+                        }
+                    ],
+                    "treat_as_built_in_keyboard": true
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
+        }
+    ]
+}

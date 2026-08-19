@@ -43,14 +43,23 @@
 # resize-overlay-duration = 4s 200ms
 
 # Config options
-theme = catppuccin-mocha
+theme = catppuccin-mocha.conf
 background = #262637
-font-size = 15
+background-opacity = 0.90
+background-blur = true
+# Dim the text of inactive panes (0.0 to 1.0)
+# This fades the text colors without touching the background
+unfocused-split-opacity = 0.7
+background-blur-radius = 250
+font-size = 12
 initial-command = /bin/zsh -l -c "tmux a || tmux"
+
+# Enable all bell features
+bell-features = system, audio, attention, title, border
+desktop-notifications = true
 
 # window appearance
 window-decoration = true
-gtk-adwaita = false
 gtk-titlebar = false
 
 window-padding-color = extend
@@ -63,8 +72,13 @@ window-vsync = false
 # function
 confirm-close-surface = false
 
+# Slow down mouse wheel scrolling in Ghostty specifically.
+mouse-scroll-multiplier = discrete:0.1,precision:0.1
+
 # keys
 # delete all to the left of cursor
 keybind = option+backspace=csi:117;5u
 # delete whole word
 keybind = ctrl+backspace=csi:119;5u
+
+# custom-shader = /Users/anpe/.config/ghostty/cursor-blaze.glsl
