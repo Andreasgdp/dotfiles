@@ -2,3 +2,4 @@ fzf-tab
 sesh-bin
 slack-desktop
 zen-browser-bin
+jjui-bin
