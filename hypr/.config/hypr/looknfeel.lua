@@ -10,7 +10,7 @@ hl.config({
 -- App workspace assignments and rules
 o.window("chrome-web\\.akiflow\\.com__-Default", { workspace = "1" })
 o.window("chrome-www\\.facebook\\.com__messages_e2ee_t-Default", { workspace = "3" })
-o.window("chrome-app\\.shortwave\\.com__-Default", { workspace = "10" })
+o.window("chrome-mail\\.google\\.com__-Default", { workspace = "10" })
 o.window("chrome-discord\\.com__channels_@me-Default", { workspace = "3" })
 o.window("slack", { workspace = "3" })
 o.window("(Alacritty|kitty|com\\.mitchellh\\.ghostty)", { workspace = "4" })

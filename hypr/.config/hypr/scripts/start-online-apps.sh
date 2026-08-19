@@ -11,7 +11,7 @@ while [ "$elapsed" -lt "$timeout_seconds" ]; do
         omarchy-launch-webapp "https://web.akiflow.com/#/planner/today" &
         omarchy-launch-webapp "https://www.facebook.com/messages/e2ee/t" &
         omarchy-launch-webapp "https://discord.com/channels/@me" &
-        omarchy-launch-webapp "https://app.shortwave.com/" &
+        omarchy-launch-webapp "https://mail.google.com/" &
         wait
         exit 0
     fi

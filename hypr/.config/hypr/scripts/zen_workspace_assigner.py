@@ -8,7 +8,7 @@ import time
 TITLE_TO_WORKSPACE = {
     "Akiflow": 1,
     "Messenger | Facebook": 3,
-    "Shortwave": 10,
+    "Gmail": 10,
 }
 
 ZEN_CLASS = "zen"

@@ -19,5 +19,5 @@ coreutils		git			jjui			libmd			libvidstab		maven			p11-kit			stow			wget
 countdown		git-delta		joker			libmicrohttpd		libvmaf			mbedtls@3		pandoc			svt-av1			x264
 
 ==> Casks
-aerospace			basictex			discord				font-hack-nerd-font		font-sketchybar-app-font	karabiner-elements		shortwave			spotify
+aerospace			basictex			discord				font-hack-nerd-font		font-sketchybar-app-font	karabiner-elements		spotify
 alt-tab				blender				firefox				font-sf-pro			ghostty@tip			nomachine			slack				visual-studio-code

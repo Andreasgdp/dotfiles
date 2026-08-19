@@ -259,5 +259,5 @@ if.app-id = 'md.obsidian'
 run = ['move-node-to-workspace 7']
 
 [[on-window-detected]]
-if.app-id = 'com.electron.shortwave'
+if.window-title-regex-substring = '[Gg]mail'
 run = ['move-node-to-workspace 10']

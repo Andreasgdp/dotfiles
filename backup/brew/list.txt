@@ -182,7 +182,6 @@ font-sketchybar-app-font
 ghostty@tip
 karabiner-elements
 nomachine
-shortwave
 slack
 spotify
 visual-studio-code
