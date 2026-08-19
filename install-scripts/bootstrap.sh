@@ -11,28 +11,38 @@ linux_install_manifest() {
   local title=$1
   local manifest=$2
   local installer=$3
+  local pkgs=()
   local pkg
-
-  say ""
-  say "$title"
 
   while IFS= read -r pkg; do
     if omarchy-pkg-present "$pkg" >/dev/null 2>&1; then
       say "  - $pkg (installed)"
       continue
     fi
-
-    if confirm "Install $pkg?" "Y"; then
-      "$installer" "$pkg"
-    else
-      say "  - skipped $pkg"
-    fi
+    pkgs+=("$pkg")
   done < <(read_manifest "$manifest")
+
+  if (( ${#pkgs[@]} > 0 )); then
+    say ""
+    say "$title (${#pkgs[@]} packages to install)"
+    if confirm "Install missing $title?" "Y"; then
+      for pkg in "${pkgs[@]}"; do
+        say "  - Installing $pkg..."
+        "$installer" "$pkg"
+      done
+    else
+      say "  - skipped $title"
+    fi
+  else
+    say ""
+    say "$title (all installed)"
+  fi
 }
 
 flatpak_install_manifest() {
   local title=$1
   local manifest=$2
+  local apps=()
   local app
 
   command_exists flatpak || {
@@ -42,44 +52,61 @@ flatpak_install_manifest() {
     return
   }
 
-  say ""
-  say "$title"
-
   while IFS= read -r app; do
     if flatpak info "$app" >/dev/null 2>&1; then
       say "  - $app (installed)"
       continue
     fi
-
-    if confirm "Install $app?" "Y"; then
-      flatpak install -y flathub "$app"
-    else
-      say "  - skipped $app"
-    fi
+    apps+=("$app")
   done < <(read_manifest "$manifest")
+
+  if (( ${#apps[@]} > 0 )); then
+    say ""
+    say "$title (${#apps[@]} apps to install)"
+    if confirm "Install missing $title?" "Y"; then
+      for app in "${apps[@]}"; do
+        say "  - Installing $app..."
+        flatpak install -y flathub "$app"
+      done
+    else
+      say "  - skipped $title"
+    fi
+  else
+    say ""
+    say "$title (all installed)"
+  fi
 }
 
 macos_install_manifest() {
   local title=$1
   local manifest=$2
   local brew_args=$3
+  local pkgs=()
   local pkg
-
-  say ""
-  say "$title"
 
   while IFS= read -r pkg; do
     if brew list $brew_args "$pkg" >/dev/null 2>&1; then
       say "  - $pkg (installed)"
       continue
     fi
-
-    if confirm "Install $pkg?" "Y"; then
-      brew install $brew_args "$pkg"
-    else
-      say "  - skipped $pkg"
-    fi
+    pkgs+=("$pkg")
   done < <(read_manifest "$manifest")
+
+  if (( ${#pkgs[@]} > 0 )); then
+    say ""
+    say "$title (${#pkgs[@]} packages to install)"
+    if confirm "Install missing $title?" "Y"; then
+      for pkg in "${pkgs[@]}"; do
+        say "  - Installing $pkg..."
+        brew install $brew_args "$pkg"
+      done
+    else
+      say "  - skipped $title"
+    fi
+  else
+    say ""
+    say "$title (all installed)"
+  fi
 }
 
 platform=$(detect_platform)

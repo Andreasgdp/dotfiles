@@ -28,6 +28,11 @@ confirm() {
   local default=${2:-N}
   local reply
 
+  if [[ ! -t 0 ]]; then
+    [[ $default == "Y" ]]
+    return
+  fi
+
   if [[ $default == "Y" ]]; then
     read -r -p "$prompt [Y/n] " reply
     [[ -z $reply || $reply =~ ^[Yy]$ ]]
@@ -43,11 +48,7 @@ detect_platform() {
       printf 'macos\n'
       ;;
     Linux)
-      if command_exists omarchy-version; then
-        printf 'linux-omarchy\n'
-      else
-        printf 'linux\n'
-      fi
+      printf 'linux-omarchy\n'
       ;;
     *)
       printf 'unknown\n'

@@ -1,0 +1,6 @@
+hl.on("hyprland.start", function()
+  hl.exec_cmd("python3 ~/.config/hypr/scripts/zen_workspace_assigner.py")
+  hl.exec_cmd("~/.config/hypr/scripts/start-online-apps.sh")
+  hl.exec_cmd("spotify")
+  hl.exec_cmd("uwsm-app -- xdg-terminal-exec --dir=\"$HOME\"")
+end)
