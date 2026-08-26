@@ -58,7 +58,8 @@ ssh -T git@github.com || true
 if [[ -d $DOTFILES_ROOT/.git ]] && git -C "$DOTFILES_ROOT" remote get-url origin >/dev/null 2>&1; then
   origin_url=$(git -C "$DOTFILES_ROOT" remote get-url origin)
 
-  if [[ $origin_url =~ ^https://github.com/(.+)/(.+)(\.git)?$ ]]; then
+  clean_url="${origin_url%.git}"
+  if [[ $clean_url =~ ^https://github\.com/([^/]+)/([^/]+)$ ]]; then
     ssh_url="git@github.com:${BASH_REMATCH[1]}/${BASH_REMATCH[2]}.git"
 
     if confirm "Switch dotfiles origin remote to SSH?" "Y"; then
