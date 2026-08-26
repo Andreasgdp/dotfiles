@@ -213,8 +213,6 @@ records = true
 # strategy = "auto"
 
 [daemon]
-enabled = true
-autostart = true
 
 [ai]
 enabled = true

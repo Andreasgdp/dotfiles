@@ -3,9 +3,10 @@
   name = Andreas Petersen
 
 [core]
-  pager = delta
+  pager = hunk pager
   editor = nvim
   hooksPath = ~/gitconfig/hooks
+  excludesFile = ~/.gitignore_global
 
 [interactive]
   diffFilter = delta --color-only
@@ -23,7 +24,7 @@
 
 [diff]
   colorMoved = default
-#  algorithm = histogram
+  algorithm = histogram
 
 [alias]
   s = status

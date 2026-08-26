@@ -1,6 +1,7 @@
 return {
   {
     "neovim/nvim-lspconfig",
+    lazy = false,
     opts = {
       servers = {
         pyright = {
@@ -16,6 +17,7 @@ return {
             },
           },
         },
+        copilot = {},
       },
       inlay_hints = {
         enabled = true,

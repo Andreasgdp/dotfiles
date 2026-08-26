@@ -1,0 +1,10 @@
+id = "local.jj-workspace-setup"
+name = "jj Workspace Setup"
+version = "0.1.0"
+min_herdr_version = "0.7.0"
+description = "On new jj workspace: copy .env files from the main repo and open the standard 5-tab layout."
+platforms = ["macos", "linux"]
+
+[[events]]
+on = "workspace.created"
+command = ["./setup.sh"]

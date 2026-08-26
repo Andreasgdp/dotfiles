@@ -1,0 +1,7 @@
+[tools]
+"aqua:modem-dev/hunk" = "latest"
+codex = "latest"
+gh = "latest"
+"github:can1357/oh-my-pi" = "latest"
+node = "26.7.0"
+opencode = "latest"

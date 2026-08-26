@@ -1,0 +1,160 @@
+onboarding = false
+# herdr config — mirrors ~/.config/tmux/tmux.conf where herdr has an equivalent.
+# Full defaults: herdr --default-config
+
+[theme]
+name = "catppuccin"        # = catppuccin mocha (dark default)
+
+[theme.custom]
+panel_bg = "reset"         # transparent bg, like tmux bg=default
+accent = "#f5c2e7"         # catppuccin pink, ~ magenta active border
+
+[ui]
+accent = "#f5c2e7"
+mouse_capture = true       # tmux: set -g mouse on
+
+[terminal]
+default_shell = "/bin/zsh"   # tmux: set-option -g default-shell /bin/zsh
+
+[advanced]
+scrollback_limit_bytes = 50000000  # ~ tmux history-limit 1000000 (bytes, not lines)
+
+[session]
+resume_agents_on_restore = true
+
+[keys]
+prefix = "ctrl+a"            # tmux: set -g prefix ^A
+
+# --- tabs (≈ tmux windows) ---
+new_tab = "prefix+ctrl+c"   # tmux: bind ^C new-window
+next_tab = "prefix+n"       # tmux default: n next-window
+previous_tab = "prefix+p"   # tmux default: p previous-window
+rename_tab = "prefix+r"     # tmux: bind r rename-window
+close_tab = ""              # close via close_pane so the focused child collapses upward
+# switch_tab = prefix+1..9   herdr default = tmux select-window 1..9
+
+# --- panes ---
+# focus prefix+h/j/k/l (herdr default; you chose prefix over bare ctrl to keep
+# ctrl+h=backspace and nvim intact)
+split_vertical = "prefix+ctrl+v"     # tmux: bind v split-window -h (left/right)
+split_horizontal = "prefix+ctrl+s"   # tmux: bind s split-window -v (top/bottom)
+zoom = "prefix+z"               # tmux: bind z resize-pane -Z
+close_pane = ""                 # custom ctrl+q command below handles last-workspace focus
+resize_mode = "prefix+ctrl+r"   # tmux used ,./-= direct; herdr only has a mode
+copy_mode = "prefix+["          # tmux default copy mode
+
+# --- workspaces (≈ tmux sessions / sesh) ---
+new_workspace = ""              # custom ctrl+n command below gives random label + $HOME cwd
+workspace_picker = "prefix+w"   # herdr default; ctrl+f below is the sesh picker
+close_workspace = ""            # custom shift+d command below focuses last workspace first
+
+# --- misc ---
+detach = "prefix+ctrl+d"        # tmux: bind ^D detach
+reload_config = "prefix+shift+r" # tmux: bind R source-file (reload)
+settings = "prefix+shift+s"     # moved off prefix+s (now split_horizontal)
+
+# sesh-style workspace picker (tmux: bind -n C-f sesh connect)
+[[keys.command]]
+key = "ctrl+f"
+type = "pane"
+command = "~/.config/herdr/workspace-picker.sh"
+description = "fuzzy-pick dir -> switch/create workspace"
+
+# ctrl+a ctrl+n -> new random workspace in ~
+[[keys.command]]
+key = "prefix+ctrl+n"
+type = "shell"
+command = "~/.config/herdr/new-workspace.sh"
+description = "new random workspace in home"
+
+# ctrl+a ctrl+q -> close focused pane, focusing last workspace first if needed
+[[keys.command]]
+key = "prefix+ctrl+q"
+type = "shell"
+command = "~/.config/herdr/close-pane.sh"
+description = "close focused pane"
+
+# ctrl+a shift+d -> close workspace, then land on last workspace
+[[keys.command]]
+key = "prefix+shift+d"
+type = "shell"
+command = "~/.config/herdr/close-workspace.sh"
+description = "close workspace and focus previous"
+
+# ctrl+a ctrl+t -> last workspace (tmux: bind ^t sesh last)
+[[keys.command]]
+key = "prefix+ctrl+t"
+type = "plugin_action"
+command = "third774.last-workspace.toggle"
+description = "swap to last workspace"
+
+# prefix+x -> swap focused pane downward (tmux: bind x swap-pane -D)
+[[keys.command]]
+key = "prefix+x"
+type = "shell"
+command = "herdr pane swap --direction down --current"
+description = "swap pane down"
+
+# ctrl+a ctrl+o -> project templates picker (tmux: bind ^o tmux-sessionizer)
+[[keys.command]]
+key = "prefix+ctrl+o"
+type = "plugin_action"
+command = "cloudmanic.herdr-plus.projects"
+description = "open a project workspace (5-tab layout)"
+
+# ctrl+a ctrl+j -> last tab
+[[keys.command]]
+key = "prefix+ctrl+j"
+type = "shell"
+command = "~/.config/herdr/last-tab.sh"
+description = "switch to last-focused tab"
+
+# ctrl+a space -> picker center
+[[keys.command]]
+key = "prefix+space"
+type = "plugin_action"
+command = "herdr-picker-plus.open"
+description = "picker center"
+
+# jj workspace helpers
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "nathanflurry.jj-workspace.new"
+description = "new jj workspace"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "nathanflurry.jj-workspace.new-tab"
+description = "new jj workspace (in tab)"
+
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "nathanflurry.jj-workspace.remove"
+description = "remove jj workspace"
+
+[[keys.command]]
+key = "ctrl+h"
+type = "plugin_action"
+command = "vim-herdr-navigation.left"
+description = "navigate left (vim/herdr)"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "plugin_action"
+command = "vim-herdr-navigation.down"
+description = "navigate down (vim/herdr)"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "plugin_action"
+command = "vim-herdr-navigation.up"
+description = "navigate up (vim/herdr)"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "plugin_action"
+command = "vim-herdr-navigation.right"
+description = "navigate right (vim/herdr)"

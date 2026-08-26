@@ -32,6 +32,7 @@ jujutsu
 lazydocker
 lazygit
 mako
+mise
 nautilus
 neovim
 obsidian

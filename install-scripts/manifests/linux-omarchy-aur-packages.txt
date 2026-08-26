@@ -3,3 +3,8 @@ sesh-bin
 slack-desktop
 zen-browser-bin
 jjui-bin
+bun-bin
+herdr
+hunk-bin
+opencode
+tuicr

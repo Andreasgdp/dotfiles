@@ -1,240 +1,183 @@
-# Fast .zshrc without oh-my-zsh
+# Fast .zshrc - Lazy loading for speed
 
+# Set up basic environment first
 export LANG=en_US.UTF-8
 export EDITOR=nvim
-export BAT_THEME="Catppuccin Mocha"
-export PYENV_ROOT="$HOME/.pyenv"
-export SDKMAN_DIR="$HOME/.sdkman"
-export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-export N_PREFIX="$HOME/n"
-export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
-export HISTSIZE=100000
-export SAVEHIST=100000
 
-typeset -U path fpath
+# PATH setup
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$PATH:/opt/nvim-linux64/bin:/usr/local/bin:/usr/local/share:/usr/bin:/bin:/usr/sbin:/sbin:/snap/bin:$HOME/.local/bin:$HOME/dotfiles/localbin/.local/bin:$HOME/.cargo/bin"
+export PATH="$PATH:$HOME/.rvm/bin"
 
-path=(
-  "$N_PREFIX/bin"
-  "$HOME/.cargo/bin"
-  "$HOME/.local/bin"
-  "$HOME/dotfiles/localbin/.local/bin"
-  /opt/nvim-linux64/bin
-  /usr/local/bin
-  /usr/local/share
-  /usr/bin
-  /bin
-  /usr/sbin
-  /sbin
-  /snap/bin
-  $path
-)
-
-[[ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]] && path=(/opt/homebrew/opt/coreutils/libexec/gnubin $path)
-[[ -d "$PYENV_ROOT/bin" ]] && path=("$PYENV_ROOT/bin" $path)
-[[ -d "$HOME/.rvm/bin" ]] && path+=("$HOME/.rvm/bin")
-
+# Lazy loading helper
 _lazy_load() {
   local cmd=$1
   local init_cmd="$2"
-
   eval "$init_cmd"
-  (( $+functions[$cmd] )) && unfunction "$cmd"
+  if declare -f "$cmd" >/dev/null; then
+    unfunction "$cmd"
+  fi
   command "$cmd" "$@"
 }
 
-_source_first() {
-  local candidate
-
-  for candidate in "$@"; do
-    if [[ -r "$candidate" ]]; then
-      source "$candidate"
-      return 0
-    fi
-  done
-
-  return 1
-}
-
-_add_fpath_if_dir() {
-  [[ -d "$1" ]] && fpath=("$1" $fpath)
-}
-
-setopt APPEND_HISTORY
-setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_REDUCE_BLANKS
-setopt HIST_SAVE_NO_DUPS
-setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
-
+# Basic aliases that are always available
 alias c='clear'
 alias cl='clear'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-alias ......='cd ../../../../..'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
 alias mkdir='mkdir -p'
 alias rmrf='rm -rf'
 alias vim='nvim'
 alias vi='nvim'
 alias v='nvim'
-alias ssh='TERM=xterm-256color ssh'
+alias h='hx'
+alias ssh="TERM=xterm-256color ssh"
+# zoxide replaces cd (set up above)
 
+# Tool aliases (lazy load)
 alias cat='bat'
 alias l='eza -lh --icons=auto'
 alias ls='eza -1 --icons=auto'
 alias ll='eza -lha --icons=auto --sort=name --group-directories-first'
 alias ld='eza -lhD --icons=auto'
-alias lt='eza --tree --level=2 --long --icons --git'
+alias lt="eza --tree --level=2 --long --icons --git"
 alias lg='lazygit'
 alias ldocker='lazydocker'
 alias f='fastfetch'
 
+# Docker aliases
 alias dka='docker kill $(docker ps -q)'
 alias dca='docker rm $(docker ps -a -q)'
 alias dprune='docker system prune -af --volumes'
 alias dclean='dka && dca && dprune'
 
-alias jjlog='watch -n 1 -c "jj --color=always --ignore-working-copy"'
-alias jjs='jj show'
-alias jjc='jj check'
-alias jjfetch='jj git fetch'
-alias jjnew='jj new'
-
+# JJ aliases
+alias jjlog="watch -n 1 -c \"jj --color=always --ignore-working-copy\""
+alias jjs="jj show"
+alias jjc="jj check"
+alias jjfetch="jj git fetch"
+alias jjf="jj git fetch"
+alias jjnew="jj new"
 jjl() {
   jj -r 'all()' --limit "${1:-100}" --color=always
 }
-
 jjtouch() {
   jj touch -r "${1}-..@"
 }
 
-alias claudesession='claude -r'
+# Review a GitHub PR in Hunk without fetching or checking out its branches.
+review-prev() {
+  if (( $# != 1 )); then
+    print -u2 'usage: review <pull-request-url>'
+    return 2
+  fi
 
-if command -v hx >/dev/null 2>&1; then
-  alias h='hx'
-fi
-
-if command -v kitten >/dev/null 2>&1; then
-  alias d='kitten diff'
-fi
-
-if command -v greadlink >/dev/null 2>&1; then
-  alias readlink='greadlink'
-fi
-
-if command -v direnv >/dev/null 2>&1; then
-  eval "$(direnv hook zsh)"
-fi
-
-if command -v atuin >/dev/null 2>&1; then
-  eval "$(atuin init zsh)"
-fi
-
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh)"
-  alias cd='z'
-fi
-
-pyenv() {
-  _lazy_load pyenv '[[ -x "$PYENV_ROOT/bin/pyenv" ]] && export PATH="$PYENV_ROOT/bin:$PATH" && eval "$("$PYENV_ROOT/bin/pyenv" init - zsh)"'
+  setopt localoptions pipefail
+  command gh pr diff --patch --color=never "$1" | command hunk patch
 }
 
-rvm() {
-  _lazy_load rvm '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"'
-}
+alias review="tuicr tui pr"
 
-sdk() {
-  _lazy_load sdk '[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"'
-}
+#claude
+alias claudesession="claude -r"
+alias clanker="claude"
 
-starship_precmd() {
+# opencode
+alias oc="opencode"
+
+# Kitty alias
+alias d="kitten diff"
+
+# Environment variables for tools
+export BAT_THEME="Catppuccin Mocha"
+export PYENV_ROOT="$HOME/.pyenv"
+# export N_PREFIX="$HOME/n"
+export SDKMAN_DIR="$HOME/.sdkman"
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+# setup pyenv
+if command -v pyenv >/dev/null 2>&1; then
+  eval "$(pyenv init - zsh)"
+elif [[ -x "$PYENV_ROOT/bin/pyenv" ]]; then
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init - zsh)"
+fi
+
+
+# Lazy load starship
+starship_prompt() {
   if command -v starship >/dev/null 2>&1; then
     eval "$(starship init zsh)"
   fi
-
-  unfunction starship_precmd
-  precmd_functions=(${precmd_functions:#starship_precmd})
+}
+precmd() {
+  starship_prompt
+  unfunction precmd
 }
 
-precmd_functions+=(starship_precmd)
+# direnv and atuin are already initialized above
 
-autoload -Uz compinit up-line-or-beginning-search down-line-or-beginning-search
-zmodload -F zsh/stat b:zstat 2>/dev/null
+# Initialize zoxide for smarter cd
+eval "$(zoxide init zsh)"
+alias cd='z'
 
-command mkdir -p "$HOME/.zsh/cache"
-command mkdir -p "${HISTFILE:h}"
 
-_add_fpath_if_dir "$HOME/.docker/completions"
-_add_fpath_if_dir "$HOME/dotfiles/zsh/plugins/fzf-tab"
-_add_fpath_if_dir /usr/share/zsh/plugins/fzf-tab
+# Lazy load RVM
+rvm() {
+  _lazy_load rvm '[[ -s "$HOME/.rvm/bin/sdkman-init.sh" ]] && source "$HOME/.rvm/bin/rvm"'
+}
 
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' use-cache yes
-zstyle ':completion:*' cache-path "$HOME/.zsh/cache"
+# Lazy load SDKMAN
+sdk() {
+  _lazy_load sdk '[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"'
+}
 
-zcompdump_file="${ZDOTDIR:-$HOME}/.zcompdump"
-zcompdump_mtime=0
+# load Rust environment
+path+=("$HOME/.cargo/bin")
+export PATH="$HOME/.cargo/bin:$PATH"
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
-if [[ -s "$zcompdump_file" ]]; then
-  zstat -A zcompdump_stat +mtime -- "$zcompdump_file" 2>/dev/null || zcompdump_stat=()
-  (( ${#zcompdump_stat} )) && zcompdump_mtime=$zcompdump_stat[1]
-fi
+# Initialize shell hooks that must run immediately
+eval "$(direnv hook zsh)"
+eval "$(atuin init zsh)"
 
-if (( EPOCHSECONDS - zcompdump_mtime > 86400 )); then
-  compinit -d "$zcompdump_file"
+# Load ZSH plugins directly (faster than Oh-my-zsh)
+[[ -f "$HOME/dotfiles/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh" ]] && source "$HOME/dotfiles/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh"
+[[ -f "$HOME/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" ]] && source "$HOME/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[[ -f "$HOME/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$HOME/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+# Minimal ZSH setup for speed
+autoload -Uz compinit
+fpath=("$HOME/.docker/completions" "$HOME/dotfiles/zsh/plugins/fzf-tab" $fpath)
+# export PATH="$N_PREFIX/bin:$PATH"
+
+# Only run compinit once a day
+zcompdump_file="$HOME/.zcompdump"
+zcompdump_mtime=$(stat -c %Y "$zcompdump_file" 2>/dev/null || stat -f %m "$zcompdump_file" 2>/dev/null || echo 0)
+zcompdump_day=$(date -d "@$zcompdump_mtime" +"%j" 2>/dev/null || date -r "$zcompdump_mtime" +"%j" 2>/dev/null || echo 0)
+
+if [[ "$(date +'%j')" != "$zcompdump_day" ]]; then
+  compinit
 else
-  compinit -C -d "$zcompdump_file"
+  compinit -C
 fi
 
-_source_first \
-  /usr/share/fzf/key-bindings.zsh \
-  /usr/local/share/fzf/key-bindings.zsh \
-  "$HOME/.fzf/shell/key-bindings.zsh"
+# Basic key bindings
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
 
-_source_first \
-  /usr/share/fzf/completion.zsh \
-  /usr/local/share/fzf/completion.zsh \
-  "$HOME/.fzf/shell/completion.zsh"
-
-_source_first \
-  "$HOME/dotfiles/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh" \
-  /usr/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh \
-  /usr/share/fzf-tab/fzf-tab.plugin.zsh
-
-_source_first \
-  "$HOME/dotfiles/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" \
-  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
-  /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-history_search_up_widget='up-line-or-beginning-search'
-history_search_down_widget='down-line-or-beginning-search'
-
-if _source_first \
-  "$HOME/dotfiles/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh" \
-  /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh \
-  /usr/share/zsh-history-substring-search/zsh-history-substring-search.zsh; then
-  history_search_up_widget='history-substring-search-up'
-  history_search_down_widget='history-substring-search-down'
-else
-  zle -N up-line-or-beginning-search
-  zle -N down-line-or-beginning-search
+# Readlink alias
+alias readlink=greadlink
+ 
+# Force 'n' to the front of the PATH
+export N_PREFIX="$HOME/n"
+# This removes any existing n/bin from PATH and re-inserts it at the very start
+export PATH="$N_PREFIX/bin:${PATH//"$N_PREFIX/bin:"/}"
+export PATH="$HOME/.bun/bin:$PATH"
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
 fi
-
-_source_first \
-  "$HOME/dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
-  /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
-  /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-bindkey '^[[H' beginning-of-line
-bindkey '^[[F' end-of-line
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[4~' end-of-line
-bindkey '^[[A' "$history_search_up_widget"
-bindkey '^[[B' "$history_search_down_widget"

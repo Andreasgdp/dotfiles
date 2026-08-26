@@ -7,10 +7,12 @@ fastfetch
 ghostty
 gitconfig
 helix
+herdr
 htop
 jj
 lazygit
 localbin
+mise
 nvim
 sesh
 starship
